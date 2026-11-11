@@ -18,7 +18,7 @@ let current = null;          // elemento .screen actual
 let cleanup = null;          // limpieza del mount() de la pantalla actual
 let overlay = null;          // { code, type, opener, cleanup }
 let internal = false;        // true mientras el router mismo cambia el hash
-let busy = false;
+let navId = 0;               // la última navegación gana: las anteriores que sigan en curso se abandonan
 
 const view = () => $('#view');
 const parse = (hash) => {
@@ -56,19 +56,22 @@ function build(code, params) {
   el.setAttribute('aria-label', meta.title);
   const ctx = { code, params, meta };
   const fill = () => {
-    el.replaceChildren(def ? def.render(ctx) : pendingScreen(code));
+    const node = def ? def.render(ctx) : pendingScreen(code);
+    el.replaceChildren(node);
+    ctx.root = node; // lo que devolvió render(): mount() trabaja sobre esto, no sobre el contenedor .screen
     return ctx;
   };
   return { el, ctx, fill, def };
 }
 
 /** Muestra una pantalla de la pila. kind: push | back | swap | mode | none */
-async function show(entry, kind) {
+async function show(entry, kind, id) {
   const meta = META[entry.code];
   const { el, ctx, fill, def } = build(entry.code, entry.params);
   const first = !visited.has(entry.code) && def?.skeleton !== false && kind !== 'none' && kind !== 'back';
   visited.add(entry.code);
   const old = current;
+  ctx.kind = kind; ctx.first = first; // las pantallas deciden con esto si escalonan sus listas (solo en la primera carga)
   if (cleanup) { cleanup(); cleanup = null; }
   if (first) el.innerHTML = skeleton(); else fill();
   // La barra se mueve junto con la entrada: oculta o visible según la pantalla.
@@ -78,15 +81,16 @@ async function show(entry, kind) {
   const entering = enterScreen(el, kind);
   if (first) {
     await new Promise((r) => setTimeout(r, reduce() ? 150 : 520));
-    if (current !== el) return;
+    if (id !== navId) return;
     fill();
     el.classList.add('vx-loaded');
     setTimeout(() => el.classList.remove('vx-loaded'), 220);
   }
-  const m = def?.mount?.(el, ctx);
+  const m = def?.mount?.(ctx.root || el, ctx);
   cleanup = typeof m === 'function' ? m : null;
   await entering;
-  if (old && old !== el) old.remove();
+  if (id !== navId) return;
+  [...view().children].forEach((c) => { if (c !== el) c.remove(); }); // deja solo la pantalla actual
   if (kind === 'back' && entry.scroll) el.scrollTop = entry.scroll;
   $('h1', el)?.focus({ preventScroll: true });
 }
@@ -97,29 +101,29 @@ export async function go(code, { kind = 'push', params = {} } = {}) {
   const meta = META[code];
   if (!meta) { toast('Esa pantalla no existe'); return; }
   if (meta.type === 'sheet' || meta.type === 'dialog' || meta.type === 'flow') return openOverlay(code, params);
-  if (busy) return;
-  busy = true;
-  try {
+  const id = ++navId;
+  {
     if (meta.mode && meta.mode !== state.mode) set({ mode: meta.mode }); // saltar desde el Índice cambia el modo
     if (overlay) await closeOverlay({ silent: true });
     if (top() && current) top().scroll = current.scrollTop;
     const entry = { code, params, scroll: 0 };
-    if (kind === 'push') stack.push(entry); else { stack.length = 0; stack.push(entry); }
+    // 'fade' (fundido 350) y 'smart' (fundido 200, barras de búsqueda) apilan como un push pero sin desplazamiento.
+    if (kind === 'push' || kind === 'fade' || kind === 'smart') stack.push(entry); else { stack.length = 0; stack.push(entry); }
     setHash(code, params);
-    await show(entry, kind);
-  } finally { busy = false; }
+    await show(entry, { fade: 'mode', smart: 'swap' }[kind] || kind, id);
+  }
 }
 
 export async function back() {
   if (overlay) return closeOverlay();
-  if (stack.length < 2 || busy) return;
-  busy = true;
-  try {
+  if (stack.length < 2) return;
+  const id = ++navId;
+  {
     stack.pop();
     const entry = top();
     setHash(entry.code, entry.params);
-    await show(entry, 'back');
-  } finally { busy = false; }
+    await show(entry, 'back', id);
+  }
 }
 
 /** Reinicia la pila y muestra el inicio de un modo con fundido de 350 ms. */

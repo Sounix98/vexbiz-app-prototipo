@@ -35,6 +35,11 @@ const I = {
   chevron: 'M9 6l6 6-6 6', add: 'M12 5v14M5 12h14', inbox: 'M4 13l3-8h10l3 8v6H4zM4 13h5l1 2h4l1-2h5',
   sound: 'M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 010 6', shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
   wrench: 'M14.5 6.5a4 4 0 005 5L10 21a2.1 2.1 0 01-3-3z', toolbox: 'M4 9h16v10H4zM9 9V6h6v3M4 14h16',
+  minus: 'M6 12h12', heart: 'M12 20s-7-4.6-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.4-7 10-7 10z',
+  share: '<circle cx="6" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 11l8-4M8 13l8 4"/>',
+  copy: 'M9 9h11v11H9zM5 15V5h10', upload: 'M12 16V5M7 9l5-5 5 5M5 19h14', map: 'M9 4l6 2 5-2v14l-5 2-6-2-5 2V6zM9 4v14M15 6v14',
+  trash: 'M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13', edit: 'M4 20h4L19 9l-4-4L4 16zM13 7l4 4', truck: 'M3 7h11v9H3zM14 10h4l3 3v3h-7',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
   menu: 'M4 6h16M4 12h16M4 18h16', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 };
 export const icon = (name, size = 24) => {

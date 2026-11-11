@@ -13,7 +13,7 @@ export const usuario = {
 
 export const direcciones = [
   { id: 'casa', nombre: 'Casa', predeterminada: true, linea: 'Av. Bolívar Norte, Res. Los Samanes, Torre B, Apto 4-2', ref: 'Frente a la plaza', ciudad: 'Valencia, Carabobo', cp: '2001', tel: '0414-555 1234' },
-  { id: 'oficina', nombre: 'Oficina', linea: 'C.C. Metrópolis, Nivel 2, Local 214', ciudad: 'Valencia, Carabobo', cp: '2003', tel: '0241-555 9876' },
+  { id: 'oficina', nombre: 'Oficina', linea: 'C.C. Metrópolis, Nivel 2, Local 214', ciudad: 'Valencia, Carabobo', cp: '2003', tel: '0241-555 9876', sinMapa: true },
   { id: 'taller', nombre: 'Taller principal', linea: 'Zona Industrial Castillito, Calle 98', ciudad: 'San Diego, Carabobo', cp: '2006', tel: '0412-555 4422', sinMapa: true },
 ];
 
@@ -36,8 +36,36 @@ export const productos = [
   { id: 'tarj', nombre: 'Tarjeta electrónica condensadora split 12K', corto: 'Tarjeta condensadora 12K', categoria: 'Climatización › Tarjetas', tienda: 'cr', precio: 64.0, stock: 15 },
   { id: 'tal', nombre: 'Taladro percutor inalámbrico 18V', corto: 'Taladro percutor 18V', categoria: 'Herramientas', tienda: 'ha', precio: 129.9, stock: 9 },
   { id: 'llav', nombre: 'Juego de llaves 12 piezas', corto: 'Juego de llaves 12 piezas', categoria: 'Herramientas', tienda: 'ha', precio: 24.9, stock: 30 },
+  // INVENTADO: el resto del catálogo de demo (aires y compresores) para que Resultados, Nicho, Categoría y Filtros tengan qué filtrar
+  { id: 'lg12', nombre: 'Aire split Dual Inverter 12.000 BTU', corto: 'Aire LG Dual 12K', marca: 'LG', ref: 'S4-Q12JA3WF', categoria: 'Climatización › Aires split', tienda: 'ft', precio: 412.0, stock: 6 },
+  { id: 'mi12', nombre: 'Aire split Xtreme Save 12.000 BTU', corto: 'Aire Midea 12K', marca: 'Midea', ref: 'MSAGBU-12CRDN8', categoria: 'Climatización › Aires split', tienda: 'cr', precio: 356.0, stock: 14 },
+  { id: 'da18', nombre: 'Aire split inverter 18.000 BTU', corto: 'Aire Daikin 18K', marca: 'Daikin', ref: 'FTKB50', categoria: 'Climatización › Aires split', tienda: 'ft', precio: 629.0, stock: 3 },
+  { id: 'ca24', nombre: 'Aire split 24.000 BTU 220V', corto: 'Aire Carrier 24K', marca: 'Carrier', ref: '42QHC024', categoria: 'Climatización › Aires split', tienda: 'eh', precio: 780.0, stock: 0 },
+  { id: 'sa09', nombre: 'Aire split inverter 9.000 BTU', corto: 'Aire Samsung 9K', marca: 'Samsung', ref: 'AR09TVHZ', categoria: 'Climatización › Aires split', tienda: 'cr', precio: 298.0, stock: 20 },
+  { id: 'lg18', nombre: 'Aire split Dual Inverter 18.000 BTU', corto: 'Aire LG Dual 18K', marca: 'LG', ref: 'S4-Q18KL3QF', categoria: 'Climatización › Aires split', tienda: 'ft', precio: 540.0, stock: 9, condicion: 'Caja abierta' },
+  { id: 'cs24', nombre: 'Compresor scroll 24.000 BTU', corto: 'Compresor scroll 24K', marca: 'GMCC', ref: 'FT-CMP-24S', categoria: 'Climatización › Compresores', sub: 'scroll', tienda: 'ft', precio: 320.0, stock: 5 },
+  { id: 'ci12', nombre: 'Compresor inverter 12.000 BTU', corto: 'Compresor inverter 12K', marca: 'Samsung', ref: 'FT-CMP-12I', categoria: 'Climatización › Compresores', sub: 'inverter', tienda: 'ft', precio: 245.0, stock: 4 },
+  { id: 'cn14', nombre: 'Compresor para nevera 1/4 HP', corto: 'Compresor nevera 1/4 HP', marca: 'GMCC', ref: 'FT-CMP-N14', categoria: 'Climatización › Compresores', sub: 'nevera', tienda: 'rs', precio: 78.0, stock: 11 },
 ];
+// INVENTADO: precios anteriores de tres productos para que «Ofertas relámpago» tenga descuentos (−20 %)
+Object.assign(producto_('lg12'), { antes: 515.0, oferta: '20/10' });
+Object.assign(producto_('mi12'), { antes: 445.0, oferta: '20/10' });
+Object.assign(producto_('sa09'), { antes: 372.5, oferta: '20/10' });
+function producto_(id) { return productos.find((p) => p.id === id); }
+productos.forEach((p) => { p.condicion = p.condicion || 'Nuevo'; if (!p.sub && p.id === 'comp') p.sub = 'rotativo'; });
 export const producto = (id) => productos.find((p) => p.id === id);
+/** Ofertas de otras tiendas para el mismo producto (M2.10). Solo el aire split de la ficha tiene varias. */
+export const ofertas = {
+  aa12: [
+    { t: 'cr', precio: 372.0, stock: 12, nota: 'Mejor precio' },
+    { t: 'ft', precio: 389.0, antes: 486.25, stock: 8, actual: true },
+    { t: 'eh', precio: 395.0, stock: 2, nota: 'Caja abierta' },
+    { t: 'rs', precio: 410.0, stock: 0 },
+  ],
+};
+/** Precio y tienda de una línea del carrito (con oferta de otra tienda si la tiene). */
+export const precioDe = (id, oferta) => (oferta ? ofertas[id].find((o) => o.t === oferta).precio : producto(id).precio);
+export const tiendaDe = (id, oferta) => tienda(oferta || producto(id).tienda);
 export const tienda = (id) => tiendas.find((t) => t.id === id);
 
 /** Carrito inicial = el de M3.01: 4 líneas, 2 tiendas, subtotal $ 568,80. */
@@ -56,7 +84,7 @@ export const pedidos = [
 export const compra = {
   pasarela: { total: 466.14, impuestoPct: 2, tasaDia: '16/10', intento: 'SP-88123' },
   debitoPct: 3, // impuesto del débito bancario (M3.06 / M3.07)
-  pedidos: [{ id: '#VX-20430', tienda: 'Frío Total C.A.', total: 389.0 }, { id: '#VX-20431', tienda: 'ClimaRepuestos', total: 68.0 }],
+  pedidos: [{ id: '#VX-20430', tienda: 'Frío Total C.A.', total: 389.0, articulos: 1 }, { id: '#VX-20431', tienda: 'ClimaRepuestos', total: 68.0, articulos: 2 }],
   bancos: [{ id: 'banesco', nombre: 'Banesco', tipo: 'Personal', doc: 'V-12.***.678', tel: '0414-***-1234' }, { id: 'mercantil', nombre: 'Mercantil', doc: 'V-12.***.678', tel: '0412-***-9876' }],
 };
 
@@ -95,3 +123,30 @@ export const avisos = {
     { titulo: 'Nuevo reclamo #R-0091', detalle: 'Carmen D. abrió un reclamo.', hora: '02:58' },
   ],
 };
+
+/** Nichos (M2.05). Los conteos son totales del catálogo, no se calculan. */
+export const nichos = [
+  { id: 'clima', nombre: 'Climatización', texto: 'Aires, repuestos y herramientas de refrigeración.', productos: 1284, servicio: true },
+  { id: 'refri', nombre: 'Refrigeración comercial', texto: 'Neveras, cavas y equipos para negocios.', productos: 642 },
+  { id: 'electro', nombre: 'Electrodomésticos', texto: 'Línea blanca y sus repuestos.', productos: 938 },
+  { id: 'elec', nombre: 'Electricidad', texto: 'Cableado, breakers e iluminación.', productos: 2110 },
+  { id: 'solar', nombre: 'Energía solar', texto: 'Paneles, inversores y baterías.', productos: 214 },
+  { id: 'plom', nombre: 'Plomería', texto: 'Tuberías, bombas y grifería.', productos: 0 },
+];
+/** Directorio de M2.11 tal como está en Figma (difiere en algunos datos de `tiendas`; ver INFORME). */
+export const directorio = [
+  { id: 'ft', sigla: 'FT', nombre: 'Frío Total C.A.', nicho: 'Climatización', ciudad: 'Caracas', rating: 4.8, productos: 46 },
+  { id: 'cr', sigla: 'CR', nombre: 'ClimaRepuestos', nicho: 'Climatización', ciudad: 'Valencia', rating: 4.7, productos: 128 },
+  { id: 'eh', sigla: 'EH', nombre: 'ElectroHogar Express', nicho: 'Electrodomésticos', ciudad: 'Barquisimeto', rating: 4.6, productos: 212 },
+  { id: 'vc', sigla: 'VC', nombre: 'Voltio Center', nicho: 'Electricidad', ciudad: 'Caracas', rating: 4.9, productos: 534 },
+  { id: 'rs', sigla: 'RS', nombre: 'Refrigeración El Sol', nicho: 'Refrigeración', ciudad: 'Maracay', rating: 4.2, productos: 37 },
+];
+/** Búsquedas (M2.02). */
+export const sugerencias = [
+  { t: 'Compresor rotativo 12.000 BTU R410A', n: '7 tiendas', en: 'En Climatización' },
+  { t: 'Compresor scroll 24.000 BTU', n: '3 tiendas' },
+  { t: 'GMCC', n: '42 productos' },
+  { t: 'compresor de nevera', n: '128 resultados' },
+  { t: 'compresor 12000 btu', n: '86 resultados' },
+];
+export const recientes = ['aire split 12000', 'capacitor 35 uf'];

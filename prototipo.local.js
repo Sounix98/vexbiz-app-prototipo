@@ -8,6 +8,21 @@
   };
 
   // assets/js/data.js
+  var TASA = 36.89486;
+  var usuario = {
+    nombre: "Aníbal Lejarazu",
+    iniciales: "AL",
+    correo: "anibal@correo.com",
+    verificado: true,
+    ciudad: "Valencia, Carabobo",
+    resumen: { sinPagar: 1, enCamino: 2, entregados: 14 },
+    gastoMensual: [["May", 48], ["Jun", 95], ["Jul", 31], ["Ago", 142], ["Sep", 77], ["Oct", 124]]
+  };
+  var direcciones = [
+    { id: "casa", nombre: "Casa", predeterminada: true, linea: "Av. Bolívar Norte, Res. Los Samanes, Torre B, Apto 4-2", ref: "Frente a la plaza", ciudad: "Valencia, Carabobo", cp: "2001", tel: "0414-555 1234" },
+    { id: "oficina", nombre: "Oficina", linea: "C.C. Metrópolis, Nivel 2, Local 214", ciudad: "Valencia, Carabobo", cp: "2003", tel: "0241-555 9876", sinMapa: true },
+    { id: "taller", nombre: "Taller principal", linea: "Zona Industrial Castillito, Calle 98", ciudad: "San Diego, Carabobo", cp: "2006", tel: "0412-555 4422", sinMapa: true }
+  ];
   var tiendas = [
     { id: "ft", sigla: "FT", nombre: "Frío Total C.A.", nicho: "Climatización", ciudad: "Caracas", region: "Distrito Capital", rating: 4.8, productos: 46, verificada: true },
     { id: "cr", sigla: "CR", nombre: "ClimaRepuestos", nicho: "Climatización", ciudad: "Valencia", rating: 4.7, productos: 128 },
@@ -30,9 +45,39 @@
     { id: "comp", nombre: "Compresor rotativo 12.000 BTU R410A", corto: "Compresor rotativo 12K", marca: "GMCC", ref: "FT-CMP-12K", categoria: "Climatización › Compresores", tienda: "ft", precio: 189, stock: 8 },
     { id: "tarj", nombre: "Tarjeta electrónica condensadora split 12K", corto: "Tarjeta condensadora 12K", categoria: "Climatización › Tarjetas", tienda: "cr", precio: 64, stock: 15 },
     { id: "tal", nombre: "Taladro percutor inalámbrico 18V", corto: "Taladro percutor 18V", categoria: "Herramientas", tienda: "ha", precio: 129.9, stock: 9 },
-    { id: "llav", nombre: "Juego de llaves 12 piezas", corto: "Juego de llaves 12 piezas", categoria: "Herramientas", tienda: "ha", precio: 24.9, stock: 30 }
+    { id: "llav", nombre: "Juego de llaves 12 piezas", corto: "Juego de llaves 12 piezas", categoria: "Herramientas", tienda: "ha", precio: 24.9, stock: 30 },
+    // INVENTADO: el resto del catálogo de demo (aires y compresores) para que Resultados, Nicho, Categoría y Filtros tengan qué filtrar
+    { id: "lg12", nombre: "Aire split Dual Inverter 12.000 BTU", corto: "Aire LG Dual 12K", marca: "LG", ref: "S4-Q12JA3WF", categoria: "Climatización › Aires split", tienda: "ft", precio: 412, stock: 6 },
+    { id: "mi12", nombre: "Aire split Xtreme Save 12.000 BTU", corto: "Aire Midea 12K", marca: "Midea", ref: "MSAGBU-12CRDN8", categoria: "Climatización › Aires split", tienda: "cr", precio: 356, stock: 14 },
+    { id: "da18", nombre: "Aire split inverter 18.000 BTU", corto: "Aire Daikin 18K", marca: "Daikin", ref: "FTKB50", categoria: "Climatización › Aires split", tienda: "ft", precio: 629, stock: 3 },
+    { id: "ca24", nombre: "Aire split 24.000 BTU 220V", corto: "Aire Carrier 24K", marca: "Carrier", ref: "42QHC024", categoria: "Climatización › Aires split", tienda: "eh", precio: 780, stock: 0 },
+    { id: "sa09", nombre: "Aire split inverter 9.000 BTU", corto: "Aire Samsung 9K", marca: "Samsung", ref: "AR09TVHZ", categoria: "Climatización › Aires split", tienda: "cr", precio: 298, stock: 20 },
+    { id: "lg18", nombre: "Aire split Dual Inverter 18.000 BTU", corto: "Aire LG Dual 18K", marca: "LG", ref: "S4-Q18KL3QF", categoria: "Climatización › Aires split", tienda: "ft", precio: 540, stock: 9, condicion: "Caja abierta" },
+    { id: "cs24", nombre: "Compresor scroll 24.000 BTU", corto: "Compresor scroll 24K", marca: "GMCC", ref: "FT-CMP-24S", categoria: "Climatización › Compresores", sub: "scroll", tienda: "ft", precio: 320, stock: 5 },
+    { id: "ci12", nombre: "Compresor inverter 12.000 BTU", corto: "Compresor inverter 12K", marca: "Samsung", ref: "FT-CMP-12I", categoria: "Climatización › Compresores", sub: "inverter", tienda: "ft", precio: 245, stock: 4 },
+    { id: "cn14", nombre: "Compresor para nevera 1/4 HP", corto: "Compresor nevera 1/4 HP", marca: "GMCC", ref: "FT-CMP-N14", categoria: "Climatización › Compresores", sub: "nevera", tienda: "rs", precio: 78, stock: 11 }
   ];
+  Object.assign(producto_("lg12"), { antes: 515, oferta: "20/10" });
+  Object.assign(producto_("mi12"), { antes: 445, oferta: "20/10" });
+  Object.assign(producto_("sa09"), { antes: 372.5, oferta: "20/10" });
+  function producto_(id) {
+    return productos.find((p) => p.id === id);
+  }
+  productos.forEach((p) => {
+    p.condicion = p.condicion || "Nuevo";
+    if (!p.sub && p.id === "comp") p.sub = "rotativo";
+  });
   var producto = (id) => productos.find((p) => p.id === id);
+  var ofertas = {
+    aa12: [
+      { t: "cr", precio: 372, stock: 12, nota: "Mejor precio" },
+      { t: "ft", precio: 389, antes: 486.25, stock: 8, actual: true },
+      { t: "eh", precio: 395, stock: 2, nota: "Caja abierta" },
+      { t: "rs", precio: 410, stock: 0 }
+    ]
+  };
+  var precioDe = (id, oferta) => oferta ? ofertas[id].find((o) => o.t === oferta).precio : producto(id).precio;
+  var tiendaDe = (id, oferta) => tienda(oferta || producto(id).tienda);
   var tienda = (id) => tiendas.find((t) => t.id === id);
   var carritoInicial = [
     { id: "aa12", qty: 1 },
@@ -40,6 +85,13 @@
     { id: "tal", qty: 1 },
     { id: "llav", qty: 1 }
   ];
+  var compra = {
+    pasarela: { total: 466.14, impuestoPct: 2, tasaDia: "16/10", intento: "SP-88123" },
+    debitoPct: 3,
+    // impuesto del débito bancario (M3.06 / M3.07)
+    pedidos: [{ id: "#VX-20430", tienda: "Frío Total C.A.", total: 389, articulos: 1 }, { id: "#VX-20431", tienda: "ClimaRepuestos", total: 68, articulos: 2 }],
+    bancos: [{ id: "banesco", nombre: "Banesco", tipo: "Personal", doc: "V-12.***.678", tel: "0414-***-1234" }, { id: "mercantil", nombre: "Mercantil", doc: "V-12.***.678", tel: "0412-***-9876" }]
+  };
   var solicitudes = [
     { id: "#S-1082", servicio: "Instalación de aire split 12.000 BTU", total: 60, cliente: "María González", direccion: "Urb. El Viñedo, Calle 4, Casa 12, Valencia", cuando: "sábado 18/10/2026 9:00", caducaMs: (5 * 60 + 12) * 6e4 }
   ];
@@ -62,6 +114,29 @@
       { titulo: "Nuevo reclamo #R-0091", detalle: "Carmen D. abrió un reclamo.", hora: "02:58" }
     ]
   };
+  var nichos = [
+    { id: "clima", nombre: "Climatización", texto: "Aires, repuestos y herramientas de refrigeración.", productos: 1284, servicio: true },
+    { id: "refri", nombre: "Refrigeración comercial", texto: "Neveras, cavas y equipos para negocios.", productos: 642 },
+    { id: "electro", nombre: "Electrodomésticos", texto: "Línea blanca y sus repuestos.", productos: 938 },
+    { id: "elec", nombre: "Electricidad", texto: "Cableado, breakers e iluminación.", productos: 2110 },
+    { id: "solar", nombre: "Energía solar", texto: "Paneles, inversores y baterías.", productos: 214 },
+    { id: "plom", nombre: "Plomería", texto: "Tuberías, bombas y grifería.", productos: 0 }
+  ];
+  var directorio = [
+    { id: "ft", sigla: "FT", nombre: "Frío Total C.A.", nicho: "Climatización", ciudad: "Caracas", rating: 4.8, productos: 46 },
+    { id: "cr", sigla: "CR", nombre: "ClimaRepuestos", nicho: "Climatización", ciudad: "Valencia", rating: 4.7, productos: 128 },
+    { id: "eh", sigla: "EH", nombre: "ElectroHogar Express", nicho: "Electrodomésticos", ciudad: "Barquisimeto", rating: 4.6, productos: 212 },
+    { id: "vc", sigla: "VC", nombre: "Voltio Center", nicho: "Electricidad", ciudad: "Caracas", rating: 4.9, productos: 534 },
+    { id: "rs", sigla: "RS", nombre: "Refrigeración El Sol", nicho: "Refrigeración", ciudad: "Maracay", rating: 4.2, productos: 37 }
+  ];
+  var sugerencias = [
+    { t: "Compresor rotativo 12.000 BTU R410A", n: "7 tiendas", en: "En Climatización" },
+    { t: "Compresor scroll 24.000 BTU", n: "3 tiendas" },
+    { t: "GMCC", n: "42 productos" },
+    { t: "compresor de nevera", n: "128 resultados" },
+    { t: "compresor 12000 btu", n: "86 resultados" }
+  ];
+  var recientes = ["aire split 12000", "capacitor 35 uf"];
 
   // assets/js/format.js
   var nf = (min, max) => new Intl.NumberFormat("es-VE", { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: "always" });
@@ -69,6 +144,10 @@
   var nf0 = nf(0, 0);
   var round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
   var money = (usd) => `$ ${nf2.format(usd)}`;
+  var num = (n, decimals = 2) => (decimals === 0 ? nf0 : nf2).format(n);
+  var bs = (usd, { decimals = 2, tasa = TASA } = {}) => `Bs ${(decimals === 0 ? nf0 : nf2).format(usd * tasa)}`;
+  var bsRef = (usd, tasaDia = "15/10", opts) => `≈ ${bs(usd, opts)} · tasa del ${tasaDia}`;
+  var pct = (base, p) => round2(base * p / 100);
   var plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
   var clock = (ms, { pad = false } = {}) => {
     const s = Math.max(0, Math.ceil(ms / 1e3));
@@ -296,8 +375,8 @@
     cart: carritoInicial.map((l) => ({ ...l })),
     orders: [],
     // pedidos creados en la demo
-    flow: {},
-    // paso actual de los flujos (checkout, pago…)
+    flow: { demoPago: "aprobado", direccion: "casa", metodo: "debito", banco: "banesco", retiro: {}, filtros: { orden: "relevantes", marcas: [], nuevo: false, soloDisp: false, min: "", max: "" } },
+    // paso actual de los flujos
     sonidoAvisos: true
   });
   var state = fresh();
@@ -317,8 +396,36 @@
     Object.assign(state, fresh(), { mode: keepMode });
     emit();
   }
+  var lineKey = (l) => l.id + (l.oferta ? "@" + l.oferta : "");
   var cartCount = () => state.cart.length;
-  var cartSubtotal = () => round2(state.cart.reduce((s, l) => s + producto(l.id).precio * l.qty, 0));
+  var cartLines = () => state.cart.map((l) => ({ ...l, key: lineKey(l), p: producto(l.id), t: tiendaDe(l.id, l.oferta), precio: precioDe(l.id, l.oferta) }));
+  var cartSubtotal = () => round2(state.cart.reduce((s, l) => s + precioDe(l.id, l.oferta) * l.qty, 0));
+  function addToCart(id, qty = 1, oferta) {
+    const line = state.cart.find((l) => l.id === id && l.oferta === oferta);
+    if (line) {
+      line.qty += qty;
+      delete line.cambioPrecio;
+    } else state.cart.push(oferta ? { id, qty, oferta } : { id, qty });
+    emit();
+  }
+  function setQty(key, qty) {
+    const line = state.cart.find((l) => lineKey(l) === key);
+    if (!line) return;
+    if (qty <= 0) state.cart = state.cart.filter((l) => lineKey(l) !== key);
+    else line.qty = qty;
+    emit();
+  }
+  function removeLine(key) {
+    const i = state.cart.findIndex((l) => lineKey(l) === key);
+    if (i < 0) return () => {
+    };
+    const [line] = state.cart.splice(i, 1);
+    emit();
+    return () => {
+      state.cart.splice(Math.min(i, state.cart.length), 0, line);
+      emit();
+    };
+  }
   function loadPrefs() {
     try {
       return JSON.parse(localStorage.getItem(PREF_KEY)) || {};
@@ -335,8 +442,11 @@
 
   // assets/js/motion.js
   var reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.hasAttribute("data-reduce-motion");
-  var done = (el) => Promise.all(el.getAnimations({ subtree: false }).map((a) => a.finished)).catch(() => {
-  });
+  var done = (el) => Promise.race([
+    Promise.all(el.getAnimations({ subtree: false }).map((a) => a.finished)).catch(() => {
+    }),
+    new Promise((r) => setTimeout(r, 700))
+  ]);
   async function enterScreen(el, kind) {
     const cls = { push: "is-enter", back: "is-back", swap: "is-swap", mode: "is-mode" }[kind];
     if (!cls) return;
@@ -358,6 +468,19 @@
     await done(sheet);
     sheet.classList.remove("is-closing");
     scrim.hidden = sheet.hidden = true;
+  }
+  function stagger(list) {
+    [...list.children].forEach((c, i) => c.style.setProperty("--i", i));
+    list.classList.add("vx-stagger");
+  }
+  function reveal(root2) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add("is-in");
+        io.unobserve(e.target);
+      }
+    }), { threshold: 0.12, root: root2.closest(".screen") || null });
+    root2.querySelectorAll(".vx-reveal").forEach((n) => io.observe(n));
   }
   function play(el, cls) {
     if (!el) return;
@@ -427,6 +550,16 @@
     shield: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z",
     wrench: "M14.5 6.5a4 4 0 005 5L10 21a2.1 2.1 0 01-3-3z",
     toolbox: "M4 9h16v10H4zM9 9V6h6v3M4 14h16",
+    minus: "M6 12h12",
+    heart: "M12 20s-7-4.6-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.4-7 10-7 10z",
+    share: '<circle cx="6" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 11l8-4M8 13l8 4"/>',
+    copy: "M9 9h11v11H9zM5 15V5h10",
+    upload: "M12 16V5M7 9l5-5 5 5M5 19h14",
+    map: "M9 4l6 2 5-2v14l-5 2-6-2-5 2V6zM9 4v14M15 6v14",
+    trash: "M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13",
+    edit: "M4 20h4L19 9l-4-4L4 16zM13 7l4 4",
+    truck: "M3 7h11v9H3zM14 10h4l3 3v3h-7",
+    eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
     menu: "M4 6h16M4 12h16M4 18h16",
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'
   };
@@ -442,9 +575,9 @@
   };
   var $ = (sel, root2 = document) => root2.querySelector(sel);
   var $$ = (sel, root2 = document) => [...root2.querySelectorAll(sel)];
-  var topbar = (title, { back: back2 = true, trailing = "", close = false } = {}) => `
+  var topbar = (title, { back: back3 = true, trailing = "", close = false } = {}) => `
   <header class="md-topbar"><div class="md-topbar-row">
-    ${back2 ? `<button type="button" class="md-iconbtn md-iconbtn--standard md-sl" ${close ? "data-close" : "data-back"} aria-label="${close ? "Cerrar" : "Volver"}">${icon(close ? "close" : "back")}</button>` : ""}
+    ${back3 ? `<button type="button" class="md-iconbtn md-iconbtn--standard md-sl" ${close ? "data-close" : "data-back"} aria-label="${close ? "Cerrar" : "Volver"}">${icon(close ? "close" : "back")}</button>` : ""}
     <h1 class="md-topbar-title md-title-large" tabindex="-1">${esc(title)}</h1>${trailing}
   </div></header>`;
   var btn = (label, { kind = "filled", go: go2, kindNav, attrs = "", block = false, id } = {}) => `<button type="button" class="md-btn md-btn--${kind} md-sl vx-press${block ? " md-btn--block" : ""}"${id ? ` id="${id}"` : ""}${go2 ? ` data-go="${go2}"` : ""}${kindNav ? ` data-kind="${kindNav}"` : ""} ${attrs}>${label}</button>`;
@@ -538,7 +671,7 @@
   var cleanup = null;
   var overlay = null;
   var internal = false;
-  var busy = false;
+  var navId = 0;
   var view = () => $("#view");
   var parse = (hash) => {
     const [path, qs = ""] = hash.replace(/^#\/?/, "").split("?");
@@ -574,17 +707,21 @@
     el.setAttribute("aria-label", meta.title);
     const ctx = { code, params, meta };
     const fill = () => {
-      el.replaceChildren(def ? def.render(ctx) : pendingScreen(code));
+      const node = def ? def.render(ctx) : pendingScreen(code);
+      el.replaceChildren(node);
+      ctx.root = node;
       return ctx;
     };
     return { el, ctx, fill, def };
   }
-  async function show(entry, kind) {
+  async function show(entry, kind, id) {
     const meta = META[entry.code];
     const { el, ctx, fill, def } = build(entry.code, entry.params);
     const first = !visited.has(entry.code) && def?.skeleton !== false && kind !== "none" && kind !== "back";
     visited.add(entry.code);
     const old = current;
+    ctx.kind = kind;
+    ctx.first = first;
     if (cleanup) {
       cleanup();
       cleanup = null;
@@ -597,15 +734,18 @@
     const entering = enterScreen(el, kind);
     if (first) {
       await new Promise((r) => setTimeout(r, reduce() ? 150 : 520));
-      if (current !== el) return;
+      if (id !== navId) return;
       fill();
       el.classList.add("vx-loaded");
       setTimeout(() => el.classList.remove("vx-loaded"), 220);
     }
-    const m = def?.mount?.(el, ctx);
+    const m = def?.mount?.(ctx.root || el, ctx);
     cleanup = typeof m === "function" ? m : null;
     await entering;
-    if (old && old !== el) old.remove();
+    if (id !== navId) return;
+    [...view().children].forEach((c) => {
+      if (c !== el) c.remove();
+    });
     if (kind === "back" && entry.scroll) el.scrollTop = entry.scroll;
     $("h1", el)?.focus({ preventScroll: true });
   }
@@ -617,35 +757,30 @@
       return;
     }
     if (meta.type === "sheet" || meta.type === "dialog" || meta.type === "flow") return openOverlay(code, params);
-    if (busy) return;
-    busy = true;
-    try {
+    const id = ++navId;
+    {
       if (meta.mode && meta.mode !== state.mode) set({ mode: meta.mode });
       if (overlay) await closeOverlay({ silent: true });
       if (top() && current) top().scroll = current.scrollTop;
       const entry = { code, params, scroll: 0 };
-      if (kind === "push") stack.push(entry);
+      if (kind === "push" || kind === "fade" || kind === "smart") stack.push(entry);
       else {
         stack.length = 0;
         stack.push(entry);
       }
       setHash(code, params);
-      await show(entry, kind);
-    } finally {
-      busy = false;
+      await show(entry, { fade: "mode", smart: "swap" }[kind] || kind, id);
     }
   }
   async function back() {
     if (overlay) return closeOverlay();
-    if (stack.length < 2 || busy) return;
-    busy = true;
-    try {
+    if (stack.length < 2) return;
+    const id = ++navId;
+    {
       stack.pop();
       const entry = top();
       setHash(entry.code, entry.params);
-      await show(entry, "back");
-    } finally {
-      busy = false;
+      await show(entry, "back", id);
     }
   }
   var goHome = (mode, kind = "mode") => go(HOME[mode], { kind });
@@ -926,7 +1061,163 @@
     }
   });
 
+  // assets/js/market.js
+  var stars = (r) => `★ ${num(r, 1)}`;
+  var avatar = (txt, big = false) => `<span class="md-avatar md-avatar--initials vx-av${big ? " vx-av--l" : ""}" aria-hidden="true">${esc(txt)}</span>`;
+  var pct2 = (p) => p.antes ? Math.round((1 - p.precio / p.antes) * 100) : 0;
+  function stock(n) {
+    if (n <= 0) return { label: "Agotado", level: "out", ic: "close" };
+    if (n <= 3) return { label: `Últimas ${n} ${n === 1 ? "unidad" : "unidades"}`, level: "low", ic: "warning" };
+    return { label: "Disponible", level: "ok", ic: "check" };
+  }
+  var stockHtml = (n, extra = "") => {
+    const s = stock(n);
+    return `<span class="vx-stock vx-stock--${s.level} md-body-small">${icon(s.ic, 14)}${s.label}${extra}</span>`;
+  };
+  function productCard(p, { i } = {}) {
+    const t = tienda(p.tienda), off = pct2(p), out = p.stock <= 0;
+    return `<article class="vx-pcard"${i != null ? ` style="--i:${i}"` : ""}>
+    <a class="vx-pcard-link md-sl vx-press" href="#/M2.08?id=${p.id}" data-go="M2.08?id=${p.id}" aria-label="${esc(p.nombre)}, ${money(p.precio)}">
+      <span class="vx-pimg" aria-hidden="true">${icon("box", 32)}</span>
+      <span class="vx-pbody">
+        ${p.marca ? `<span class="md-label-small vx-muted">${esc(p.marca)}</span>` : ""}
+        <span class="md-body-medium vx-pname">${esc(p.corto || p.nombre)}</span>
+        <span class="vx-pprice vx-tab-num"><b class="md-title-medium">${money(p.precio)}</b>${p.antes ? `<s class="md-body-small vx-muted">${money(p.antes)}</s><span class="vx-off md-label-small">−${off} %</span>` : ""}</span>
+        <span class="md-body-small vx-muted">${esc(t.nombre)}</span>
+        ${stockHtml(p.stock)}
+      </span>
+    </a>
+    <button type="button" class="md-iconbtn md-iconbtn--tonal md-sl vx-padd" data-add="${p.id}" aria-label="Añadir al carrito: ${esc(p.corto || p.nombre)}"${out ? " disabled" : ""}>${icon("cart")}</button>
+  </article>`;
+  }
+  var storeRow = (t) => `<li><button type="button" class="md-li md-li--2 md-sl vx-press vx-row" data-go="M2.12?id=${t.id}">
+  ${avatar(t.sigla)}<span class="md-li-text"><span class="md-li-title md-body-large">${esc(t.nombre)}</span><span class="md-li-sup md-body-medium">${esc(t.nicho)} · ${esc(t.ciudad)}</span></span>
+  <span class="md-li-end md-body-small vx-tab-num">${stars(t.rating)}${t.productos != null ? ` · ${t.productos} productos` : ""}</span></button></li>`;
+  var nicheTile = (n) => {
+    const off = !n.productos;
+    return `<li><button type="button" class="vx-niche md-sl vx-press" ${off ? "disabled" : `data-go="M2.06?id=${n.id}"`}>
+    <span class="vx-niche-ico">${icon(n.id === "clima" ? "sliders" : n.id === "elec" ? "bell" : "box", 28)}</span>
+    <span class="vx-niche-text"><span class="md-title-small">${esc(n.nombre)}</span><span class="md-body-small vx-muted">${esc(n.texto)}</span>
+      <span class="md-label-medium">${off ? "Todavía sin catálogo" : `${num(n.productos, 0)} productos`}</span>
+      ${n.servicio ? `<span class="md-chip-wrap"><span class="vx-tag md-label-small">${icon("wrench", 14)}Con servicio técnico</span></span>` : ""}</span>
+    ${off ? "" : `<span class="vx-muted">${icon("chevron")}</span>`}</button></li>`;
+  };
+  var field = ({ id, label, type = "text", value = "", help = "", error = "", autocomplete = "", inputmode = "", placeholder = "", trail = "", attrs = "" }) => `
+  <div class="md-tf md-tf--outlined${error ? " md-tf--error" : ""}" data-field="${id}">
+    <label class="md-tf-box"><span class="md-tf-content"><span class="md-tf-label md-body-small">${esc(label)}</span>
+      <input class="md-tf-input md-body-large" id="${id}" name="${id}" type="${type}" value="${esc(value)}"${autocomplete ? ` autocomplete="${autocomplete}"` : ""}${inputmode ? ` inputmode="${inputmode}"` : ""}${placeholder ? ` placeholder="${esc(placeholder)}"` : ""} aria-describedby="${id}-help"${error ? ' aria-invalid="true"' : ""} ${attrs}></span>${trail}</label>
+    <span class="md-tf-help md-body-small" id="${id}-help">${esc(error || help)}</span></div>`;
+  function fieldError(root2, id, msg) {
+    const wrap = $(`[data-field="${id}"]`, root2);
+    if (!wrap) return;
+    const help = $(`#${id}-help`, wrap), input = $("input", wrap);
+    wrap.classList.toggle("md-tf--error", !!msg);
+    msg ? input.setAttribute("aria-invalid", "true") : input.removeAttribute("aria-invalid");
+    if (msg) {
+      help.textContent = msg;
+      play(wrap, "vx-shake");
+    } else help.textContent = wrap.dataset.help || "";
+  }
+  var PWD_RULES = [["8 caracteres o más", (v) => v.length >= 8], ["Una letra mayúscula", (v) => /[A-ZÁÉÍÓÚÑ]/.test(v)], ["Un número", (v) => /\d/.test(v)]];
+  var reqsHtml = () => `<ul class="vx-reqs" role="list" aria-label="Requisitos de la contraseña">${PWD_RULES.map(([t]) => `<li data-req>${icon("close", 18)}<span>${t}</span><span class="md-sr-only"> · falta</span></li>`).join("")}</ul>`;
+  function paintReqs(ul, value) {
+    let all = true;
+    $$("[data-req]", ul).forEach((li, i) => {
+      const ok = PWD_RULES[i][1](value);
+      all = all && ok;
+      li.classList.toggle("is-ok", ok);
+      li.firstElementChild.outerHTML = icon(ok ? "check" : "close", 18);
+      li.lastElementChild.textContent = ok ? " · cumplido" : " · falta";
+    });
+    return all;
+  }
+  var radioOpt = ({ name, value, title, text = "", checked = false, extra = "", end = "" }) => `
+  <label class="vx-opt${checked ? " is-on" : ""}"><span class="md-radio-hit md-sl vx-opt-radio"><input class="md-radio-input" type="radio" name="${name}" value="${value}"${checked ? " checked" : ""}><span class="md-radio-ring"></span></span>
+    <span class="vx-opt-text"><span class="md-body-large">${title}</span>${text ? `<span class="md-body-medium vx-muted">${text}</span>` : ""}${extra}</span>${end}</label>`;
+  var switchHtml = (id, label, on = false) => `<label class="md-switch vx-switch-row"><span class="md-body-large">${label}</span>
+  <input class="md-sr-only" type="checkbox" role="switch" id="${id}"${on ? " checked" : ""}><span class="md-switch-track${on ? " md-switch-track--on" : ""}" aria-hidden="true"><span class="md-switch-handle vx-thumb"></span></span></label>`;
+  function wireControls(root2) {
+    root2.addEventListener("change", (e) => {
+      const t = e.target;
+      if (t.matches("input[role=switch]")) t.nextElementSibling.classList.toggle("md-switch-track--on", t.checked);
+      if (t.matches("input[type=radio]")) $$(`input[name="${t.name}"]`, root2).forEach((r) => r.closest(".vx-opt")?.classList.toggle("is-on", r.checked));
+    });
+  }
+  var page = (top2, body, action = "") => `<div class="vx-page">${top2}<div class="vx-body">${body}</div>${action ? `<footer class="vx-actionbar">${action}</footer>` : ""}</div>`;
+  var STEPS = ["Entrega", "Envío", "Forma de pago"];
+  var checkoutSteps = (n) => `<ol class="vx-steps" aria-label="Paso ${n} de 3">${STEPS.map((s, i) => `
+  <li class="vx-step${i + 1 < n ? " is-done" : ""}${i + 1 === n ? " is-on" : ""}"${i + 1 === n ? ' aria-current="step"' : ""}>
+    <span class="vx-step-dot md-label-large">${i + 1 < n ? icon("check", 16) : i + 1}</span><span class="md-label-medium">${s}</span></li>
+  ${i < 2 ? `<li class="vx-step-line" aria-hidden="true"><i data-full="${i + 1 < n ? 1 : 0}"></i></li>` : ""}`).join("")}</ol>`;
+  function fillSteps(root2) {
+    requestAnimationFrame(() => $$(".vx-step-line i", root2).forEach((i) => i.classList.toggle("is-full", i.dataset.full === "1")));
+  }
+  var banner = (kind, text, extra = "") => `<div class="vx-banner vx-banner--${kind}" role="${kind === "error" ? "alert" : "status"}">${icon({ info: "info", warning: "warning", error: "error", success: "check", neutral: "info" }[kind], 20)}<p class="md-body-medium">${text}</p>${extra}</div>`;
+  var stepper = (key, qty, max = 99) => `<span class="vx-stepper" role="group" aria-label="Cantidad">
+  <button type="button" class="md-iconbtn md-iconbtn--outlined md-sl" data-dec="${key}" aria-label="Quitar una unidad"${qty <= 1 ? " disabled" : ""}>${icon("minus", 18)}</button>
+  <output class="md-title-medium vx-tab-num" data-qty="${key}" aria-live="polite">${qty}</output>
+  <button type="button" class="md-iconbtn md-iconbtn--outlined md-sl" data-inc="${key}" aria-label="Añadir una unidad"${qty >= max ? " disabled" : ""}>${icon("add", 18)}</button></span>`;
+  var wired = false;
+  function wireAdd() {
+    if (wired) return;
+    wired = true;
+    $("#phone").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-add]");
+      if (!b || b.disabled) return;
+      const id = b.dataset.add, qty = Number(b.dataset.qty || 1), oferta = b.dataset.oferta || void 0;
+      state.flow.lastAdded = id;
+      state.flow.lastQty = qty;
+      addToCart(id, qty, oferta);
+      const was = b.innerHTML;
+      b.disabled = true;
+      b.innerHTML = b.classList.contains("md-btn") ? `${icon("check", 20)}Añadido` : icon("check");
+      b.classList.add("vx-tick");
+      setTimeout(() => {
+        if (b.isConnected) {
+          b.innerHTML = was;
+          b.disabled = false;
+          b.classList.remove("vx-tick");
+        }
+      }, 1200);
+      const head = $("#phone [data-cart-btn]");
+      head && play(head.querySelector("svg"), "vx-pop");
+      openOverlay("O.CAR");
+    });
+  }
+  var closeOnGo = (el) => el.addEventListener("click", (e) => {
+    if (e.target.closest("[data-go]")) closeOverlay({ silent: true });
+  });
+  var otpHtml = (id, n, prefill = "", label = "Código") => `<div class="vx-otp" id="${id}" role="group" aria-label="${label}" style="--n:${n}">${Array.from({ length: n }, (_, i) => `<input class="vx-otp-box md-title-large" inputmode="numeric" autocomplete="${i === 0 ? "one-time-code" : "off"}" maxlength="1" aria-label="Dígito ${i + 1} de ${n}" value="${prefill[i] || ""}">`).join("")}</div>`;
+  function wireOtp(root2, id, onChange) {
+    const boxes = $$("input", $(`#${id}`, root2));
+    const value = () => boxes.map((b) => b.value).join("");
+    boxes.forEach((b, i) => {
+      b.addEventListener("input", () => {
+        b.value = b.value.replace(/\D/g, "").slice(-1);
+        if (b.value && boxes[i + 1]) boxes[i + 1].focus();
+        onChange(value());
+      });
+      b.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !b.value && boxes[i - 1]) boxes[i - 1].focus();
+      });
+      b.addEventListener("paste", (e) => {
+        const d = (e.clipboardData?.getData("text") || "").replace(/\D/g, "").slice(0, boxes.length);
+        if (!d) return;
+        e.preventDefault();
+        [...d].forEach((c, k) => {
+          boxes[k].value = c;
+        });
+        boxes[Math.min(d.length, boxes.length - 1)].focus();
+        onChange(value());
+      });
+    });
+    return { value, focusFirstEmpty: () => (boxes.find((b) => !b.value) || boxes[boxes.length - 1]).focus() };
+  }
+
   // assets/js/screens/m1.js
+  var wordmark = (cls = "") => `<div class="vx-logo ${cls}" role="img" aria-label="VexBiz">VE<span class="vx-logo-x">X</span>BIZ</div>`;
+  var back2 = (close = false) => `<header class="vx-backbar">${iconBtn(close ? "close" : "back", close ? "Cerrar" : "Volver", close ? "data-close" : "data-back")}</header>`;
+  var emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
   register("M1.01", {
     skeleton: false,
     render() {
@@ -940,6 +1231,1229 @@
     mount() {
       const t = setTimeout(() => openOverlay("O.CON"), reduce() ? 300 : 1600);
       return () => clearTimeout(t);
+    }
+  });
+  register("M1.02", {
+    render() {
+      const el = h(page(
+        `<header class="vx-authhead">${wordmark("vx-logo--ink")}</header>`,
+        `
+      <h1 class="md-headline-small" tabindex="-1">Inicia sesión</h1>
+      <p class="md-body-large vx-muted vx-lede">Con tu cuenta de VexBiz en Venezuela</p>
+      <form class="vx-form" novalidate id="fEntrar">
+        ${field({ id: "correo", label: "Correo", type: "email", value: usuario.correo, autocomplete: "username", inputmode: "email" })}
+        ${field({ id: "clave", label: "Contraseña", type: "password", value: "ClaveDemo1", autocomplete: "current-password" })}
+        <div class="vx-row-end">${btn("¿Olvidaste tu contraseña?", { kind: "text", go: "M1.08" })}</div>
+      </form>
+      <div class="vx-center"><p class="md-body-medium vx-muted">¿Todavía no tienes cuenta en Venezuela?</p>${btn("Crear cuenta", { kind: "outlined", go: "M1.05" })}</div>`,
+        btn("Entrar", { kind: "filled", block: true, id: "btnEntrar" })
+      ));
+      const submit = () => {
+        const c = el.querySelector("#correo").value.trim(), k = el.querySelector("#clave").value;
+        fieldError(el, "correo", !c ? "Escribe tu correo" : !emailOk(c) ? "Escribe un correo válido" : "");
+        fieldError(el, "clave", !k ? "Escribe tu contraseña" : "");
+        if (!c || !emailOk(c) || !k) return;
+        set({ flow: { ...state.flow, correo: c } });
+        go(c.includes("+sinconfirmar") ? "M1.04" : "M1.03", { kind: "push" });
+      };
+      el.querySelector("#btnEntrar").addEventListener("click", submit);
+      el.querySelector("#fEntrar").addEventListener("submit", (e) => {
+        e.preventDefault();
+        submit();
+      });
+      el.querySelector("#fEntrar").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submit();
+        }
+      });
+      return el;
+    }
+  });
+  register("M1.05", {
+    render() {
+      const el = h(page(
+        topbar("Crear cuenta", { close: true }),
+        `
+      <p class="md-body-large vx-lede">Regístrate gratis para comprar, vender o trabajar como técnico en Venezuela.</p>
+      <form class="vx-form" novalidate id="fCrear">
+        ${field({ id: "rNombre", label: "Nombre completo", autocomplete: "name" })}
+        ${field({ id: "rCorreo", label: "Correo", type: "email", autocomplete: "email", inputmode: "email" })}
+        <div class="md-tf md-tf--outlined"><label class="md-tf-box"><span class="md-tf-content"><span class="md-tf-label md-body-small">País</span>
+          <select class="md-tf-input md-body-large" id="pais" aria-label="País"><option>Venezuela</option></select></span></label><span class="md-tf-help md-body-small"></span></div>
+        ${field({ id: "rClave", label: "Contraseña", type: "password", autocomplete: "new-password" })}
+        ${reqsHtml()}
+        ${field({ id: "rClave2", label: "Repite la contraseña", type: "password", autocomplete: "new-password" })}
+        ${field({ id: "rCodigo", label: "Código de invitación (opcional)" })}
+      </form>
+      <p class="md-body-small vx-muted vx-lede">Al crear tu cuenta aceptas los <a class="vx-link" href="#/M6.25?doc=terminos" data-go="M6.25?doc=terminos">Términos y condiciones</a> y la <a class="vx-link" href="#/M6.25?doc=privacidad" data-go="M6.25?doc=privacidad">Política de privacidad</a>.</p>
+      <div class="vx-center"><p class="md-body-medium vx-muted">¿Ya tienes cuenta?</p>${btn("Entrar", { kind: "text", attrs: "data-close" })}</div>`,
+        btn("Crear cuenta", { kind: "filled", block: true, id: "btnCrear" })
+      ));
+      closeOnGo(el);
+      const reqs = el.querySelector(".vx-reqs");
+      paintReqs(reqs, "");
+      el.querySelector("#rClave").addEventListener("input", (e) => paintReqs(reqs, e.target.value));
+      el.querySelector("#btnCrear").addEventListener("click", async () => {
+        const v = (id) => el.querySelector("#" + id).value.trim();
+        const bad = {
+          rNombre: !v("rNombre") && "Escribe tu nombre",
+          rCorreo: !v("rCorreo") ? "Escribe tu correo" : !emailOk(v("rCorreo")) ? "Escribe un correo válido" : "",
+          rClave: !paintReqs(reqs, el.querySelector("#rClave").value) && "La contraseña no cumple los requisitos",
+          rClave2: el.querySelector("#rClave2").value !== el.querySelector("#rClave").value && "Las contraseñas no coinciden"
+        };
+        Object.entries(bad).forEach(([k, m]) => fieldError(el, k, m || ""));
+        if (Object.values(bad).some(Boolean)) return;
+        set({ flow: { ...state.flow, correo: v("rCorreo"), codigo: v("rCodigo") } });
+        await closeOverlay({ silent: true });
+        go("M1.06", { kind: "push" });
+      });
+      return el;
+    }
+  });
+  register("M1.03", {
+    render() {
+      const el = h(page(
+        back2(),
+        `
+      <span class="vx-state-ico">${icon("shield", 32)}</span>
+      <h1 class="md-headline-small" tabindex="-1">Verificación en dos pasos</h1>
+      <p class="md-body-large vx-lede">Abre tu app de autenticación y escribe el código de 6 dígitos. Cambia cada 30 segundos.</p>
+      ${otpHtml("otp", 6, "48291", "Código de 6 dígitos")}
+      <p class="md-body-medium vx-otp-err" id="otpErr" role="alert" hidden>${icon("error", 18)} El código no es correcto</p>
+      <div class="vx-stack">${btn("No me llega el código", { kind: "text", attrs: 'data-toast="El código cambia cada 30 segundos: revisa la hora de tu teléfono"' })}${btn("Usar otra cuenta", { kind: "text", go: "M1.02", kindNav: "swap" })}</div>`,
+        btn("Verificar", { kind: "filled", block: true, id: "btnVerif", attrs: "disabled" })
+      ));
+      const ctl = wireOtp(el, "otp", (v) => {
+        el.querySelector("#btnVerif").disabled = v.length < 6;
+        el.querySelector("#otpErr").hidden = true;
+      });
+      el.querySelector("#btnVerif").addEventListener("click", () => {
+        const v = ctl.value();
+        if (v === "000000") {
+          el.querySelector("#otpErr").hidden = false;
+          return;
+        }
+        set({ sesion: true });
+        go("M2.01", { kind: "mode" });
+      });
+      el.__ctl = ctl;
+      el.__sync = () => {
+        el.querySelector("#btnVerif").disabled = ctl.value().length < 6;
+      };
+      return el;
+    },
+    mount(el) {
+      el.__sync();
+      el.__ctl.focusFirstEmpty();
+    }
+  });
+  register("M1.04", {
+    render() {
+      const correo = state.flow.correo || usuario.correo;
+      const el = h(page(back2(), `
+      <span class="vx-state-ico">${icon("info", 32)}</span>
+      <h1 class="md-headline-small" tabindex="-1">Confirma tu correo</h1>
+      <p class="md-title-medium">Aún no has confirmado tu correo</p>
+      <p class="md-body-large vx-lede">Te enviamos el enlace hace un momento a ${esc(correo)}. Revisa también la carpeta de no deseados.</p>
+      <div class="vx-stack">
+        ${btn("Abrir mi app de correo", { kind: "tonal", block: true, attrs: 'data-toast="Abre tu correo y toca el enlace de VexBiz"' })}
+        ${btn("Reenviar enlace", { kind: "outlined", block: true, id: "btnReenviar", attrs: "disabled" })}
+        <p class="md-body-medium vx-muted vx-center" id="espera" aria-live="off"></p>
+        ${btn("Usar otra cuenta", { kind: "text", block: true, go: "M1.02", kindNav: "swap" })}
+      </div>`, btn("Ya lo confirmé", { kind: "filled", block: true, go: "M2.01", kindNav: "mode" })));
+      return el;
+    },
+    mount(el) {
+      let left = 4 * 60;
+      const paint = () => {
+        const m = Math.ceil(left / 60);
+        el.querySelector("#espera").textContent = left > 0 ? `Podrás pedir otro en ${m} min` : "";
+        el.querySelector("#btnReenviar").disabled = left > 0;
+      };
+      paint();
+      const id = setInterval(() => {
+        left -= 1;
+        paint();
+        if (left <= 0) clearInterval(id);
+      }, 1e3);
+      return () => clearInterval(id);
+    }
+  });
+  register("M1.06", {
+    render() {
+      const step = (n, t) => `<li class="vx-step-item"><span class="vx-step-dot md-label-large">${n}</span><span class="md-body-large">${t}</span></li>`;
+      return h(page(
+        back2(),
+        `
+      <span class="vx-state-ico">${icon("inbox", 32)}</span>
+      <h1 class="md-headline-small" tabindex="-1">Revisa tu correo</h1>
+      <p class="md-title-medium vx-tab-num">${esc(state.flow.correo || "anibal.lejarazu@correo.com")}</p>
+      <ol class="vx-steplist" role="list">
+        ${step(1, "Abre el enlace que te enviamos.")}
+        ${step(2, "Elige qué vienes a hacer: comprar, trabajar como técnico o registrar tu empresa.")}
+        ${step(3, "Hasta que no confirmes tu correo no podrás entrar.")}</ol>
+      ${state.flow.codigo ? '<p class="md-body-medium vx-muted">Tu código de invitación quedó asociado.</p>' : '<p class="md-body-medium vx-muted">Tu código de invitación quedó asociado.</p>'}
+      <div class="vx-stack">${btn("Volver a entrar", { kind: "text", block: true, go: "M1.02", kindNav: "mode" })}</div>`,
+        btn("Ya abrí el enlace", { kind: "filled", block: true, go: "M1.07", kindNav: "push" })
+      ));
+    }
+  });
+  register("M1.07", {
+    render() {
+      const sel = state.flow.uso || "comprar";
+      const opt = (v, title, text, ic) => radioOpt({ name: "uso", value: v, title: `<span class="vx-opt-ico">${icon(ic)}</span>${title}`, text, checked: sel === v });
+      const el = h(page(
+        back2(),
+        `
+      <h1 class="md-headline-small" tabindex="-1">¿Qué vienes a hacer en VexBiz?</h1>
+      <div class="vx-options" role="radiogroup" aria-label="¿Qué vienes a hacer en VexBiz?">
+        ${opt("comprar", "Comprar", "Productos, repuestos y suministros de todo el catálogo.", "bag")}
+        ${opt("tecnico", "Trabajar como técnico", "Recibe solicitudes de instalación y reparación en tu zona.", "wrench")}
+        ${opt("empresa", "Registrar mi empresa", "Vende, ofrece servicios o da de alta a tu equipo.", "toolbox")}
+      </div>
+      <p class="md-body-medium vx-muted" id="eleg" aria-live="polite"></p>`,
+        btn("Continuar", { kind: "filled", block: true, id: "btnCont" })
+      ));
+      wireControls(el);
+      const txt = { comprar: "Elegiste comprar", tecnico: "Elegiste trabajar como técnico", empresa: "Elegiste registrar tu empresa" };
+      const paint = () => {
+        el.querySelector("#eleg").textContent = txt[el.querySelector("input[name=uso]:checked").value];
+      };
+      el.addEventListener("change", paint);
+      paint();
+      el.querySelector("#btnCont").addEventListener("click", () => {
+        const v = el.querySelector("input[name=uso]:checked").value;
+        set({ flow: { ...state.flow, uso: v } });
+        if (v === "comprar") {
+          set({ mode: "comprador" });
+          go("M2.01", { kind: "mode" });
+        } else if (v === "tecnico") {
+          set({ mode: "tecnico" });
+          go("M8.01", { kind: "mode" });
+        } else go("M6.22", { kind: "push" });
+      });
+      return el;
+    }
+  });
+  register("M1.08", {
+    render() {
+      const el = h(page(
+        back2(),
+        `
+      <h1 class="md-headline-small" tabindex="-1">Recuperar contraseña</h1>
+      <p class="md-title-medium">¿Olvidaste tu contraseña?</p>
+      <p class="md-body-large vx-lede">Escribe tu correo y te enviamos un enlace para crear una nueva.</p>
+      <form class="vx-form" novalidate>${field({ id: "correo", label: "Correo", type: "email", value: state.flow.correo || "", autocomplete: "email", inputmode: "email" })}</form>
+      <div class="vx-stack">${btn("Volver a entrar", { kind: "text", block: true, go: "M1.02", kindNav: "swap" })}</div>`,
+        btn("Enviar enlace", { kind: "filled", block: true, id: "btnEnviar" })
+      ));
+      el.querySelector("#btnEnviar").addEventListener("click", () => {
+        const c = el.querySelector("#correo").value.trim();
+        fieldError(el, "correo", !c ? "Escribe tu correo" : !emailOk(c) ? "Escribe un correo válido" : "");
+        if (!c || !emailOk(c)) return;
+        toast("Te enviamos el enlace. En esta demo lo abrimos por ti.");
+        go("M1.09", { kind: "push" });
+      });
+      return el;
+    }
+  });
+  register("M1.09", {
+    render() {
+      const el = h(page(
+        back2(),
+        `
+      <h1 class="md-headline-small" tabindex="-1">Contraseña nueva</h1>
+      <p class="md-title-medium">Crea tu contraseña nueva</p>
+      <p class="md-body-large vx-lede">Al guardarla se cerrarán tus sesiones abiertas en otros dispositivos.</p>
+      <form class="vx-form" novalidate>${field({ id: "clave", label: "Contraseña nueva", type: "password", autocomplete: "new-password" })}${reqsHtml()}</form>`,
+        btn("Guardar contraseña", { kind: "filled", block: true, id: "btnGuardar", attrs: "disabled" })
+      ));
+      const reqs = el.querySelector(".vx-reqs");
+      paintReqs(reqs, "");
+      el.querySelector("#clave").addEventListener("input", (e) => {
+        el.querySelector("#btnGuardar").disabled = !paintReqs(reqs, e.target.value);
+      });
+      el.querySelector("#btnGuardar").addEventListener("click", () => {
+        toast("Contraseña actualizada");
+        go("M1.02", { kind: "mode" });
+      });
+      return el;
+    }
+  });
+  register("M1.10", {
+    render() {
+      const el = h(page(back2(), `
+      <span class="vx-state-ico">${icon("check", 32)}</span>
+      <h1 class="md-headline-small" tabindex="-1">Boletín</h1>
+      <p class="md-title-medium">Ya estás suscrito al boletín</p>
+      <p class="md-body-large vx-lede">Te escribiremos con ofertas y novedades una vez por semana.</p>
+      ${btn("Ir al inicio", { kind: "filled", block: true, go: "M2.01", kindNav: "mode" })}
+      <hr class="md-divider vx-hr">
+      <p class="md-body-medium vx-muted">Si llegas desde Ayuda o el enlace falla:</p>
+      <h2 class="md-title-large">Suscríbete al boletín</h2>
+      <p class="md-body-large vx-lede">Ofertas, cupones y novedades. Una vez por semana, sin más.</p>
+      <form class="vx-form" novalidate>${field({ id: "correo", label: "Correo", type: "email", value: state.flow.correo || usuario.correo, autocomplete: "email", inputmode: "email" })}</form>
+      ${btn("Suscribirme", { kind: "filled", block: true, id: "btnSub" })}
+      <p class="md-body-small vx-muted">Sin correo basura. Puedes darte de baja cuando quieras.</p>`));
+      el.querySelector("#btnSub").addEventListener("click", () => {
+        const c = el.querySelector("#correo").value.trim();
+        fieldError(el, "correo", !c ? "Escribe tu correo" : !emailOk(c) ? "Escribe un correo válido" : "");
+        if (c && emailOk(c)) toast("Listo: te suscribimos al boletín");
+      });
+      return el;
+    }
+  });
+
+  // assets/js/screens/m2.js
+  var norm = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\./g, "");
+  var grid = (items) => `<div class="vx-grid" data-stagger>${items.map((p, i) => productCard(p, { i })).join("")}</div>`;
+  var scroller = (items, stag = false) => `<div class="vx-scroller"${stag ? " data-stagger" : ""}>${items.map((p, i) => productCard(p, { i })).join("")}</div>`;
+  var sectionHead = (title, link = "") => `<div class="vx-sechead"><h2 class="md-title-large">${title}</h2>${link}</div>`;
+  var AIRES = () => productos.filter((p) => p.categoria.endsWith("Aires split"));
+  var COMPRESORES = () => productos.filter((p) => p.categoria.endsWith("Compresores"));
+  function buscar(q) {
+    const t = norm(q).split(/\s+/).filter(Boolean);
+    if (!t.length) return productos.slice();
+    return productos.filter((p) => {
+      const hay = norm(`${p.nombre} ${p.marca || ""} ${p.categoria} ${p.ref || ""}`);
+      return t.every((w) => hay.includes(w));
+    });
+  }
+  function aplicar(list) {
+    const f = state.flow.filtros;
+    let r = list.filter((p) => (!f.marcas.length || f.marcas.includes(p.marca)) && (!f.nuevo || p.condicion === "Nuevo") && (!f.soloDisp || p.stock > 0) && (f.min === "" || p.precio >= Number(f.min)) && (f.max === "" || p.precio <= Number(f.max)));
+    if (f.orden === "menor") r = r.sort((a, b) => a.precio - b.precio);
+    else if (f.orden === "mayor") r = r.sort((a, b) => b.precio - a.precio);
+    return r;
+  }
+  var hayFiltros = () => {
+    const f = state.flow.filtros;
+    return f.marcas.length || f.nuevo || f.soloDisp || f.min !== "" || f.max !== "" || f.orden !== "relevantes";
+  };
+  var chipsAplicados = () => {
+    const f = state.flow.filtros;
+    const c = [...f.marcas.map((m) => ["marca:" + m, m])];
+    if (f.nuevo) c.push(["nuevo", "Nuevo"]);
+    if (f.soloDisp) c.push(["disp", "Sólo disponibles"]);
+    return c;
+  };
+  var filtroBar = () => `<div class="vx-filterbar"><div class="vx-chips" data-chips></div>${btn(`${icon("sliders", 18)}Filtros y orden`, { kind: "tonal", go: "O.FIL" })}</div>`;
+  function paintChips(root2) {
+    const host = $("[data-chips]", root2);
+    if (!host) return;
+    host.innerHTML = chipsAplicados().map(([k, t]) => `<span class="md-chip-wrap"><button type="button" class="md-chip md-chip--selected md-chip--trail md-sl md-label-large" data-unf="${k}" aria-label="Quitar filtro ${esc(t)}">${esc(t)}${icon("close", 18)}</button></span>`).join("");
+  }
+  function wireFiltros(root2, universe, paint) {
+    state.flow.universe = universe;
+    const sync = () => {
+      paintChips(root2);
+      paint(aplicar(universe()));
+    };
+    root2.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-unf]");
+      if (!b) return;
+      const f = state.flow.filtros, k = b.dataset.unf;
+      if (k.startsWith("marca:")) f.marcas = f.marcas.filter((m) => m !== k.slice(6));
+      else if (k === "nuevo") f.nuevo = false;
+      else if (k === "disp") f.soloDisp = false;
+      set({ flow: state.flow });
+    });
+    sync();
+    return subscribe(sync);
+  }
+  var countText = (n) => plural(n, "publicación", "publicaciones");
+  register("M2.01", {
+    render() {
+      const ofertas6 = ["aa12", "lg12", "mi12", "sa09", "comp", "da18"].map(producto);
+      const vendidos = ["ctrl", "cap", "tal", "tarj"].map(producto);
+      const serv = (eyebrow, title, ic, to) => `<li><button type="button" class="md-li md-li--2 md-sl vx-press vx-row" data-go="${to}"><span class="md-li-icon">${icon(ic)}</span>
+      <span class="md-li-text"><span class="md-label-small vx-eyebrow">${eyebrow}</span><span class="md-li-title md-body-large">${title}</span></span><span class="md-li-end">${icon("chevron")}</span></button></li>`;
+      return h(`<div>
+      <header class="vx-homehead">
+        <div class="vx-homehead-row"><div class="vx-logo vx-logo--ink vx-logo--sm" role="img" aria-label="VexBiz">VE<span class="vx-logo-x">X</span>BIZ</div>${iconBtn("bell", "Avisos", 'data-go="M6.17"')}</div>
+        <button type="button" class="md-search md-sl vx-searchbtn" data-go="M2.02" data-kind="smart" aria-label="Buscar en VexBiz">${icon("search")}<span class="md-body-large vx-muted">Buscar en VexBiz</span></button>
+        <h1 class="md-sr-only" tabindex="-1">Inicio</h1>
+      </header>
+      <section class="vx-hero" aria-label="Promociones"><div class="vx-carousel" tabindex="0" aria-label="Promociones, desliza para ver más">${[1, 2, 3].map((n) => `<div class="vx-slide" role="group" aria-label="Promoción ${n} de 3"><span aria-hidden="true">${icon("tag", 40)}</span></div>`).join("")}</div>
+        <div class="vx-dots" aria-hidden="true">${[0, 1, 2].map((i) => `<i class="vx-dot${i === 0 ? " is-on" : ""}"></i>`).join("")}</div></section>
+      <section class="vx-sec vx-reveal">${sectionHead("Nichos", btn("Ver todos", { kind: "text", go: "M2.05", kindNav: "swap" }))}
+        <ul class="vx-nichesq" role="list">${nichos.slice(0, 5).map((n) => `<li><button type="button" class="vx-nsq md-sl vx-press" data-go="M2.06?id=${n.id}"><span>${icon(n.id === "clima" ? "sliders" : "box", 28)}</span><span class="md-label-medium">${esc(n.nombre)}</span></button></li>`).join("")}</ul></section>
+      <section class="vx-sec vx-reveal">${sectionHead("Ofertas relámpago")}<p class="md-body-medium vx-count-row vx-tab-num" aria-live="off">${icon("clock", 18)} Termina en <b id="hRelo" class="md-title-small">02:14:36</b></p>
+        ${scroller(ofertas6, true)}</section>
+      <section class="vx-sec vx-reveal">${sectionHead("Más vendidos", btn("Ver todos", { kind: "text", go: "M2.03" }))}${grid(vendidos)}</section>
+      <section class="vx-sec vx-reveal">${sectionHead("Servicios")}<ul class="vx-list" role="list">
+        ${serv("TÉCNICOS CERTIFICADOS", "Instalación y reparación", "wrench", "M4.03")}${serv("AUXILIO VIAL 24/7", "Grúa, batería y cerrajería", "truck", "M4.08")}${serv("SEGUROS", "Protege tu vehículo", "shield", "M4.06")}</ul></section>
+      <section class="vx-sec vx-reveal">${sectionHead("Tiendas destacadas", btn("Ver todas", { kind: "text", go: "M2.11" }))}
+        <ul class="vx-list" role="list">${[tienda("ft"), tienda("ha"), tienda("re")].map((t) => `<li><button type="button" class="md-li md-li--2 md-sl vx-press vx-row" data-go="M2.12?id=${t.id}">${avatar(t.sigla, true)}
+          <span class="md-li-text"><span class="md-li-title md-body-large">${esc(t.nombre)}</span></span><span class="md-li-end md-body-small vx-tab-num">${stars(t.rating)}</span></button></li>`).join("")}</ul></section>
+      <section class="vx-sec vx-help vx-reveal"><h2 class="md-title-large">¿Te ayudamos?</h2>${btn("Escríbenos por WhatsApp", { kind: "filled", block: true, attrs: 'data-toast="Abre el WhatsApp de VexBiz: lunes a sábado, 8:00 a 18:00"' })}</section>
+    </div>`);
+    },
+    mount(el, ctx) {
+      if (ctx.first && ctx.kind !== "back") $$("[data-stagger]", el).forEach(stagger);
+      reveal(el);
+      const t0 = Date.now(), total = ((2 * 60 + 14) * 60 + 36) * 1e3, out = el.querySelector("#hRelo");
+      const id = setInterval(() => {
+        out.textContent = clock(total - (Date.now() - t0));
+      }, 1e3);
+      const car = el.querySelector(".vx-carousel"), dots = $$(".vx-dot", el);
+      const onScroll = () => {
+        const i = Math.round(car.scrollLeft / car.clientWidth);
+        dots.forEach((d, k) => d.classList.toggle("is-on", k === i));
+      };
+      car.addEventListener("scroll", onScroll, { passive: true });
+      return () => clearInterval(id);
+    }
+  });
+  register("M2.02", {
+    skeleton: false,
+    render() {
+      const el = h(`<div class="vx-page">
+      <header class="vx-searchhead">${iconBtn("back", "Volver", "data-back")}
+        <form class="md-search vx-searchform" role="search" id="fBuscar">${icon("search")}<input class="md-search-input md-body-large" id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="Buscar en VexBiz" aria-label="Buscar en VexBiz" value="">
+        <button type="button" class="md-iconbtn md-iconbtn--standard md-sl md-search-trail" id="qClear" aria-label="Borrar búsqueda" hidden>${icon("close")}</button></form></header>
+      <h1 class="md-sr-only" tabindex="-1">Buscar</h1>
+      <div class="vx-body" id="sugg" aria-live="polite"></div></div>`);
+      const q = el.querySelector("#q"), box = el.querySelector("#sugg");
+      const paint = () => {
+        const t = norm(q.value.trim());
+        el.querySelector("#qClear").hidden = !t;
+        if (!t) {
+          box.innerHTML = `<h2 class="md-label-large vx-sub">Búsquedas recientes</h2><ul class="vx-list" role="list">${recientes.map((r) => `<li><button type="button" class="md-li md-sl vx-press vx-row" data-q="${esc(r)}"><span class="md-li-icon">${icon("clock")}</span><span class="md-li-text"><span class="md-li-title md-body-large">${esc(r)}</span></span></button></li>`).join("")}</ul>
+          <div class="vx-chipwrap">${["Climatización", "Refrigeración", "Electricidad", "Automotriz", "Herramientas"].map((n) => `<span class="md-chip-wrap"><button type="button" class="md-chip md-sl md-label-large" data-go="${n === "Climatización" ? "M2.06?id=clima" : "M2.05"}">${n}</button></span>`).join("")}</div>`;
+          return;
+        }
+        const hits = sugerencias.filter((s) => norm(s.t).includes(t));
+        box.innerHTML = `${hits.length ? `<ul class="vx-list" role="list">${hits.map((s) => `<li><button type="button" class="md-li md-li--2 md-sl vx-press vx-row" data-q="${esc(s.t)}"><span class="md-li-icon">${icon("search")}</span>
+        <span class="md-li-text"><span class="md-li-title md-body-large">${esc(s.t)}</span>${s.en ? `<span class="md-li-sup md-body-medium">${esc(s.en)}</span>` : ""}</span><span class="md-li-end md-body-small">${esc(s.n)}</span></button></li>`).join("")}</ul>` : ""}
+        <ul class="vx-list" role="list"><li><button type="button" class="md-li md-sl vx-press vx-row" data-q="${esc(q.value.trim())}"><span class="md-li-icon">${icon("search")}</span><span class="md-li-text"><span class="md-li-title md-body-large">Buscar «${esc(q.value.trim())}»</span></span></button></li></ul>`;
+      };
+      const run = (term) => go("M2.03", { kind: "push", params: { q: term } });
+      q.addEventListener("input", paint);
+      el.querySelector("#fBuscar").addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (q.value.trim()) run(q.value.trim());
+      });
+      el.querySelector("#qClear").addEventListener("click", () => {
+        q.value = "";
+        paint();
+        q.focus();
+      });
+      box.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-q]");
+        if (b) run(b.dataset.q);
+      });
+      paint();
+      return el;
+    },
+    mount(el) {
+      el.querySelector("#q").focus();
+    }
+  });
+  register("M2.03", {
+    render(ctx) {
+      const q = ctx.params.q || "aire split";
+      const el = h(page(`<header class="vx-searchhead">${iconBtn("back", "Volver", "data-back")}
+      <button type="button" class="md-search md-sl vx-searchbtn" data-go="M2.02" data-kind="smart" aria-label="Cambiar la búsqueda: ${esc(q)}">${icon("search")}<span class="md-body-large">${esc(q)}</span></button></header>`, `
+      <h1 class="md-title-large vx-pad-h" tabindex="-1">Resultados para «${esc(q)}»</h1>
+      <p class="md-body-medium vx-muted vx-pad-h" id="rInfo" aria-live="polite"></p>
+      ${filtroBar()}<div id="rList"></div>
+      <section class="vx-sec">${sectionHead("Quienes buscaron esto compraron")}${scroller(["ctrl", "cap", "tarj"].map(producto))}</section>`));
+      el.__q = q;
+      return el;
+    },
+    mount(el, ctx) {
+      const q = el.__q, base = () => buscar(q);
+      return wireFiltros(el, base, (list) => {
+        el.querySelector("#rInfo").textContent = `${list[0] ? list[0].categoria.split(" › ")[0] : "Climatización"} · ${countText(list.length)}`;
+        const host = el.querySelector("#rList");
+        host.innerHTML = list.length ? grid(list) : stateBlock({ icon: "searchoff", title: "No encontramos resultados", text: hayFiltros() ? "Prueba quitando algún filtro." : "Prueba con otras palabras." });
+        if (ctx.first && !host.dataset.done) {
+          host.dataset.done = 1;
+          $$("[data-stagger]", host).forEach(stagger);
+        }
+      });
+    }
+  });
+  register("O.FIL", {
+    render() {
+      const uni = state.flow.universe ? state.flow.universe() : AIRES();
+      const marcas = [...new Set(uni.map((p) => p.marca).filter(Boolean))].map((m) => [m, uni.filter((p) => p.marca === m).length]);
+      const f = JSON.parse(JSON.stringify(state.flow.filtros));
+      const chk = (id, label, n, on) => `<label class="md-check vx-chk"><span class="md-check-hit md-sl"><input class="md-check-input" type="checkbox" id="${id}"${on ? " checked" : ""}><span class="md-check-box${on ? " md-check-box--on" : ""}">${on ? icon("check", 16) : ""}</span></span><span class="md-body-large">${label}</span>${n != null ? `<span class="md-body-small vx-muted vx-tab-num vx-chk-n">${n}</span>` : ""}</label>`;
+      const ord = (v, t) => `<label class="md-radio vx-chk"><span class="md-radio-hit md-sl"><input class="md-radio-input" type="radio" name="ord" value="${v}"${f.orden === v ? " checked" : ""}><span class="md-radio-ring"></span></span><span class="md-body-large">${t}</span></label>`;
+      const el = h(`<div class="vx-filters"><div class="vx-sheet-head"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">Filtros y orden</h2>${iconBtn("close", "Cerrar", "data-close")}</div>
+      <h3 class="md-label-large vx-sub">Ordenar por</h3><div role="radiogroup" aria-label="Ordenar por">${ord("relevantes", "Más relevantes")}${ord("menor", "Menor precio")}${ord("mayor", "Mayor precio")}</div>
+      <h3 class="md-label-large vx-sub">Aplicados</h3><div class="vx-chips" id="fApl"></div>
+      <h3 class="md-label-large vx-sub">Marca</h3>${marcas.map(([m, n]) => chk("m_" + m, esc(m), n, f.marcas.includes(m))).join("")}
+      <h3 class="md-label-large vx-sub">Condición</h3>${chk("cNuevo", "Nuevo", uni.filter((p) => p.condicion === "Nuevo").length, f.nuevo)}
+      <label class="md-switch vx-switch-row"><span class="md-body-large">Sólo disponibles</span><input class="md-sr-only" type="checkbox" role="switch" id="fDisp"${f.soloDisp ? " checked" : ""}><span class="md-switch-track${f.soloDisp ? " md-switch-track--on" : ""}" aria-hidden="true"><span class="md-switch-handle vx-thumb"></span></span></label>
+      <h3 class="md-label-large vx-sub">Precio (USD)</h3><div class="vx-two">${field({ id: "fMin", label: "Mínimo", value: f.min, inputmode: "decimal" })}${field({ id: "fMax", label: "Máximo", value: f.max, inputmode: "decimal" })}</div>
+      <div class="md-sheet-foot">${btn("Limpiar", { kind: "text", id: "fClear" })}${btn("Ver resultados", { kind: "filled", id: "fApply" })}</div></div>`);
+      const read = () => ({ orden: el.querySelector("input[name=ord]:checked").value, marcas: marcas.map(([m]) => m).filter((m) => el.querySelector('[id="m_' + m + '"]').checked), nuevo: el.querySelector("#cNuevo").checked, soloDisp: el.querySelector("#fDisp").checked, min: el.querySelector("#fMin").value.trim(), max: el.querySelector("#fMax").value.trim() });
+      const paint = () => {
+        const d = read();
+        const prev = state.flow.filtros;
+        state.flow.filtros = d;
+        const n = aplicar(uni).length;
+        state.flow.filtros = prev;
+        el.querySelector("#fApply").textContent = `Ver ${plural(n, "resultado", "resultados")}`;
+        el.querySelector("#fApl").innerHTML = [...d.marcas, ...d.nuevo ? ["Nuevo"] : [], ...d.soloDisp ? ["Sólo disponibles"] : []].map((t) => `<span class="md-chip md-chip--selected md-label-large">${esc(t)}</span>`).join("") || '<span class="md-body-medium vx-muted">Ninguno</span>';
+      };
+      el.addEventListener("change", (e) => {
+        const t = e.target;
+        if (t.matches(".md-check-input")) {
+          const b = t.nextElementSibling;
+          b.classList.toggle("md-check-box--on", t.checked);
+          b.innerHTML = t.checked ? icon("check", 16) : "";
+        }
+        if (t.matches("input[role=switch]")) t.nextElementSibling.classList.toggle("md-switch-track--on", t.checked);
+        paint();
+      });
+      el.addEventListener("input", paint);
+      el.querySelector("#fClear").addEventListener("click", () => {
+        state.flow.filtros = { orden: "relevantes", marcas: [], nuevo: false, soloDisp: false, min: "", max: "" };
+        set({ flow: state.flow });
+        closeOverlay();
+      });
+      el.querySelector("#fApply").addEventListener("click", () => {
+        state.flow.filtros = read();
+        set({ flow: state.flow });
+        closeOverlay();
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M2.05", {
+    render() {
+      return h(`<div>${topbar("Explorar", { back: false, trailing: iconBtn("bell", "Avisos", 'data-go="M6.17"') })}
+      <div class="vx-pad"><button type="button" class="md-search md-sl vx-searchbtn" data-go="M2.02" data-kind="smart" aria-label="Buscar en VexBiz">${icon("search")}<span class="md-body-large vx-muted">Buscar en VexBiz</span></button></div>
+      <ul class="vx-niches" role="list" data-stagger>${nichos.map((n, i) => nicheTile(n).replace("<li>", `<li style="--i:${i}">`)).join("")}</ul>
+      <div class="vx-pad">${btn("Ver todas las tiendas", { kind: "outlined", block: true, go: "M2.11" })}</div></div>`);
+    },
+    mount(el, ctx) {
+      if (ctx.first) $$("[data-stagger]", el).forEach(stagger);
+    }
+  });
+  register("M2.06", {
+    render(ctx) {
+      const n = nichos.find((x) => x.id === ctx.params.id) || nichos[0];
+      const cats = [["Aires split", 312, "aires"], ["Compresores", 86, "compresores"], ["Tarjetas", 54, "tarjetas"], ["Controles", 41, "controles"]];
+      const el = h(page(topbar(n.nombre, { trailing: iconBtn("search", "Buscar", 'data-go="M2.02" data-kind="smart"') }), `
+      <p class="md-body-large vx-pad-h">${esc(n.id === "clima" ? "Aires acondicionados, repuestos y herramientas de refrigeración." : n.texto)}</p>
+      ${n.servicio ? `<div class="vx-pad-h">${banner("info", "Requiere instalación técnica", btn("Ver técnicos", { kind: "text", go: "M4.03" }))}</div>` : ""}
+      <div class="vx-cats">${cats.map(([t, c, id]) => `<button type="button" class="vx-cat md-sl vx-press" data-go="M2.07?cat=${id}"><span class="md-title-small">${t}</span><span class="md-body-small vx-muted vx-tab-num">${num(c, 0)}</span></button>`).join("")}</div>
+      ${filtroBar()}
+      <section class="vx-sec">${sectionHead("Destacados")}<p class="md-body-medium vx-muted vx-pad-h">${num(n.productos || 1284, 0)} productos</p><div id="nList"></div></section>`));
+      return el;
+    },
+    mount(el, ctx) {
+      const base = () => ["aa12", "lg12", "comp", "mi12", "ctrl"].map(producto);
+      return wireFiltros(el, base, (list) => {
+        el.querySelector("#nList").innerHTML = list.length ? grid(list) : stateBlock({ icon: "searchoff", title: "No encontramos resultados", text: "Prueba quitando algún filtro." });
+      });
+    }
+  });
+  register("M2.07", {
+    render(ctx) {
+      const subs = [["rotativo", "Rotativos", 86], ["scroll", "Scroll", 24], ["inverter", "Inverter", 41], ["nevera", "Para nevera", 57]];
+      return h(page(topbar("Compresores", { trailing: iconBtn("search", "Buscar", 'data-go="M2.02" data-kind="smart"') }), `
+      <p class="md-label-large vx-muted vx-pad-h">Climatización › Repuestos de A/A</p>
+      <p class="md-body-large vx-pad-h">Compresores rotativos y scroll para equipos split y de ventana, con su refrigerante y capacidad. Elige el que coincide con la placa de tu equipo…</p>
+      <div class="vx-chipwrap vx-pad-h" role="group" aria-label="Tipo de compresor">${subs.map(([id, t, n]) => `<span class="md-chip-wrap"><button type="button" class="md-chip md-sl md-label-large" data-sub="${id}" aria-pressed="false">${t} <span class="vx-tab-num">${n}</span></button></span>`).join("")}</div>
+      ${filtroBar()}<div id="cList"></div>`));
+    },
+    mount(el) {
+      let sub = null;
+      const base = () => COMPRESORES().filter((p) => !sub || p.sub === sub);
+      const un = wireFiltros(el, base, (list) => {
+        el.querySelector("#cList").innerHTML = list.length ? grid(list) : stateBlock({ icon: "searchoff", title: "No encontramos resultados", text: "Prueba quitando algún filtro." });
+      });
+      const repaint = () => set({ flow: state.flow });
+      el.addEventListener("click", (e) => {
+        const c = e.target.closest("[data-sub]");
+        if (!c) return;
+        sub = sub === c.dataset.sub ? null : c.dataset.sub;
+        $$("[data-sub]", el).forEach((b) => {
+          const on = b.dataset.sub === sub;
+          b.classList.toggle("md-chip--selected", on);
+          b.setAttribute("aria-pressed", on);
+        });
+        repaint();
+      });
+      return un;
+    }
+  });
+  register("M2.08", {
+    render(ctx) {
+      const p = producto(ctx.params.id) || producto("aa12"), t = tienda(p.tienda), off = pct2(p);
+      state.flow.viewing = p.id;
+      const otras = (ofertas[p.id] || []).filter((o) => !o.actual);
+      const desde = otras.length ? Math.min(...otras.map((o) => o.precio)) : 0;
+      const el = h(page(
+        `<header class="vx-fichahead">${iconBtn("back", "Volver", "data-back")}<span class="vx-spacer"></span>
+        ${iconBtn("share", "Compartir", 'data-toast="Enlace copiado"')}
+        <button type="button" class="md-iconbtn md-iconbtn--standard md-sl" id="fav" aria-pressed="false" aria-label="Guardar en favoritos">${icon("heart")}</button>
+        <button type="button" class="md-iconbtn md-iconbtn--standard md-sl vx-cartbtn" data-go="M3.01" data-kind="smart" data-cart-btn aria-label="Carrito, ${plural(cartCount(), "artículo", "artículos")}">${icon("cart")}<span class="md-badge md-badge--large vx-cartbadge" id="fCart"${cartCount() ? "" : " hidden"}>${cartCount()}</span></button></header>`,
+        `
+      <button type="button" class="vx-gallery md-sl" data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${icon("box", 64)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
+      <div class="vx-pad-h vx-ficha">
+        <p class="md-body-small vx-muted">${esc(p.categoria)}</p>
+        <h1 class="md-headline-small" tabindex="-1">${esc(p.nombre)}${p.id === "aa12" ? " · 220V" : ""}</h1>
+        <p class="md-body-medium vx-muted">${p.marca ? esc(p.marca) + " · " : ""}Ref. ${esc(p.ref || p.id.toUpperCase())}${p.gtin ? " · GTIN " + p.gtin : ""}</p>
+        <div class="vx-badges">${off ? '<span class="vx-tag md-label-medium">La mejor oferta</span>' : ""}<span class="vx-tag md-label-medium">${esc(p.condicion)}</span></div>
+        <div class="vx-price vx-tab-num">${p.antes ? `<p class="md-body-medium"><s class="vx-muted">${money(p.antes)}</s> <span class="vx-off md-label-medium">−${off} %</span> <span class="vx-muted">Oferta hasta el ${p.oferta}</span></p>` : ""}
+          <p class="vx-price-now" id="fPrice">${money(p.precio)}</p><p class="md-body-medium vx-muted">${bsRef(p.precio, "15/10")}</p></div>
+        <p class="vx-stockline">${stockHtml(p.stock, ` · ${plural(p.stock, "unidad", "unidades")}`)}</p>
+        <p class="md-body-small vx-muted">Precio y existencias confirmados por la tienda</p>
+        <div class="vx-qtyrow"><span class="md-title-small">Cantidad</span>${stepper("q", 1, Math.max(p.stock, 1))}</div>
+        <ul class="vx-list" role="list">
+          <li><button type="button" class="md-li md-li--2 md-sl vx-press vx-row" data-go="M2.12?id=${t.id}">${avatar(t.sigla)}<span class="md-li-text"><span class="md-li-title md-body-large">${esc(t.nombre)}</span><span class="md-li-sup md-body-medium">${esc(t.ciudad)} · <span class="vx-tab-num">${stars(t.rating)}</span></span></span><span class="md-li-end">${icon("chevron")}</span></button></li>
+          ${otras.length ? `<li><button type="button" class="md-li md-sl vx-press vx-row" data-go="O.OTR"><span class="md-li-icon">${icon("store")}</span><span class="md-li-text"><span class="md-li-title md-body-large">Otras ${otras.length} tiendas, desde ${money(desde)}</span></span><span class="md-li-end">${icon("chevron")}</span></button></li>` : ""}</ul>
+        <section class="vx-sec vx-reveal">${sectionHead("Quienes lo vieron también compraron")}${scroller(["ctrl", "cap", "lg12"].map(producto))}</section>
+      </div>`,
+        `<div class="vx-actionsum"><span class="md-body-small vx-muted">Total</span><span class="md-title-large vx-tab-num" id="fTotal">${money(p.precio)}</span></div>${btn(`${icon("cart", 20)}Añadir al carrito`, { kind: "filled", id: "fAdd", attrs: `data-add="${p.id}" data-qty="1"${p.stock <= 0 ? " disabled" : ""}` })}`
+      ));
+      el.__p = p;
+      return el;
+    },
+    mount(el) {
+      const p = el.__p;
+      let qty = 1;
+      const out = el.querySelector("[data-qty]"), dec = el.querySelector("[data-dec]"), inc = el.querySelector("[data-inc]"), add = el.querySelector("#fAdd");
+      const paint = () => {
+        out.textContent = qty;
+        dec.disabled = qty <= 1;
+        inc.disabled = qty >= p.stock;
+        add.dataset.qty = qty;
+        el.querySelector("#fTotal").textContent = money(p.precio * qty);
+        play(el.querySelector("#fTotal"), "vx-tick");
+        play(out, "vx-tick");
+      };
+      dec.addEventListener("click", () => {
+        qty = Math.max(1, qty - 1);
+        paint();
+      });
+      inc.addEventListener("click", () => {
+        qty = Math.min(p.stock, qty + 1);
+        paint();
+      });
+      el.querySelector("#fav").addEventListener("click", (e) => {
+        const b = e.currentTarget, on = b.getAttribute("aria-pressed") !== "true";
+        b.setAttribute("aria-pressed", on);
+        b.classList.toggle("is-fav", on);
+        toast(on ? "Guardado en favoritos" : "Quitado de favoritos");
+      });
+      const un = subscribe(() => {
+        const b = el.querySelector("#fCart");
+        b.hidden = !cartCount();
+        b.textContent = cartCount();
+      });
+      reveal(el);
+      return un;
+    }
+  });
+  register("M2.09", {
+    skeleton: false,
+    render() {
+      const el = h(`<div class="vx-gal"><header class="vx-galhead">${iconBtn("close", "Cerrar galería", "data-back")}<h1 class="md-title-medium vx-tab-num" id="gCount" aria-live="polite" tabindex="-1">1 de 5</h1><span class="vx-spacer"></span></header>
+      <div class="vx-carousel vx-galcar" tabindex="0" aria-label="Fotos del producto">${[1, 2, 3, 4, 5].map((n) => `<div class="vx-slide vx-gslide" role="group" aria-label="Foto ${n} de 5">${icon("box", 72)}</div>`).join("")}</div>
+      <div class="vx-dots vx-galdots" aria-hidden="true">${[0, 1, 2, 3, 4].map((i) => `<i class="vx-dot${i === 0 ? " is-on" : ""}"></i>`).join("")}</div></div>`);
+      return el;
+    },
+    mount(el) {
+      const car = el.querySelector(".vx-carousel"), dots = $$(".vx-dot", el), out = el.querySelector("#gCount");
+      const on = () => {
+        const i = Math.round(car.scrollLeft / car.clientWidth);
+        dots.forEach((d, k) => d.classList.toggle("is-on", k === i));
+        out.textContent = `${i + 1} de 5`;
+      };
+      car.addEventListener("scroll", on, { passive: true });
+      car.scrollLeft = car.clientWidth;
+      on();
+    }
+  });
+  register("O.OTR", {
+    render() {
+      const id = state.flow.viewing || "aa12", p = producto(id), list = ofertas[id] || [];
+      const disp = list.filter((o) => o.stock > 0), best = disp.length ? Math.min(...disp.map((o) => o.precio)) : null;
+      const rows = list.map((o) => {
+        const t = tienda(o.t), s = stock(o.stock);
+        return `<li class="vx-offer"><div class="vx-offer-top">${avatar(t.sigla)}<div><p class="md-body-large">${esc(t.nombre)}</p><p class="md-body-small vx-muted vx-tab-num">${stars(t.rating)} · ${esc(t.ciudad)}</p></div>
+        <div class="vx-offer-price vx-tab-num"><b class="md-title-medium">${money(o.precio)}</b>${o.antes ? `<s class="md-body-small vx-muted">${money(o.antes)}</s>` : ""}</div></div>
+        <p class="vx-offer-tags md-body-small">${o.actual ? '<span class="vx-tag">La que estás viendo</span>' : ""}${o.precio === best ? '<span class="vx-tag">Mejor precio</span>' : ""}${o.nota && o.precio !== best ? `<span class="vx-tag">${esc(o.nota)}</span>` : ""}${o.stock > 0 ? `<span class="vx-tag">Nuevo</span>` : ""}
+          ${stockHtml(o.stock, o.stock > 0 ? ` · ${o.stock} u.` : "")}</p>
+        <div class="vx-offer-act">${btn("Ver tienda", { kind: "outlined", go: `M2.12?id=${t.id}` })}${btn("Añadir al carrito", { kind: "filled", attrs: `data-add="${id}" ${o.actual ? "" : `data-oferta="${o.t}"`}${o.stock <= 0 ? " disabled" : ""}` })}</div></li>`;
+      }).join("");
+      const el = h(`<div><div class="vx-sheet-head"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">${list.length} tiendas lo venden</h2>${iconBtn("close", "Cerrar", "data-close")}</div>
+      <p class="md-body-medium vx-muted vx-pad-h">${esc(p.nombre)}</p><ul class="vx-offers" role="list">${rows}</ul></div>`);
+      closeOnGo(el);
+      return el;
+    }
+  });
+  register("M2.11", {
+    render() {
+      const el = h(`<div>${topbar("Tiendas")}
+      <div class="vx-pad">${field({ id: "tq", label: "Buscar tienda", type: "search", autocomplete: "off" })}</div>
+      <div class="vx-chipwrap vx-pad-h" role="group" aria-label="Filtrar por nicho">${["Todas", "Climatización", "Electrodomésticos", "Electricidad"].map((n2, i) => `<span class="md-chip-wrap"><button type="button" class="md-chip md-sl md-label-large${i === 0 ? " md-chip--selected" : ""}" data-n="${n2}" aria-pressed="${i === 0}">${n2}</button></span>`).join("")}</div>
+      <ul class="vx-list" role="list" id="tList"></ul></div>`);
+      let n = "Todas", q = "";
+      const paint = () => {
+        const l = directorio.filter((t) => (n === "Todas" || t.nicho === n) && norm(t.nombre).includes(norm(q)));
+        el.querySelector("#tList").innerHTML = l.length ? l.map(storeRow).join("") : `<li>${stateBlock({ icon: "searchoff", title: "No hay tiendas con ese nombre", text: "Estas son todas las que hay hoy." })}</li>`;
+      };
+      el.addEventListener("click", (e) => {
+        const c = e.target.closest("[data-n]");
+        if (!c) return;
+        n = c.dataset.n;
+        $$("[data-n]", el).forEach((b) => {
+          const on = b === c;
+          b.classList.toggle("md-chip--selected", on);
+          b.setAttribute("aria-pressed", on);
+        });
+        paint();
+      });
+      el.querySelector("#tq").addEventListener("input", (e) => {
+        q = e.target.value;
+        paint();
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M2.12", {
+    render(ctx) {
+      const id = ctx.params.id || "ft";
+      const t = directorio.find((x) => x.id === id) || tienda(id) || tienda("ft");
+      const full = tienda(t.id) || {};
+      const el = h(page(topbar(t.nombre, { trailing: iconBtn("search", "Buscar", 'data-go="M2.02" data-kind="smart"') }), `
+      <section class="vx-storehead vx-pad-h">${avatar(t.sigla, true)}<div><p class="md-title-medium">${esc(t.nombre)}</p>
+        ${full.verificada ? `<p class="md-label-medium vx-verified">${icon("check", 16)} Verificada por VexBiz</p>` : ""}
+        <p class="md-body-medium vx-muted">${esc(t.nicho)} · ${esc(full.region ? `${t.ciudad}, ${full.region.replace("Distrito Capital", "D. Capital")}` : t.ciudad)}</p>
+        <p class="md-body-medium vx-tab-num">${stars(t.rating)} · ${t.productos} productos publicados</p></div></section>
+      ${filtroBar()}<div id="sList"></div>`));
+      el.__id = t.id;
+      return el;
+    },
+    mount(el) {
+      const base = () => productos.filter((p) => p.tienda === el.__id);
+      return wireFiltros(el, base, (list) => {
+        el.querySelector("#sList").innerHTML = list.length ? grid(list) : stateBlock({ icon: "inbox", title: "Esta tienda todavía no tiene productos en la demo", text: "Prueba con Frío Total C.A." });
+      });
+    }
+  });
+
+  // assets/js/screens/m3.js
+  var ENVIO = { ft: { costo: 8.4, km: 14, kg: 9, dias: "1–2 días" }, ha: { costo: 0, dias: "1–3 días", gratis: true } };
+  var envioDe = (id) => ENVIO[id] || { costo: 6, km: 20, kg: 5, dias: "2–4 días" };
+  var IMPUESTO = { debito: 3, binance: 0, transferencia: 0 };
+  var METODO = { debito: "Débito bancario", binance: "Binance Pay", transferencia: "Transferencia a VexBiz" };
+  var dirActual = () => direcciones.find((d) => d.id === state.flow.direccion) || direcciones[0];
+  var dirCorta = (d) => `${d.linea.split(",")[0]}, ${d.ciudad.split(",")[0]}`;
+  function compraActual() {
+    const lines = cartLines();
+    const grupos = [...new Set(lines.map((l) => l.t.id))].map((id) => {
+      const ls = lines.filter((l) => l.t.id === id), env = envioDe(id), retiro = !!state.flow.retiro[id];
+      return { t: tienda(id), ls, units: ls.reduce((n, l) => n + l.qty, 0), env, retiro, envio: retiro ? 0 : env.costo, subtotal: round2(ls.reduce((s, l) => s + l.precio * l.qty, 0)) };
+    });
+    const subtotal = cartSubtotal(), envio = round2(grupos.reduce((s, g) => s + g.envio, 0));
+    const impPct = IMPUESTO[state.flow.metodo] ?? 0, impuesto = pct(subtotal + envio, impPct);
+    return { lines, grupos, subtotal, envio, impPct, impuesto, total: round2(subtotal + envio + impuesto) };
+  }
+  var compraPasarela = () => {
+    const sub = round2(compra.pedidos.reduce((s, p) => s + p.total, 0)), imp = pct(sub, compra.pasarela.impuestoPct);
+    return { sub, imp, total: round2(sub + imp) };
+  };
+  var thumb = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon("box", n)}</span>`;
+  register("M3.01", {
+    render() {
+      return h(page(
+        topbar("Tu carrito", { back: false }),
+        `<div id="cartBody"></div>`,
+        `<div class="vx-actionsum"><span class="md-body-small vx-muted">Total</span><span class="md-title-large vx-tab-num" id="cTotal"></span></div>${btn("Continuar", { kind: "filled", id: "cGo", go: "M3.02" })}`
+      ));
+    },
+    mount(el, ctx) {
+      const body = el.querySelector("#cartBody");
+      let first = true, lastTotal = null;
+      const paint = () => {
+        const act = document.activeElement, keep = act && (act.dataset.inc || act.dataset.dec || act.dataset.rm) ? ["inc", "dec", "rm"].map((k) => act.dataset[k] ? [k, act.dataset[k]] : null).find(Boolean) : null;
+        const c = compraActual(), cambios = c.lines.filter((l) => l.cambioPrecio).length;
+        if (!c.lines.length) {
+          body.innerHTML = stateBlock({ icon: "cart", title: "Tu carrito está vacío", text: "Cuando añadas algo aparecerá aquí.", action: btn("Explorar", { kind: "outlined", go: "M2.05", kindNav: "swap" }) });
+        } else {
+          body.innerHTML = `
+          <div class="vx-pad-h vx-stack">${banner("warning", `Compra #VX-20418 sin pagar · <b class="vx-tab-num">${money(129.9)}</b> · hasta hoy 18:30`, btn("Pagar", { kind: "text", go: "M3.09" }))}
+            ${cambios ? banner("info", `El precio de ${plural(cambios, "artículo", "artículos")} cambió desde que lo añadiste.`) : ""}</div>
+          <p class="md-body-medium vx-muted vx-pad-h">${plural(c.lines.length, "artículo", "artículos")} en ${plural(c.grupos.length, "tienda", "tiendas")}</p>
+          ${c.grupos.map((g, gi) => `<section class="vx-cartgroup" aria-label="${esc(g.t.nombre)}"><h2 class="md-title-medium">${esc(g.t.nombre)}</h2>
+            <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-cartline${l.cambioPrecio ? " vx-priced" : ""}" data-line="${l.key}">${thumb()}
+              <div class="vx-cartline-main"><p class="md-body-large">${esc(l.p.corto || l.p.nombre)}</p><p class="md-body-medium vx-muted vx-tab-num">${money(l.precio)} c/u</p>
+                ${l.cambioPrecio ? `<p class="vx-tag md-label-small">${icon("info", 14)}Cambió de precio</p>` : ""}
+                <div class="vx-cartline-row">${stepper(l.key, l.qty, l.p.stock)}<b class="md-title-medium vx-tab-num">${money(l.precio * l.qty)}</b></div></div>
+              <button type="button" class="md-iconbtn md-iconbtn--standard md-sl" data-rm="${l.key}" aria-label="Quitar del carrito: ${esc(l.p.corto || l.p.nombre)}">${icon("trash")}</button></li>`).join("")}</ul>
+            <p class="md-body-small vx-muted">La tienda confirmó precio y existencias hace ${[4, 12, 8][gi % 3]} min</p>
+            <p class="vx-sub-row md-body-large vx-tab-num"><span>Subtotal de la tienda</span><b>${money(g.subtotal)}</b></p></section>`).join("")}`;
+        }
+        el.querySelector("#cTotal").textContent = money(c.subtotal);
+        el.querySelector("#cGo").disabled = !c.lines.length;
+        if (lastTotal !== null && lastTotal !== c.subtotal) play(el.querySelector("#cTotal"), "vx-tick");
+        lastTotal = c.subtotal;
+        if (first) {
+          first = false;
+          $$(".vx-priced", body).forEach((n) => play(n, "vx-flash"));
+        }
+        if (keep) body.querySelector(`[data-${keep[0]}="${keep[1]}"]`)?.focus();
+      };
+      el.addEventListener("click", (e) => {
+        const inc = e.target.closest("[data-inc]"), dec = e.target.closest("[data-dec]"), rm = e.target.closest("[data-rm]");
+        const find = (k) => state.cart.find((l) => lineKey(l) === k);
+        if (inc) setQty(inc.dataset.inc, find(inc.dataset.inc).qty + 1);
+        if (dec) setQty(dec.dataset.dec, find(dec.dataset.dec).qty - 1);
+        if (rm) {
+          const undo = removeLine(rm.dataset.rm);
+          toast("Quitado del carrito", { action: "Deshacer", onAction: undo });
+        }
+      });
+      paint();
+      return subscribe(paint);
+    }
+  });
+  register("M3.02", {
+    render() {
+      const el = h(page(
+        topbar("Pagar"),
+        `${checkoutSteps(1)}<div id="dirCard"></div>
+      <p class="md-title-small vx-pad-h">Aquí te llegará el pedido</p>
+      <p class="md-body-medium vx-muted vx-pad-h">La dirección también va en la factura, aunque retires en la tienda.</p>`,
+        btn("Continuar", { kind: "filled", block: true, go: "M3.04" })
+      ));
+      const paint = () => {
+        const d = dirActual();
+        el.querySelector("#dirCard").innerHTML = `<section class="vx-card vx-addr"><div class="vx-map" aria-hidden="true">${icon("map", 40)}</div>
+        <div class="vx-addr-body"><p class="md-title-medium">${esc(d.nombre)}${d.predeterminada ? ' <span class="vx-tag md-label-small">Predeterminada</span>' : ""}</p>
+        <p class="md-body-large">${esc(d.linea)}</p>${d.ref ? `<p class="md-body-medium vx-muted">${esc(d.ref)}</p>` : ""}
+        <p class="md-body-medium vx-muted vx-tab-num">${esc(d.ciudad)} · CP ${d.cp}</p><p class="md-body-medium vx-muted vx-tab-num">${d.tel}</p>
+        <div class="vx-row-end">${btn("Editar", { kind: "text", go: "M6.14" })}${btn("Cambiar", { kind: "text", go: "M3.03" })}</div></div></section>`;
+      };
+      paint();
+      el.__un = subscribe(paint);
+      return el;
+    },
+    mount(el) {
+      fillSteps(el);
+      return el.__un;
+    }
+  });
+  register("M3.03", {
+    render() {
+      const sel = state.flow.direccion;
+      const el = h(`<div class="vx-page"><header class="vx-sheet-head vx-flowhead"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">¿Dónde lo recibes?</h2>${iconBtn("close", "Cerrar", "data-close")}</header>
+      <div class="vx-body vx-pad-h"><div role="radiogroup" aria-label="Dirección de entrega" class="vx-options">${direcciones.slice(0, 2).map((d) => radioOpt({
+        name: "dir",
+        value: d.id,
+        checked: sel === d.id,
+        title: `${esc(d.nombre)}${d.predeterminada ? ' <span class="vx-tag md-label-small">Predeterminada</span>' : ""}`,
+        text: `${esc(d.linea)}<br>${esc(d.ciudad)} ${d.cp}<br><span class="vx-tab-num">${d.tel.replace("-", " ")}</span>`,
+        extra: d.sinMapa ? `<span class="vx-tag md-label-small">${icon("warning", 14)}Sin punto en el mapa</span>` : "",
+        end: iconBtn("edit", `Editar ${d.nombre}`, 'data-go="M6.14"')
+      })).join("")}</div>
+        ${btn(`${icon("add", 20)}Añadir otra dirección`, { kind: "outlined", block: true, go: "M6.14" })}</div>
+      <footer class="vx-actionbar">${btn("Usar esta dirección", { kind: "filled", block: true, id: "dUsar" })}</footer></div>`);
+      wireControls(el);
+      closeOnGo(el);
+      el.querySelector("#dUsar").addEventListener("click", () => {
+        set({ flow: { ...state.flow, direccion: el.querySelector("input[name=dir]:checked").value } });
+        closeOverlay();
+      });
+      return el;
+    }
+  });
+  register("M3.04", {
+    render() {
+      const el = h(page(
+        topbar("Pagar"),
+        `${checkoutSteps(2)}<div id="envBody"></div>`,
+        `<div class="vx-actionsum"><span class="md-body-small vx-muted">Subtotal y envío</span><span class="md-title-large vx-tab-num" id="eTotal"></span></div>${btn("Pagar", { kind: "filled", go: "M3.06" })}`
+      ));
+      const paint = () => {
+        const c = compraActual(), d = dirActual();
+        el.querySelector("#envBody").innerHTML = `<div class="vx-pad-h"><p class="md-title-small">${esc(d.nombre)}</p><p class="md-body-medium vx-muted">${esc(dirCorta(d))} ${btn("Cambiar", { kind: "text", go: "M3.03" })}</p>
+        <p class="md-body-medium">Cada tienda despacha su paquete por separado.</p></div>
+        ${c.grupos.map((g) => `<section class="vx-cartgroup" aria-label="${esc(g.t.nombre)}"><h2 class="md-title-medium">${esc(g.t.nombre)} <span class="md-body-medium vx-muted">· ${plural(g.units, "unidad", "unidades")}</span></h2>
+          <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-envline">${thumb(20)}<span class="md-body-medium">${esc(l.p.corto || l.p.nombre)}<br><span class="vx-muted vx-tab-num">${l.qty} × ${money(l.precio)}</span></span><b class="md-body-large vx-tab-num">${money(l.precio * l.qty)}</b></li>`).join("")}</ul>
+          ${g.env.gratis ? `<p class="md-body-medium vx-env">${icon("check", 18)} Esta tienda no te cobra el envío · ${g.env.dias}</p>` : `
+            <p class="md-body-medium vx-env vx-tab-num">${icon("truck", 18)} ${g.retiro ? "Retiro en la tienda · $ 0,00" : `Envío ${money(g.env.costo)} · ${g.env.km} km · ${g.env.kg} kg · ${g.env.dias} · Aproximado`}</p>
+            <div class="vx-row-end">${btn("Ver ruta", { kind: "text", go: "M3.05" })}</div>
+            ${switchHtml("ret_" + g.t.id, "Prefiero retirarlo en la tienda", g.retiro)}`}</section>`).join("")}`;
+        el.querySelector("#eTotal").textContent = money(c.subtotal + c.envio);
+      };
+      el.addEventListener("change", (e) => {
+        const t = e.target.closest("input[role=switch]");
+        if (!t) return;
+        state.flow.retiro[t.id.slice(4)] = t.checked;
+        set({ flow: state.flow });
+        play(el.querySelector("#eTotal"), "vx-tick");
+      });
+      paint();
+      el.__un = subscribe(paint);
+      return el;
+    },
+    mount(el) {
+      fillSteps(el);
+      return el.__un;
+    }
+  });
+  register("M3.05", {
+    render() {
+      const R = { km: 168, recta: 142, base: 8, porKm: 0.05, ivaPct: 16 };
+      const kmImp = round2(R.porKm * R.km), imp = pct(R.base + kmImp, R.ivaPct);
+      const row = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
+      return h(`<div>${topbar("Ruta desde Frío Total")}
+      <div class="vx-map vx-map--big" aria-hidden="true">${icon("map", 56)}</div>
+      <div class="vx-pad-h vx-routestats vx-tab-num"><p><b class="md-title-large">${R.km} km</b><br><span class="md-body-small vx-muted">por carretera</span></p><p><b class="md-title-large">${R.recta} km</b><br><span class="md-body-small vx-muted">en línea recta</span></p><p><b class="md-title-large">2 h 10 min</b><br><span class="md-body-small vx-muted">estimados</span></p></div>
+      <h2 class="md-title-medium vx-pad-h">Cómo se calculó</h2>
+      <dl class="vx-pad-h vx-dl">${row("Tramo", "Caracas → Valencia")}${row("Vehículo", "Camioneta de carga")}${row("Bultos · peso", "2 · 38 kg")}${row("Importe base", money(R.base))}${row("Por kilómetro", `${money(R.porKm)} × ${R.km} = ${money(kmImp)}`)}${row("Impuesto", money(imp))}</dl>
+      <p class="md-body-small vx-muted vx-pad-h">El mapa es orientativo. El importe del envío es el que ves en el paso anterior.</p></div>`);
+    }
+  });
+  register("M3.06", {
+    render() {
+      const m = state.flow.metodo;
+      const el = h(page(
+        topbar("Pagar"),
+        `${checkoutSteps(3)}
+      <p class="md-body-large vx-pad-h">Un solo pago para toda la compra, aunque sean varias tiendas.</p>
+      <div class="vx-options vx-pad-h" role="radiogroup" aria-label="Forma de pago">
+        ${radioOpt({ name: "metodo", value: "debito", checked: m === "debito", title: "Débito bancario", text: "Pagas con la clave que te envía tu banco.", extra: `<span class="md-label-medium vx-tab-num">USD · Impuesto del pago: ${IMPUESTO.debito} %</span>` })}
+        ${radioOpt({ name: "metodo", value: "binance", checked: m === "binance", title: "Binance Pay", text: "Pagas desde tu cuenta de Binance.", extra: '<span class="md-label-medium">USDT</span>' })}
+        ${radioOpt({ name: "metodo", value: "transferencia", checked: m === "transferencia", title: "Transferencia a VexBiz", text: "Transfieres y reportas el pago.", extra: '<span class="md-label-medium">USD · Sin impuesto</span>' })}</div>
+      <section id="bancos" class="vx-pad-h" ${m === "debito" ? "" : "hidden"}><h2 class="md-title-medium">Tus datos para el débito</h2>
+        <div class="vx-options" role="radiogroup" aria-label="Cuenta para el débito">${compra.bancos.map((b) => radioOpt({
+          name: "banco",
+          value: b.id,
+          checked: state.flow.banco === b.id,
+          title: `${esc(b.nombre)}${b.tipo ? " · " + esc(b.tipo) : ""}`,
+          text: `<span class="vx-tab-num">${esc(b.doc)} · ${esc(b.tel)}</span>`
+        })).join("")}</div>
+        <p class="md-body-medium vx-muted">Tu banco te enviará una clave de 8 dígitos por SMS al pagar.</p></section>
+      <div class="vx-pad-h"><form class="vx-form" novalidate onsubmit="return false">${field({ id: "cupon", label: "Cupón (opcional)", value: state.flow.cupon ?? "VEXBIZ10" })}</form></div>`,
+        `<div class="vx-actionsum"><span class="md-body-small vx-muted">Total a pagar</span><span class="md-title-large vx-tab-num" id="pTotal"></span></div>${btn("Pagar", { kind: "filled", go: "O.RES" })}`
+      ));
+      wireControls(el);
+      const paint = () => {
+        const c = compraActual();
+        el.querySelector("#pTotal").textContent = money(c.total);
+      };
+      el.addEventListener("change", (e) => {
+        if (e.target.name === "metodo") {
+          state.flow.metodo = e.target.value;
+          el.querySelector("#bancos").hidden = e.target.value !== "debito";
+          paint();
+          play(el.querySelector("#pTotal"), "vx-tick");
+        }
+        if (e.target.name === "banco") state.flow.banco = e.target.value;
+      });
+      el.querySelector("#cupon").addEventListener("input", (e) => {
+        state.flow.cupon = e.target.value;
+      });
+      paint();
+      return el;
+    },
+    mount(el) {
+      fillSteps(el);
+    }
+  });
+  register("O.RES", {
+    render() {
+      const c = compraActual(), d = dirActual(), b = compra.bancos.find((x) => x.id === state.flow.banco);
+      const row = (k, v, strong = false) => `<div class="vx-sumrow${strong ? " is-strong" : ""}"><dt class="md-body-large">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
+      const el = h(`<div><div class="vx-sheet-head"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">Resumen de la compra</h2>${iconBtn("close", "Cerrar", "data-close")}</div>
+      <p class="md-body-medium vx-muted vx-pad-h">${plural(c.lines.length, "artículo", "artículos")}</p>
+      <ul class="vx-list vx-pad-h" role="list"><li class="md-body-large">${esc(d.nombre)}<br><span class="md-body-medium vx-muted">${esc(dirCorta(d))}</span></li>
+        <li class="md-body-large">${METODO[state.flow.metodo]}${state.flow.metodo === "debito" && b ? `<br><span class="md-body-medium vx-muted">${esc(b.nombre)}${b.tipo ? " · " + esc(b.tipo) : ""}</span>` : ""}</li></ul>
+      <dl class="vx-pad-h vx-dl">${row("Subtotal", money(c.subtotal))}
+        ${c.grupos.map((g) => row(`Envío · ${esc(g.t.nombre)}`, g.retiro ? "Retiro en tienda" : g.env.gratis ? "No te lo cobran" : money(g.envio))).join("")}
+        ${c.impPct ? row(`Impuesto del pago (${c.impPct} %)`, money(c.impuesto)) : ""}
+        ${state.flow.cupon ? row(`Cupón: ${esc(state.flow.cupon)}`, '<span class="md-body-medium vx-muted">se aplica al confirmar</span>') : ""}
+        ${row("Total a pagar", money(c.total), true)}</dl>
+      <p class="md-body-small vx-muted vx-pad-h vx-tab-num">Precios y envío con impuestos incluidos · ≈ ${bs(c.total)} referencial</p>
+      <p class="md-body-medium vx-pad-h">Se crean ${plural(c.grupos.length, "pedido", "pedidos")}, uno por tienda, con un solo pago.</p>
+      <div class="md-sheet-foot">${btn("Confirmar y pagar", { kind: "filled", go: "M3.08", kindNav: "push" })}</div></div>`);
+      closeOnGo(el);
+      return el;
+    }
+  });
+  register("M3.08", {
+    render() {
+      const prod = (n, q, p, s, st) => `<li class="vx-wait-line" data-st="${st}">${thumb(20)}<div><p class="md-body-large">${n}</p><p class="md-body-medium vx-muted vx-tab-num">${q} × ${money(p)} · ${s}</p></div><span class="vx-status" data-status></span></li>`;
+      return h(`<div class="vx-wait"><header class="vx-backbar">${iconBtn("close", "Salir de la sala de espera", 'data-go="M2.01" data-kind="mode"')}</header>
+      <section class="vx-pad-h"><h1 class="md-headline-small" tabindex="-1">Confirmando tu compra</h1>
+        <p class="vx-timer md-display-small vx-tab-num"><span class="md-title-large">Queda </span><span id="wLeft">3:42</span></p>
+        <span class="vx-bar-track" aria-hidden="true"><span id="wBar" class="vx-bar-fill"></span></span>
+        <p class="md-body-large" id="wWho">2 tiendas tienen que contestar</p>
+        <p class="vx-urgent" id="wUrg" hidden>${icon("warning", 18)} Queda menos de un minuto</p><span class="md-sr-only" id="wLive" aria-live="polite"></span></section>
+      <section class="vx-card vx-decide vx-pad-h" id="wDecide"><h2 class="md-title-medium">Hay algo que decidir</h2>
+        <p class="md-body-large">Tarjeta electrónica condensadora split 12K</p><p class="md-body-medium vx-muted vx-tab-num">Pediste 2 × ${money(64)} a ClimaRepuestos</p>
+        <p class="md-body-medium vx-tab-num">La tienda propone: 1 unidad a ${money(64)}</p><p class="md-body-medium vx-tab-num"><b>Pagarías ${money(64)} menos</b></p>
+        <p class="md-body-medium vx-tab-num">Te quedan <b id="wLeft2">3:42</b></p><p class="md-body-small vx-muted">Si no contestas a tiempo, esa línea sale de la compra.</p>
+        <div class="vx-stack">${btn("Aceptar la propuesta", { kind: "filled", block: true, attrs: "data-dec-ok" })}${btn("Quitar esa línea", { kind: "outlined", block: true, attrs: "data-dec-no" })}</div></section>
+      <p class="md-body-medium vx-pad-h" id="wDone" hidden></p>
+      <ul class="vx-list vx-pad-h" role="list">${prod("Aire split inverter 12.000 BTU", 1, 389, "Frío Total C.A.", "ok")}${prod("Capacitor de marcha 35+5 µF", 2, 9.5, "Frío Total C.A.", "wait")}${prod("Motor ventilador 18 W", 1, 32, "Refrigeración El Sol", "fail")}</ul>
+      <p class="md-body-small vx-muted vx-pad-h" id="wAgo">Actualizado hace 8 s</p><p class="md-body-medium vx-pad-h">Te avisamos aquí en cuanto contesten. Puedes salir y volver.</p>
+      <div class="vx-pad">${btn("Seguir sin esperar", { kind: "text", block: true, go: "M3.09", kindNav: "push" })}</div></div>`);
+    },
+    mount(el) {
+      const ST = { ok: ["check", "Confirmada"], wait: ["clock", "Esperando a que la tienda confirme"], fail: ["close", "No se pudo conseguir"] };
+      const paintSt = () => $$("[data-st]", el).forEach((li) => {
+        const [ic, t] = ST[li.dataset.st];
+        li.querySelector("[data-status]").innerHTML = `${icon(ic, 16)}<span class="md-label-medium">${t}</span>`;
+      });
+      paintSt();
+      let ago = 8, decided = false, ended = false, timers = [];
+      const finish = () => {
+        if (ended) return;
+        ended = true;
+        go("M3.09", { kind: "mode" });
+      };
+      const check = () => {
+        if (decided && !$$('[data-st="wait"]', el).length) {
+          el.querySelector("#wDone").hidden = false;
+          el.querySelector("#wDone").textContent = "Todas las tiendas contestaron. Pasamos al pago.";
+          timers.push(setTimeout(finish, 1400));
+        }
+      };
+      timers.push(setTimeout(() => {
+        const li = el.querySelector('[data-st="wait"]');
+        if (li) {
+          li.dataset.st = "ok";
+          paintSt();
+          el.querySelector("#wWho").textContent = "1 tienda tiene que contestar";
+          ago = 0;
+          check();
+        }
+      }, 6e3));
+      const ageId = setInterval(() => {
+        ago += 1;
+        el.querySelector("#wAgo").textContent = `Actualizado hace ${ago} s`;
+      }, 1e3);
+      el.querySelector("#wDecide").addEventListener("click", (e) => {
+        const ok = e.target.closest("[data-dec-ok]"), no = e.target.closest("[data-dec-no]");
+        if (!ok && !no) return;
+        decided = true;
+        el.querySelector("#wDecide").hidden = true;
+        toast(ok ? "Aceptaste: 1 unidad a " + money(64) : "Quitaste esa línea de la compra");
+        el.querySelector("#wWho").textContent = "1 tienda tiene que contestar";
+        check();
+      });
+      let said = false;
+      const stop = countdown({
+        textEl: el.querySelector("#wLeft"),
+        barEl: el.querySelector("#wBar"),
+        ms: (3 * 60 + 42) * 1e3,
+        // Patrón 15: lineal
+        onTick(left) {
+          el.querySelector("#wLeft2").textContent = el.querySelector("#wLeft").textContent;
+          if (left < 6e4 && !said) {
+            said = true;
+            el.querySelector("#wUrg").hidden = false;
+            el.querySelector(".vx-timer").classList.add("vx-is-urgent");
+            el.querySelector("#wLive").textContent = "Queda menos de un minuto para contestar.";
+          }
+        },
+        onEnd: finish
+      });
+      return () => {
+        stop();
+        clearInterval(ageId);
+        timers.forEach(clearTimeout);
+        ended = true;
+      };
+    }
+  });
+  register("M3.09", {
+    render() {
+      const t = compraPasarela(), met = state.flow.metodoPasarela || "debito";
+      const el = h(page(
+        `<header class="vx-backbar">${iconBtn("close", "Cerrar", 'data-go="M2.01" data-kind="mode"')}</header>`,
+        `
+      <h1 class="md-headline-small vx-pad-h" tabindex="-1">Finalizar pago</h1>
+      <p class="vx-pad-h"><span class="vx-tag md-label-medium">${icon("clock", 14)}Falta pagar</span></p>
+      <div class="vx-pad-h vx-stack">${banner("warning", "Paga antes de las 18:00. Después se liberan las existencias.")}
+        ${state.flow.rechazado ? banner("error", "Tu banco rechazó el último intento: «Fondos insuficientes».", btn("Ver detalle", { kind: "text", attrs: 'data-toast="Tu banco informó fondos insuficientes en el intento anterior"' })) : ""}</div>
+      <div class="vx-options vx-pad-h" role="radiogroup" aria-label="Forma de pago">
+        ${radioOpt({ name: "mp", value: "debito", checked: met === "debito", title: "Débito bancario", text: "Clave de 8 dígitos por SMS de tu banco." })}
+        ${radioOpt({ name: "mp", value: "binance", checked: met === "binance", title: "Binance Pay", text: "Paga con la app de Binance." })}</div>
+      <section class="vx-pad-h"><h2 class="md-title-medium">Tu compra · ${plural(compra.pedidos.length, "pedido", "pedidos")}</h2>
+        <ul class="vx-list" role="list">${compra.pedidos.map((p) => `<li class="vx-sumrow"><span class="md-body-large">${esc(p.tienda)}<br><span class="md-body-medium vx-muted vx-tab-num">${p.id} · ${plural(p.articulos, "artículo", "artículos")}</span></span><b class="md-body-large vx-tab-num">${money(p.total)}</b></li>`).join("")}</ul>
+        <dl class="vx-dl"><div class="vx-sumrow"><dt class="md-body-large">Pedidos</dt><dd class="md-body-large vx-tab-num">${money(t.sub)}</dd></div>
+          <div class="vx-sumrow"><dt class="md-body-large">Impuesto del pago (${compra.pasarela.impuestoPct} %)</dt><dd class="md-body-large vx-tab-num">${money(t.imp)}</dd></div>
+          <div class="vx-sumrow is-strong"><dt class="md-body-large">Total</dt><dd class="md-body-large vx-tab-num">${money(t.total)}</dd></div></dl></section>
+      <div class="vx-pad-h">${btn("Pagar con transferencia", { kind: "text", go: "M3.12" })}</div>`,
+        `<div class="vx-actionsum"><span class="md-body-small vx-muted">Total</span><span class="md-title-large vx-tab-num">${money(t.total)}</span></div>${btn("Pagar", { kind: "filled", id: "mpGo" })}`
+      ));
+      wireControls(el);
+      el.querySelector("#mpGo").addEventListener("click", () => {
+        const m = el.querySelector("input[name=mp]:checked").value;
+        state.flow.metodoPasarela = m;
+        go("M3.10", { kind: "push", params: { metodo: m } });
+      });
+      return el;
+    }
+  });
+  register("M3.10", {
+    render(ctx) {
+      const t = compraPasarela(), binance = ctx.params.metodo === "binance";
+      const head = `<div class="vx-pad-h vx-payhead"><p class="md-display-small vx-tab-num">${money(t.total)}</p>
+      <p class="md-body-medium vx-muted vx-tab-num">${binance ? `${num(t.total)} USDT` : bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })} · ${plural(compra.pedidos.length, "pedido", "pedidos")}</p></div>`;
+      const body = binance ? `${head}<div class="vx-pad-h"><div class="vx-qr" aria-hidden="true">${icon("map", 56)}</div>
+        <p class="md-body-large">Abre Binance, entra a Binance Pay y paga <b class="vx-tab-num">${num(t.total)} USDT</b>.</p>
+        <p class="md-body-medium vx-muted vx-tab-num">Intento #${compra.pasarela.intento} en Binance Pay</p></div>` : `${head}<div class="vx-pad-h"><div class="md-seg" role="tablist" aria-label="Pasos de la pasarela"><button type="button" role="tab" class="md-seg-item md-seg-item--on md-sl md-label-large" data-p="1" aria-selected="true">Paso 1 · Datos</button><button type="button" role="tab" class="md-seg-item md-sl md-label-large" data-p="2" aria-selected="false">Paso 2 · Clave</button></div>
+        <section id="p1"><dl class="vx-dl"><div class="vx-kv"><dt class="md-body-medium vx-muted">Banco</dt><dd class="md-body-large">Banesco · Personal</dd></div><div class="vx-kv"><dt class="md-body-medium vx-muted">Teléfono</dt><dd class="md-body-large vx-tab-num">0414 ···1234</dd></div></dl>${btn("Continuar", { kind: "filled", block: true, attrs: 'data-p="2"' })}</section>
+        <section id="p2" hidden><p class="md-body-large">Tu banco envió una clave de 8 dígitos al <span class="vx-tab-num">0414 ···1234</span></p>${otpHtml("clave", 8, "381072", "Clave de 8 dígitos")}
+          <div class="vx-stack">${btn("Pagar " + money(t.total), { kind: "filled", block: true, id: "payGo" })}${btn("Reenviar la clave", { kind: "text", block: true, attrs: 'data-toast="Te enviamos otra clave por SMS"' })}</div></section>
+        <p class="md-body-small vx-muted vx-tab-num">Intento #${compra.pasarela.intento} en SPIDI · Pago procesado por SPIDI</p></div>`;
+      const el = h(`<div class="vx-page">${topbar(binance ? `Pagar con Binance Pay` : `Pagar ${money(t.total)}`)}<div class="vx-body">${body}</div>
+      ${binance ? `<footer class="vx-actionbar">${btn("Ya pagué en Binance", { kind: "filled", block: true, id: "payGo" })}</footer>` : ""}</div>`);
+      el.__binance = binance;
+      return el;
+    },
+    mount(el) {
+      const binance = el.__binance, goPay = el.querySelector("#payGo");
+      const step = (n) => {
+        if (binance) return;
+        $$("[data-p].md-seg-item", el).forEach((b) => {
+          const on = b.dataset.p === String(n);
+          b.classList.toggle("md-seg-item--on", on);
+          b.setAttribute("aria-selected", on);
+        });
+        el.querySelector("#p1").hidden = n !== 1;
+        el.querySelector("#p2").hidden = n !== 2;
+        if (n === 2) ctl.focusFirstEmpty();
+      };
+      let ctl = { focusFirstEmpty() {
+      }, value: () => "12345678" };
+      if (!binance) {
+        ctl = wireOtp(el, "clave", (v) => {
+          goPay.disabled = v.length < 8;
+        });
+        el.addEventListener("click", (e) => {
+          const b = e.target.closest("[data-p]");
+          if (b) step(Number(b.dataset.p));
+        });
+      }
+      goPay.addEventListener("click", () => {
+        goPay.classList.add("md-btn--busy");
+        goPay.disabled = true;
+        goPay.setAttribute("aria-busy", "true");
+        setTimeout(() => go("M3.11", { kind: "mode", params: { estado: state.flow.demoPago, metodo: binance ? "binance" : "debito" } }), 900);
+      });
+    }
+  });
+  register("M3.11", {
+    render(ctx) {
+      const estado = ctx.params.estado || "aprobado", metodo = ctx.params.metodo || "debito", t = compraPasarela();
+      const row = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
+      const metTxt = { debito: "Débito · 0414 ···1234", binance: "Binance Pay · USDT", transferencia: "Transferencia bancaria" }[metodo];
+      const ico = {
+        aprobado: `<svg class="vx-ring vx-resico vx-resico--ok" viewBox="0 0 72 72" width="72" height="72" aria-hidden="true"><circle cx="36" cy="36" r="32" fill="none" stroke="currentColor" stroke-width="4"/><path class="vx-check" pathLength="1" d="M22 37l10 10 18-20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        rechazado: `<span class="vx-resico vx-resico--bad" id="resIco">${icon("error", 56)}</span>`,
+        pendiente: `<span class="vx-resico vx-resico--wait">${icon("clock", 56)}</span>`,
+        revision: `<span class="vx-resico vx-resico--wait">${icon("clock", 56)}</span>`
+      }[estado];
+      const title = { aprobado: "Pago aprobado", rechazado: "Pago rechazado", pendiente: "Pago pendiente", revision: "Transferencia reportada" }[estado];
+      const pedidos = `<h2 class="md-title-medium">Pedidos</h2><ul class="vx-list" role="list">${compra.pedidos.map((p) => `<li class="vx-sumrow"><span class="md-body-large">${p.id}<br><span class="md-body-medium vx-muted">${esc(p.tienda)}</span></span></li>`).join("")}</ul>`;
+      const acts = {
+        aprobado: `${btn("Ver mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${btn("Seguir comprando", { kind: "outlined", block: true, go: "M2.01", kindNav: "swap" })}<div class="vx-twin">${btn("Descargar comprobante", { kind: "text", attrs: 'data-toast="Comprobante guardado en tu teléfono"' })}${btn("Compartir", { kind: "text", attrs: 'data-toast="Enlace al comprobante copiado"' })}</div>`,
+        rechazado: `${btn("Reintentar el pago", { kind: "filled", block: true, go: "M3.09", kindNav: "mode" })}${btn("Cambiar forma de pago", { kind: "outlined", block: true, go: "M3.09", kindNav: "mode" })}${btn("Ver mis pedidos", { kind: "text", block: true, go: "M6.03", kindNav: "swap" })}`,
+        pendiente: `${btn("Ver mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${btn("Ir al inicio", { kind: "text", block: true, go: "M2.01", kindNav: "swap" })}`,
+        revision: `${btn("Ver mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${btn("Ir al inicio", { kind: "text", block: true, go: "M2.01", kindNav: "swap" })}`
+      }[estado];
+      const el = h(`<div class="vx-page"><div class="vx-body vx-result"><div class="vx-resbox">${ico}<h1 class="md-headline-small" tabindex="-1">${title}</h1>
+      ${estado === "rechazado" ? `<p class="md-body-large vx-reason">${icon("error", 18)} Tu banco rechazó el pago: «Fondos insuficientes»</p>` : ""}
+      ${estado === "pendiente" ? `<div class="md-progress md-progress--indet vx-resprog" role="progressbar" aria-label="Esperando a tu banco" style="--_pct:30%"><span class="md-progress-track"></span><span class="md-progress-active"></span></div><p class="md-body-large">Estamos esperando la confirmación de tu banco. Te avisamos aquí.</p>` : ""}
+      ${estado === "revision" ? '<p class="md-body-large">Reportar no es pagar: la compra queda en revisión hasta que se confirme el dinero.</p>' : ""}</div>
+      <dl class="vx-dl vx-pad-h">${row("Importe", `${money(t.total)}<br><span class="md-body-small vx-muted">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</span>`)}${row("Método", metTxt)}${metodo !== "transferencia" ? row("Transacción", compra.pasarela.intento) : ""}</dl>
+      <div class="vx-pad-h">${pedidos}</div><div class="vx-pad vx-stack">${acts}</div></div></div>`);
+      return el;
+    },
+    mount(el, ctx) {
+      const estado = ctx.params.estado || "aprobado";
+      if (estado === "rechazado") {
+        state.flow.rechazado = true;
+        play(el.querySelector("#resIco"), "vx-shake");
+      }
+      if (estado === "aprobado") {
+        state.flow.rechazado = false;
+        if (!state.orders.some((o) => o.id === compra.pedidos[0].id)) {
+          state.orders.unshift(...compra.pedidos.map((p) => ({ ...p, estado: "Pagado", fecha: "16/10" })));
+          state.cart = [];
+          set({ orders: state.orders });
+        }
+      }
+      el.querySelector("h1").focus({ preventScroll: true });
+    }
+  });
+  register("M3.12", {
+    render() {
+      const sel = state.flow.transfPedido || compra.pedidos[0].id;
+      const copy = (txt) => iconBtn("copy", `Copiar ${txt}`, `data-copy="${esc(txt)}"`);
+      const dato = (k, v) => `<div class="vx-kv vx-kv--copy"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd>${copy(v)}</div>`;
+      const el = h(page(
+        topbar("Reportar una transferencia"),
+        `
+      <section class="vx-pad-h"><h2 class="md-title-medium">A quién se paga</h2>
+        <div class="vx-options" role="radiogroup" aria-label="Pedido a pagar">${compra.pedidos.map((p) => radioOpt({ name: "ped", value: p.id, checked: sel === p.id, title: esc(p.tienda), text: `<span class="vx-tab-num">Pedido ${p.id} · ${money(p.total)}</span>` })).join("")}</div>
+        <dl class="vx-dl" id="tDatos"></dl></section>
+      <section class="vx-pad-h"><h2 class="md-title-medium">Ya transferí</h2>
+        <form class="vx-form" novalidate onsubmit="return false">${field({ id: "tRef", label: "Número de referencia del banco", inputmode: "numeric" })}${field({ id: "tMonto", label: "Monto transferido (USD)", inputmode: "decimal" })}</form>
+        <div class="vx-options" role="radiogroup" aria-label="Tipo de transferencia">${radioOpt({ name: "tipo", value: "banco", checked: true, title: "Transferencia bancaria" })}${radioOpt({ name: "tipo", value: "movil", title: "Pago móvil" })}</div>
+        <p class="md-title-small">Foto del comprobante</p>
+        <div class="vx-stack">${btn(`${icon("upload", 20)}Subir foto`, { kind: "tonal", block: true, id: "tFoto" })}<p class="md-body-medium vx-muted" id="tFotoOk" role="status"></p></div>
+        <p class="md-body-medium vx-muted">Reportar no es pagar: la compra queda en revisión hasta que se confirme el dinero.</p></section>`,
+        btn("Reportar la transferencia", { kind: "filled", block: true, id: "tGo" })
+      ));
+      wireControls(el);
+      const paint = () => {
+        const p = compra.pedidos.find((x) => x.id === el.querySelector("input[name=ped]:checked").value);
+        el.querySelector("#tDatos").innerHTML = `${dato("Banco", "Banco de Venezuela")}${dato("Cuenta", "0102 0123 4500 0123 4567")}${dato("Titular", "Frío Total Servicios C.A.")}${dato("Documento", "J-41234567-8")}
+        ${dato("Monto", money(p.total))}<p class="md-body-small vx-muted vx-tab-num vx-pad-h0">${bsRef(p.total, compra.pasarela.tasaDia, { decimals: 0 }).replace(" · tasa del " + compra.pasarela.tasaDia, "")}</p>${dato("Referencia", p.id.replace("#", ""))}`;
+      };
+      el.addEventListener("change", (e) => {
+        if (e.target.name === "ped") {
+          state.flow.transfPedido = e.target.value;
+          paint();
+        }
+      });
+      el.addEventListener("click", async (e) => {
+        const c = e.target.closest("[data-copy]");
+        if (!c) return;
+        try {
+          await navigator.clipboard.writeText(c.dataset.copy);
+          toast("Copiado");
+        } catch {
+          toast("Selecciona el dato para copiarlo");
+        }
+      });
+      let foto = false;
+      el.querySelector("#tFoto").addEventListener("click", () => {
+        foto = true;
+        el.querySelector("#tFotoOk").textContent = "comprobante.jpg · listo para enviar";
+      });
+      el.querySelector("#tGo").addEventListener("click", () => {
+        fieldError(el, "tRef", !el.querySelector("#tRef").value.trim() ? "Escribe la referencia" : "");
+        fieldError(el, "tMonto", !el.querySelector("#tMonto").value.trim() ? "Escribe el monto" : "");
+        if (!el.querySelector("#tRef").value.trim() || !el.querySelector("#tMonto").value.trim()) return;
+        if (!foto) {
+          toast("Añade la foto del comprobante");
+          return;
+        }
+        go("M3.11", { kind: "mode", params: { estado: "revision", metodo: "transferencia" } });
+      });
+      paint();
+      return el;
     }
   });
 
@@ -968,6 +2482,10 @@
     seg($("#segModo"), Object.entries(MODE_NAME).map(([k, v]) => [k, v === "Empresa de servicio" ? "Empresa" : v]), state.mode, (m) => {
       set({ mode: m });
       goHome(m, "mode");
+    });
+    seg($("#segPago"), [["aprobado", "Aprobado"], ["rechazado", "Rechazado"], ["pendiente", "Pendiente"]], state.flow.demoPago, (v) => {
+      state.flow.demoPago = v;
+      set({ flow: state.flow });
     });
     seg($("#segTema"), [["light", "Claro"], ["dark", "Oscuro"]], root.getAttribute("data-theme"), setTheme);
   }
@@ -1015,5 +2533,6 @@
   paintSegs();
   paintIndex();
   fit();
+  wireAdd();
   start();
 })();

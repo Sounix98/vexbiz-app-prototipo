@@ -4,8 +4,12 @@ export const reduce = () =>
   matchMedia('(prefers-reduced-motion: reduce)').matches ||
   document.documentElement.hasAttribute('data-reduce-motion');
 
-const done = (el) =>
-  Promise.all(el.getAnimations({ subtree: false }).map((a) => a.finished)).catch(() => {});
+// Espera a que terminen las animaciones del elemento, con un tope: en una pestaña oculta el navegador no las
+// ejecuta y la navegación se quedaría esperando para siempre.
+const done = (el) => Promise.race([
+  Promise.all(el.getAnimations({ subtree: false }).map((a) => a.finished)).catch(() => {}),
+  new Promise((r) => setTimeout(r, 700)),
+]);
 
 // kind: 'push' | 'back' | 'swap' | 'mode' | 'none'
 export async function enterScreen(el, kind) {

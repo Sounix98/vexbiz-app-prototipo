@@ -6,6 +6,7 @@ import { defs } from './screens/registry.js';
 import { state, set, subscribe, reset, loadPrefs, savePrefs } from './store.js';
 import { $, $$ } from './ui.js';
 import { esc } from './format.js';
+import { wireAdd } from './market.js';
 
 const root = document.documentElement;
 const prefs = loadPrefs();
@@ -20,6 +21,7 @@ function seg(host, items, current, onPick) {
 }
 function paintSegs() {
   seg($('#segModo'), Object.entries(MODE_NAME).map(([k, v]) => [k, v === 'Empresa de servicio' ? 'Empresa' : v]), state.mode, (m) => { set({ mode: m }); goHome(m, 'mode'); });
+  seg($('#segPago'), [['aprobado', 'Aprobado'], ['rechazado', 'Rechazado'], ['pendiente', 'Pendiente']], state.flow.demoPago, (v) => { state.flow.demoPago = v; set({ flow: state.flow }); });
   seg($('#segTema'), [['light', 'Claro'], ['dark', 'Oscuro']], root.getAttribute('data-theme'), setTheme);
 }
 
@@ -64,4 +66,5 @@ window.addEventListener('hashchange', () => setTimeout(paintIndex, 400));
 document.addEventListener('click', (e) => { if (e.target.closest('#phone,#index')) setTimeout(paintIndex, 450); });
 addEventListener('resize', fit);
 paintSegs(); paintIndex(); fit();
+wireAdd();
 start();

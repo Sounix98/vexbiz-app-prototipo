@@ -1,5 +1,5 @@
 // Estado en memoria del prototipo. localStorage solo guarda preferencias del panel (tema, reducir movimiento, modo).
-import { carritoInicial, producto, tienda } from './data.js';
+import { carritoInicial, producto, precioDe, tiendaDe } from './data.js';
 import { round2 } from './format.js';
 
 const PREF_KEY = 'vx-proto-prefs';
@@ -11,7 +11,7 @@ const fresh = () => ({
   sesion: false,            // sesión de demo iniciada
   cart: carritoInicial.map((l) => ({ ...l })),
   orders: [],               // pedidos creados en la demo
-  flow: {},                 // paso actual de los flujos (checkout, pago…)
+  flow: { demoPago: 'aprobado', direccion: 'casa', metodo: 'debito', banco: 'banesco', retiro: {}, filtros: { orden: 'relevantes', marcas: [], nuevo: false, soloDisp: false, min: '', max: '' } }, // paso actual de los flujos
   sonidoAvisos: true,
 });
 
@@ -29,22 +29,31 @@ export function reset() {
 }
 
 // ── Carrito ─────────────────────────────────────────────────────────────────
+// Una línea = { id, qty, oferta? }. `oferta` es la tienda alternativa elegida en M2.10.
+export const lineKey = (l) => l.id + (l.oferta ? '@' + l.oferta : '');
 export const cartCount = () => state.cart.length;
 export const cartUnits = () => state.cart.reduce((n, l) => n + l.qty, 0);
-export const cartLines = () => state.cart.map((l) => ({ ...l, p: producto(l.id), t: tienda(producto(l.id).tienda) }));
-export const cartSubtotal = () => round2(state.cart.reduce((s, l) => s + producto(l.id).precio * l.qty, 0));
+export const cartLines = () => state.cart.map((l) => ({ ...l, key: lineKey(l), p: producto(l.id), t: tiendaDe(l.id, l.oferta), precio: precioDe(l.id, l.oferta) }));
+export const cartSubtotal = () => round2(state.cart.reduce((s, l) => s + precioDe(l.id, l.oferta) * l.qty, 0));
 
-export function addToCart(id, qty = 1) {
-  const line = state.cart.find((l) => l.id === id);
-  if (line) { line.qty += qty; delete line.cambioPrecio; } else state.cart.push({ id, qty });
+export function addToCart(id, qty = 1, oferta) {
+  const line = state.cart.find((l) => l.id === id && l.oferta === oferta);
+  if (line) { line.qty += qty; delete line.cambioPrecio; } else state.cart.push(oferta ? { id, qty, oferta } : { id, qty });
   emit();
-  return state.cart.find((l) => l.id === id);
 }
-export function setQty(id, qty) {
-  const line = state.cart.find((l) => l.id === id);
+export function setQty(key, qty) {
+  const line = state.cart.find((l) => lineKey(l) === key);
   if (!line) return;
-  if (qty <= 0) state.cart = state.cart.filter((l) => l.id !== id); else line.qty = qty;
+  if (qty <= 0) state.cart = state.cart.filter((l) => lineKey(l) !== key); else line.qty = qty;
   emit();
+}
+/** Quita una línea y devuelve una función que la restaura en su sitio (para «Deshacer»). */
+export function removeLine(key) {
+  const i = state.cart.findIndex((l) => lineKey(l) === key);
+  if (i < 0) return () => {};
+  const [line] = state.cart.splice(i, 1);
+  emit();
+  return () => { state.cart.splice(Math.min(i, state.cart.length), 0, line); emit(); };
 }
 
 // ── Preferencias del panel ──────────────────────────────────────────────────
