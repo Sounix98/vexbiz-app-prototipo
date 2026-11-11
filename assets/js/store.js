@@ -2,6 +2,7 @@
 import { carritoInicial, producto, precioDe, tiendaDe, direcciones, pagosIni, sesionesIni, reclamosIni, devolucionesIni, avisosCuenta } from './data.js';
 import { round2 } from './format.js';
 import { PUNTOS_INI, historialPuntos, avanceIni, preguntasIni } from './data2.js';
+import { pedidosTiendaIni, pedidosMasIni, pendientesIni, productosTiendaIni, carritosIni, apartadasIni, reclamosTiendaIni, cuponesIni, reglasEnvioIni, docsTiendaIni, fichasIni, ajustesIni, tiendaPublica, cuentasBanco } from './data4.js';
 import { solicitudesIni, trabajoIni, serviciosIni, horarioIni, oficiosIni, docsIni, perfilTecnico } from './data3.js';
 
 const PREF_KEY = 'vx-proto-prefs';
@@ -30,6 +31,15 @@ const fresh = () => ({
   academia: { puntos: PUNTOS_INI, historial: historialPuntos.map((h) => ({ ...h })), avance: JSON.parse(JSON.stringify(avanceIni)), inscritos: ['inv', 'gas', 'split'],
     eventos: { solar: false, tableros: true }, offline: {}, preguntasHoy: 2 },
   preguntas: preguntasIni.map((q) => ({ ...q, respuestas: q.respuestas.map((r) => ({ ...r })) })),
+  // Modo Tienda (Fase 5)
+  shop: {
+    pedidos: pedidosTiendaIni.map((o) => ({ ...o, lineas: o.lineas.map((l) => [...l]) })), mas: pedidosMasIni.map((o) => ({ ...o, lineas: o.lineas.map((l) => [...l]) })), masCargado: false,
+    pendientes: pendientesIni.map((p) => ({ ...p, venceAt: Date.now() + p.venceEn })), resueltas: 0,
+    productos: productosTiendaIni.map((p) => ({ ...p, mov: p.mov.map((m) => [...m]) })), carritos: carritosIni.map((c) => ({ ...c })), apartadas: apartadasIni.map((a) => ({ ...a })), confirmados: {},
+    reclamos: reclamosTiendaIni.map((r) => ({ ...r })), cupones: cuponesIni.map((c) => ({ ...c })), reglas: reglasEnvioIni.map((r) => ({ ...r })), docs: docsTiendaIni.map((d) => ({ ...d })), docsEnviados: false,
+    fichas: fichasIni.map((f) => ({ ...f, lista: f.lista.map((x) => ({ ...x })) })), ajustes: JSON.parse(JSON.stringify(ajustesIni)), publica: { ...tiendaPublica },
+    cobroInmediato: true, cuentas: cuentasBanco.map((c) => ({ ...c })), despacho: {},
+  },
   // Modo Técnico (Fase 4)
   tec: {
     offline: true, cambios: 2, enviando: false,   // sin señal: los cambios quedan «guardados en el teléfono» y se envían solos al volver

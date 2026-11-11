@@ -1,6 +1,6 @@
 # INFORME · Prototipo de la app VEXBIZ
 
-Última actualización: 11/11/2026 · **Fase 4 terminada** (Modo Técnico, M8). Las fases 5 y 6 siguen pendientes.
+Última actualización: 11/11/2026 · **Fase 5 terminada** (Modo Tienda, M7). Solo falta la Fase 6 (Modo Empresa y pulido).
 
 ## Cómo abrirlo
 
@@ -20,12 +20,12 @@
 | **M4 Servicios** | 9 | **9** | **Fase 3** |
 | **M5 Academia** | 10 | **10** | **Fase 3** (incluye la pantalla de flujo M5.09) |
 | **M6 Cuenta** | 27 | **27** | **Fase 2** (incluye la hoja «Acciones de la dirección» y las pantallas de flujo M6.14 y M6.16) |
-| M7 Modo Tienda | 23 | 0 | Fase 5 |
+| **M7 Modo Tienda** | 23 | **23** | **Fase 5** (incluye «Más», las pantallas de flujo M7.07 y M7.21 y la hoja «Detalle del período») |
 | **M8 Modo Técnico** | 13 | **13** | **Fase 4** (incluye las dos variantes de Membresía) |
 | M9 Modo Empresa | 8 | 0 | Fase 6 |
-| Superposiciones | 9 | 8 | Falta «Detalle del período» (Fase 5) |
+| Superposiciones | 9 | 9 | Completas |
 
-El Índice muestra **106 de 138 entradas «hechas»**: cuenta por separado las hojas duplicadas de Figma (por ejemplo M3.07 y «Resumen de la compra»). Las pendientes abren una pantalla con su título y la fase en que se construye.
+El Índice muestra **130 de 138 entradas «hechas»**: cuenta por separado las hojas duplicadas de Figma (por ejemplo M3.07 y «Resumen de la compra»). Las pendientes abren una pantalla con su título y la fase en que se construye.
 
 ## Recorridos de la Fase 2 (con clics reales)
 
@@ -37,6 +37,66 @@ El Índice muestra **106 de 138 entradas «hechas»**: cuenta por separado las h
 - **Cómo se ve VexBiz, de verdad:** el tamaño del texto (100 a 150 %) escala todo el contenido de la app, «Más contraste» refuerza bordes y textos secundarios, y «Menos movimiento» es el mismo interruptor del panel. Se guardan en este teléfono y, si no se toca nada, siguen los ajustes del sistema.
 - **Ayuda:** Ayuda e información → documentos (Términos, Privacidad, Aviso legal, Trabaja como técnico…) → Contacto; WhatsApp y redes avisan «Abre el sitio de VexBiz».
 - **Avisos:** «Marcar como leídos» apaga el punto de la pestaña Cuenta; cada aviso lleva a su pantalla.
+
+## Recorridos de la Fase 5 (con clics reales)
+
+- **Contestar ventas (Patrón 15):** Inicio («3 clientes quieren comprarte» con cuenta regresiva real, barra lineal y paso a error con ícono y texto bajo 60 s) → **Confirmación pendiente** (cola de 3, «1 de 3»): con «Te quedan 1 y te piden 2» el botón de confirmar las 2 unidades queda apagado y se ofrece «Ofrecer 1 unidad» (la misma propuesta que ve el comprador en la sala de espera, M3.08); al vencer el tiempo la venta «pasa a otra tienda».
+- **Despachar:** Por despachar (5 pedidos, calculados) → **Pedido: preparar** (casillas por artículo, «Te deja $ 42,24» = total − comisión del 12 %) → **Despachar y facturar** (factura JPG, PNG, WebP o PDF hasta 10 MB; el botón se enciende solo cuando están el archivo, número, fecha, guía y el total facturado coincide con el del pedido; «Falta para despachar» se calcula) → Pedidos con el pedido «Despachado» y el contador de Inicio en 4. «Cargando más pedidos…» con esqueleto y carga al llegar al final de la lista.
+- **Inventario:** Productos (filtros, búsqueda, existencias calculadas) → **Poner a la venta** (pantalla de flujo) → **Oferta** (publicar o pausar, estado del artículo, precio; «Anotar un ajuste» suma o resta existencias, no deja bajar de cero y el movimiento queda anotado sin poder editarse).
+- **Dinero:** Ventas (comisión media y evolución mensual calculadas) → Liquidaciones → hoja **Detalle del período** (comisión del 12 % calculada) → Cuentas (cobro inmediato, abonos, agregar y quitar cuentas con validación de 20 dígitos y «Hacer principal»).
+- **Más:** Reclamos y devoluciones (aceptar o rechazar el reembolso), Reseñas, Carritos y apartadas (confirmar precio y existencias; «no te alcanzan las existencias» se calcula contra el inventario), Cupones (crear, pausar, activar), Envíos (reglas con reparto comprador / tienda), Documentos (subir y enviar a verificación), Ajustes (datos de contacto y figuras), Cómo se ve mi tienda (las mejoras salen de lo que falta de verdad) e Importadora (fichas y compatibilidades, en pantalla de flujo).
+
+## QA de la Fase 5 (412 × 892, navegador del IDE, http)
+
+| Comprobación | Resultado |
+|---|---|
+| Consola | 0 errores y 0 avisos en las 24 rutas de la fase (23 pantallas y la hoja) y en los recorridos |
+| Desborde horizontal | 0 en 24 rutas |
+| Texto menor a 13 px | Ninguno |
+| Objetivos táctiles | Todo ≥ 44 px |
+| Un `<h1>` por pantalla | Cumplido (las hojas y pantallas de flujo llevan `<h2>` como título del diálogo) |
+| Contraste calculado con los tokens | Sin pares nuevos (0 fallos en los pares en uso) |
+| Datos calculados | «Te quedan» por pedido, artículos, «Por despachar», existencias a partir de los movimientos, comisión media y su porcentaje, neto de la liquidación, plazas, mejoras de la tienda, documentos que faltan, reparto del envío |
+| Regresión | 15 rutas de las fases 0 a 4 sin errores, desbordes ni objetivos pequeños |
+| Capturas | `capturas/fase-5/` (6 en claro, 1 en oscuro) |
+
+**No verificado todavía:** rendimiento con CPU reducida 4×; lector de pantalla; `index.local.html` por `file://`; tema oscuro en todas las pantallas (Fase 6); la subida real de un archivo desde el selector del sistema (se probó asignando archivos al campo).
+
+## Errores encontrados y corregidos durante la Fase 5
+
+- En Inicio las secciones debajo de la primera tarjeta no se veían: tenían la clase de «revelar al hacer scroll» pero faltaba llamar a `reveal()`. Se vio en la captura, no en las pruebas de consola; corregido.
+- El tamaño de un archivo pequeño se mostraba «0,0 MB»; ahora muestra KB.
+- La promo «Envío gratis» mostraba un reparto de $ 0,00 / $ 0,00; ahora dice que la tienda paga el envío completo.
+
+## Conexiones añadidas respecto al Figma, Fase 5 (para confirmar)
+
+- M7.01: «Contestar» → M7.02; «Ver todos» → M7.03 (fundido 200); filas de pedidos → M7.04; tarjetas de ventas → M7.11; «Carritos abiertos» y «Unidades apartadas» → M7.09; «Cómo se ve mi tienda» → M7.19.
+- M7.04 → M7.05 → M7.03 (fundido 350, como en Figma). M7.06 → M7.08 por producto y «Poner a la venta» → M7.07 (hoja).
+- M7.11 «Ver liquidaciones» → M7.12; M7.12 → hoja de detalle; los tres segmentos de Dinero se mueven entre M7.11, M7.12 y M7.13 (Huecos, punto 1).
+- «Más» → M7.10, M7.16, M7.09, M7.14, M7.15, M7.19, M7.17, M7.18, M7.20 (Figma) y «Cambiar de modo» abre la hoja.
+- M7.09 «Reponer existencias» → M7.08; M7.19 «Configurar envíos» → M7.15 y «Actualizar existencias» → M7.06; M7.20 → M7.21 (ficha existente y «Nueva ficha», ambas como pantalla de flujo).
+
+## Textos y datos inventados, Fase 5
+
+- **Etiquetas de botón y avisos:** «Contestar», «Confirmar la venta», «Confirmar las N unidades», «Ofrecer N unidades», «No puedo venderla»; «Marcar todo empacado», «Escribir al comprador», «Imprimir etiqueta», «Subir factura», «Cambiar archivo», «Quitar archivo»; «Poner a la venta», «Anotar ajuste», «Guardar oferta»; «Ver liquidaciones», «Añadir cuenta bancaria», «Hacer principal»; «Aceptar reembolso», «Rechazar»; «Crear cupón», «Pausar», «Activar»; «Nueva regla»; «Enviar a verificación»; «Guardar teléfono»; «Nueva ficha», «Guardar ficha», «Añadir compatibilidad»; los segmentos «Por despachar / Todos», «Carritos / Apartadas», «Por resolver / Resueltos» y los filtros de Productos.
+- **Campos:** Número de guía, Número de factura, Fecha de la factura, Total facturado, Precio, Existencias, Tu código, Unidades del ajuste, Código y descuento del cupón, Banco y número de cuenta, Nombre, correo y teléfono de la tienda, Nombre, marca y referencia de la ficha, Marca y modelo del equipo; los motivos de ajuste «Compra / Dañada / Otro».
+- **Datos:** líneas, teléfonos, direcciones y horas de los pedidos que Figma no detalla (los totales sí cuadran con Figma), dos pedidos más que cargan al final de la lista, las ventas pendientes 2 y 3 de la cola, las unidades apartadas, la regla «Envío regional» que crea «Nueva regla», tres fichas del catálogo libres para «Poner a la venta», las descripciones de las fichas de la importadora, y el mínimo de transferencia de $ 50,00 (Figma solo dice «No llega al mínimo»).
+
+## Datos del Figma que se contradicen, Fase 5
+
+1. **Total neto de la liquidación 01/10 a 15/10:** Figma dice $ 3.120,40, pero con sus propias líneas (3.546,00 − 425,52 − 38,28 + 38,20 − 64,00) el total es **$ 3.056,40**; $ 3.120,40 sale si no se resta el reembolso de $ 64,00. Se calcula (3.056,40) en la lista y en la hoja.
+2. **Cuenta regresiva de la venta pendiente:** Inicio dice «04:32» y Confirmación pendiente dice «01:48» para la misma venta. Las dos pantallas comparten el mismo reloj (arranca en 04:32).
+3. **Contadores de «Más» y de M7.19:** Figma dice «3 activos» (cupones), «2 pendientes» (reclamos), «Falta 1» (documentos) y «4 mejoras», pero las listas traen 1 cupón activo, 1 reclamo solicitado, 2 documentos por resolver y 3 sugerencias. Se calculan desde las listas (1, 1, 2 y 2 al principio).
+4. **«46 productos disponibles (3 agotados)»:** la lista de Productos tiene 1 agotado; se calcula 1 y se mantiene «46» como total de catálogo.
+5. **Sugerencia «Sin regla de envío»:** Figma la muestra aunque hay 2 reglas de envío activas; aparece cuando no queda ninguna activa (pausa las dos para verla).
+6. **Reseñas:** 4,8 es el promedio de la tienda; con las cifras de la distribución (31, 3, 1, 2, 0) el promedio sería 4,7. Se mantiene 4,8 como dato.
+7. **Carritos abiertos «7» y unidades apartadas «2»:** son totales de catálogo; la lista de carritos muestra 3.
+
+## Diferencias respecto al Figma, Fase 5
+
+- «Cargando más pedidos…» carga 2 pedidos de la demo y luego dice «No hay más».
+- Las fotos de producto y de la factura son placeholders; la factura subida no se muestra, solo su nombre y tamaño.
+- El botón «Despachar» queda apagado hasta cumplir lo que falta; Figma muestra ese estado tal cual.
 
 ## Recorridos de la Fase 4 (con clics reales)
 
@@ -233,3 +293,6 @@ El Índice muestra **106 de 138 entradas «hechas»**: cuenta por separado las h
 16. ¿«Aceptar» una solicitud debe abrir el trabajo del mismo cliente (cambia M8.03) o se mantiene el de Pedro Silva como en Figma?
 17. ¿«Trabajo cerrado» necesita la confirmación grande (anillo y palomita) o basta el aviso breve?
 18. ¿El archivo de un documento debe poder verse después de subirlo?
+19. ¿El neto de la liquidación se calcula restando el reembolso ($ 3.056,40) o se mantiene $ 3.120,40?
+20. ¿Qué reloj manda para la venta pendiente: 04:32 (Inicio) o 01:48 (Confirmación pendiente)?
+21. ¿Los contadores de «Más» se calculan desde las listas (como ahora) o se fijan a los de Figma?
