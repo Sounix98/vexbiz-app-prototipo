@@ -1,0 +1,172 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   VEXBIZ · Sistema de movimiento v1
+   Se suma a tokens.css (que ya trae --vx-dur-fast / --vx-dur / --vx-dur-slow y
+   --vx-ease-standard / enter / exit / bounce). No renombra nada de eso.
+
+   Reglas:
+   1. Solo se animan transform y opacity. Nunca width, height, top, left.
+   2. Movimiento y opacidad van en animaciones separadas: el movimiento usa la
+      curva enfática (arranca casi vertical) y la opacidad usa `ease`. Con la
+      misma curva las piezas "saltan" en vez de aparecer y se ve un parpadeo.
+   3. Todo elemento que entra parte oculto (animation-fill-mode: both). Así no
+      hay un primer cuadro con el contenido ya visible.
+   4. Una cosa se mueve a la vez. Máximo 400 ms en interfaz. Más largo solo en
+      el arranque y en las confirmaciones (pago aprobado, trabajo cerrado).
+   5. Con «reducir movimiento» no hay desplazamientos: queda un fundido de
+      200 ms. Se logra poniendo --vx-shift en 0, no apagando las duraciones.
+   6. El ámbar nunca anima un estado. Un estado se anuncia con texto + ícono.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Duraciones: son las que ya usa el prototipo de Figma (150 / 200 / 350 / 400). */
+  --vx-dur-press: 100ms;   /* feedback de pulsación                              */
+  --vx-dur-state: 150ms;   /* hover, foco, switch, radio, chip, fundido overlay  */
+  --vx-dur-fade: 200ms;    /* fundido de pestañas y de opacidad que acompaña     */
+  --vx-dur-nav: 350ms;     /* pantalla que entra o sale (push)                   */
+  --vx-dur-sheet: 400ms;   /* hoja inferior y pantallas de flujo (checkout)      */
+  --vx-dur-exit: 250ms;    /* toda salida es más corta que su entrada            */
+
+  /* Curvas */
+  --vx-ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);   /* entra con movimiento */
+  --vx-ease-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);   /* sale con movimiento  */
+  --vx-ease-fade: ease;                                    /* TODA opacidad        */
+
+  /* Distancias */
+  --vx-shift: 24px;        /* desplazamiento lateral de una pantalla que entra   */
+  --vx-rise: 12px;         /* desplazamiento vertical de tarjetas y listas       */
+  --vx-stagger: 40ms;      /* retardo entre elementos de una lista (máx. 6)      */
+}
+
+/* «Reducir movimiento»: lo pide el sistema operativo o el interruptor del panel
+   (atributo data-reduce-motion en <html>). Sin desplazamientos: queda el fundido.
+   La hoja inferior sí sigue subiendo, porque explica de dónde viene el contenido,
+   pero en 200 ms. */
+@media (prefers-reduced-motion: reduce) {
+  :root { --vx-shift: 0px; --vx-rise: 0px; --vx-stagger: 0ms; --vx-dur-sheet: 200ms; }
+}
+:root[data-reduce-motion] { --vx-shift: 0px; --vx-rise: 0px; --vx-stagger: 0ms; --vx-dur-sheet: 200ms; }
+
+/* ── Fotogramas base ─────────────────────────────────────────────────────── */
+@keyframes vx-fade-in   { from { opacity: 0 } to { opacity: 1 } }
+@keyframes vx-fade-out  { from { opacity: 1 } to { opacity: 0 } }
+@keyframes vx-move-fwd  { from { transform: translateX(var(--vx-shift)) } to { transform: none } }
+@keyframes vx-move-back { from { transform: translateX(calc(var(--vx-shift) * -0.6)) } to { transform: none } }
+@keyframes vx-rise-in   { from { transform: translateY(var(--vx-rise)) } to { transform: none } }
+@keyframes vx-sheet-in  { from { transform: translateY(100%) } to { transform: none } }
+@keyframes vx-sheet-out { from { transform: none } to { transform: translateY(100%) } }
+@keyframes vx-pop       { 0% { transform: scale(1) } 40% { transform: scale(1.18) } 100% { transform: scale(1) } }
+@keyframes vx-tick      { from { transform: translateY(calc(var(--vx-rise) * -0.4)); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes vx-shake     { 0%, 100% { transform: none } 20%, 60% { transform: translateX(-4px) } 40%, 80% { transform: translateX(4px) } }
+@keyframes vx-shimmer   { from { background-position: 150% 0 } to { background-position: -50% 0 } }
+@keyframes vx-flash     { from { background-color: var(--md-sys-color-secondary-container) } to { background-color: transparent } }
+@keyframes vx-draw      { to { stroke-dashoffset: 0 } }
+@keyframes vx-live      { 0%, 100% { opacity: 1 } 50% { opacity: 0.45 } }
+@keyframes vx-count     { from { transform: scaleX(1) } to { transform: scaleX(0) } }
+
+/* ── 1 · Pantallas (router) ──────────────────────────────────────────────── */
+/* Adelante (PUSH_FROM_RIGHT 350 ms en Figma). Movimiento y fundido separados. */
+.screen.is-enter {
+  animation: vx-move-fwd var(--vx-dur-nav) var(--vx-ease-emphasized) both,
+             vx-fade-in  var(--vx-dur-fade) var(--vx-ease-fade) both;
+}
+/* Atrás: llega desde la izquierda, más corto y más suave. */
+.screen.is-back {
+  animation: vx-move-back var(--vx-dur-nav) var(--vx-ease-emphasized) both,
+             vx-fade-in   var(--vx-dur-fade) var(--vx-ease-fade) both;
+}
+/* Cambio de pestaña (DISSOLVE 200 ms en Figma): solo fundido. */
+.screen.is-swap { animation: vx-fade-in var(--vx-dur-fade) var(--vx-ease-fade) both; }
+/* Cambio de modo y entrada a la app tras el acceso (DISSOLVE 350 ms en Figma). */
+.screen.is-mode { animation: vx-fade-in var(--vx-dur-nav) var(--vx-ease-fade) both; }
+
+/* ── 2 · Hojas y superposiciones ─────────────────────────────────────────── */
+.vx-scrim {
+  position: fixed; inset: 0; z-index: var(--vx-z-sheet, 80);
+  background: color-mix(in srgb, var(--md-sys-color-scrim) 32%, transparent);   /* velo M3 al 32 % */
+  opacity: 0; transition: opacity var(--vx-dur-fade) var(--vx-ease-fade);
+}
+.vx-scrim.is-open { opacity: 1; }
+
+.vx-sheet { transform: translateY(100%); }
+.vx-sheet.is-open {
+  animation: vx-sheet-in var(--vx-dur-sheet) var(--vx-ease-emphasized) both;
+  transform: none;
+}
+.vx-sheet.is-closing {
+  animation: vx-sheet-out var(--vx-dur-exit) var(--vx-ease-accelerate) both;
+}
+
+/* Diálogo / aviso en vivo / consentimiento (DISSOLVE 150 ms en Figma). */
+.vx-overlay.is-open {
+  animation: vx-fade-in var(--vx-dur-state) var(--vx-ease-fade) both,
+             vx-rise-in var(--vx-dur-fade) var(--vx-ease-emphasized) both;
+}
+.vx-overlay.is-closing { animation: vx-fade-out var(--vx-dur-state) var(--vx-ease-fade) both; }
+
+/* ── 3 · Listas y tarjetas: entrada escalonada ───────────────────────────── */
+/* Cada hijo define --i (0, 1, 2…). Del séptimo en adelante entran juntos. */
+.vx-stagger > * {
+  animation: vx-rise-in var(--vx-dur-sheet) var(--vx-ease-emphasized) both,
+             vx-fade-in var(--vx-dur-fade) var(--vx-ease-fade) both;
+  animation-delay: calc(min(var(--i, 0), 6) * var(--vx-stagger));
+}
+/* Elementos que entran al hacer scroll: se marca .is-in con IntersectionObserver. */
+.vx-reveal:not(.is-in) { opacity: 0; transform: translateY(var(--vx-rise)); }
+.vx-reveal.is-in {
+  transition: opacity var(--vx-dur-fade) var(--vx-ease-fade),
+              transform var(--vx-dur-sheet) var(--vx-ease-emphasized);
+}
+
+/* ── 4 · Pulsación y estados de control ──────────────────────────────────── */
+.vx-press { transition: transform var(--vx-dur-press) var(--vx-ease-standard); }
+.vx-press:active { transform: scale(0.97); }
+
+/* Capa de estado M3: hover 8 %, foco 10 %, pulsado 10 %. */
+.vx-state { position: relative; isolation: isolate; }
+.vx-state::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1;
+  background: currentColor; opacity: 0; pointer-events: none;
+  transition: opacity var(--vx-dur-state) var(--vx-ease-fade);
+}
+@media (hover: hover) { .vx-state:hover::before { opacity: 0.08; } }
+.vx-state:focus-visible::before, .vx-state:active::before { opacity: 0.10; }
+
+/* Switch, radio, chip: la pieza se desliza en 150 ms. */
+.vx-thumb { transition: transform var(--vx-dur-state) var(--vx-ease-standard),
+                        background-color var(--vx-dur-state) var(--vx-ease-fade); }
+
+/* ── 5 · Carrito y confirmaciones ────────────────────────────────────────── */
+.vx-pop   { animation: vx-pop 300ms var(--vx-ease-bounce) both; }      /* ícono del carrito al añadir */
+.vx-tick  { animation: vx-tick var(--vx-dur-state) var(--vx-ease-emphasized) both; }  /* cifra que cambia */
+.vx-flash { animation: vx-flash 900ms var(--vx-ease-fade) both; }       /* línea cuyo precio cambió */
+.vx-shake { animation: vx-shake 280ms var(--vx-ease-standard) both; }   /* campo o pago rechazado */
+
+/* Palomita que se dibuja: <path class="vx-check" pathLength="1"> */
+.vx-check { stroke-dasharray: 1; stroke-dashoffset: 1;
+            animation: vx-draw 400ms var(--vx-ease-emphasized) 120ms both; }
+.vx-ring  { animation: vx-pop 500ms var(--vx-ease-bounce) both; }
+
+/* ── 6 · Carga y tiempo ──────────────────────────────────────────────────── */
+.vx-skel {
+  background: linear-gradient(100deg,
+    var(--md-sys-color-surface-container) 30%,
+    var(--md-sys-color-surface-container-high) 50%,
+    var(--md-sys-color-surface-container) 70%);
+  background-size: 200% 100%;
+  animation: vx-shimmer 1.4s linear infinite;
+}
+/* Cuenta regresiva: una barra que se vacía a velocidad constante. */
+.vx-countbar { transform-origin: left center; animation: vx-count var(--vx-count, 60s) linear both; }
+/* Punto «en vivo». Además del latido, siempre lleva la palabra «en vivo». */
+.vx-live { animation: vx-live 2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vx-skel, .vx-live { animation: none; }           /* sin ciclos infinitos */
+  .vx-shake, .vx-pop, .vx-ring { animation: none; } /* el mensaje de error ya está en texto */
+  .vx-check { animation-duration: 1ms; }
+  .vx-press:active { transform: none; }
+}
+:root[data-reduce-motion] .vx-skel, :root[data-reduce-motion] .vx-live,
+:root[data-reduce-motion] .vx-shake, :root[data-reduce-motion] .vx-pop,
+:root[data-reduce-motion] .vx-ring { animation: none; }
+:root[data-reduce-motion] .vx-check { animation-duration: 1ms; }
+:root[data-reduce-motion] .vx-press:active { transform: none; }

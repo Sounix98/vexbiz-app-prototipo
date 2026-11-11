@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es-VE" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>VEXBIZ · Prototipo de la app</title>
+  <meta name="description" content="Prototipo navegable de la app móvil del marketplace de VEXBIZ (Comprador, Técnico, Tienda y Empresa de servicio).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="ds/tokens.css">
+  <link rel="stylesheet" href="ds/m3.css">
+  <link rel="stylesheet" href="ds/motion.css">
+  <link rel="stylesheet" href="assets/css/prototipo.css">
+</head>
+<body>
+  <div class="stage">
+    <div class="fit" id="fit">
+      <div id="phone" role="application" aria-label="App VEXBIZ">
+        <main id="view"></main>
+        <div id="bar"></div>
+        <div id="scrim" class="vx-scrim" hidden></div>
+        <div id="sheet" class="md-sheet vx-sheet" role="dialog" aria-modal="true" hidden></div>
+        <div id="dialog" role="dialog" aria-modal="true" hidden></div>
+        <div id="toast" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <aside class="panel" id="panel" aria-label="Panel del prototipo">
+      <h1 class="md-title-large">Prototipo VEXBIZ · App</h1>
+      <p class="panel-meta">Fase 0 · base y transversales. Todo es demo, sin backend.</p>
+
+      <h2 class="md-label-large" id="lblModo">Modo</h2>
+      <div class="md-seg" role="group" aria-labelledby="lblModo" id="segModo"></div>
+
+      <h2 class="md-label-large" id="lblTema">Tema</h2>
+      <div class="md-seg" role="group" aria-labelledby="lblTema" id="segTema"></div>
+
+      <h2 class="md-label-large">Movimiento</h2>
+      <label class="md-switch panel-row"><span class="md-body-large">Reducir movimiento</span>
+        <input class="md-sr-only" type="checkbox" role="switch" id="swReduce">
+        <span class="md-switch-track" aria-hidden="true"><span class="md-switch-handle vx-thumb"></span></span></label>
+
+      <h2 class="md-label-large">Datos</h2>
+      <button type="button" class="md-btn md-btn--outlined md-btn--block md-sl" id="btnReset">Reiniciar datos de la demo</button>
+
+      <h2 class="md-label-large">Índice <span id="idxCount" class="panel-meta"></span></h2>
+      <div id="index"></div>
+    </aside>
+  </div>
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

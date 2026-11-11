@@ -1,0 +1,154 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Prototipo VEXBIZ · solo lo que el sistema de diseño no cubre:
+   marco del teléfono, panel del prototipo y piezas del marketplace.
+   Sin hex: todo sale de --md-sys-*, --vx-* (ds/tokens.css) y motion.css.
+   ═══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100vh; font-family: var(--font-body); font-size: 16px; line-height: 24px;
+  background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface);
+}
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--md-sys-color-secondary); outline-offset: 2px; }
+.vx-tab-num { font-variant-numeric: tabular-nums; }
+.vx-muted { color: var(--md-sys-color-on-surface-variant); }
+
+/* ── Escenario: teléfono + panel ─────────────────────────────────────────── */
+.stage { min-height: 100vh; display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 32px; padding: 16px; }
+.panel { max-width: 100%; }
+.fit { flex: none; width: calc(412px * var(--fit, 1)); height: calc(892px * var(--fit, 1)); }
+#phone {
+  position: relative; width: 412px; height: 892px; display: flex; flex-direction: column; overflow: hidden; isolation: isolate;
+  transform: scale(var(--fit, 1)); transform-origin: top left;
+  background: var(--md-sys-color-surface); border-radius: var(--md-sys-shape-corner-extra-large);
+  box-shadow: var(--md-sys-elevation-5), 0 0 0 1px var(--md-sys-color-outline-variant);
+}
+#view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.screen {
+  position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface);
+}
+.screen h1:focus, #sheet h2:focus, #dialog h2:focus { outline: none; }
+.vx-loaded { animation: vx-fade-in var(--vx-dur-fade) var(--vx-ease-fade) both; }
+#bar { flex: none; position: relative; z-index: 2; }
+
+/* Teléfono real: el marco desaparece y la app ocupa todo. */
+@media (max-width: 520px) {
+  .stage { padding: 0; display: block; }
+  .fit { width: 100%; height: 100dvh; }
+  #phone { width: 100%; height: 100dvh; transform: none; border-radius: 0; box-shadow: none; }
+  .panel { display: none; }
+}
+
+/* ── Capas: velo, hoja, diálogo, aviso (dentro del marco) ────────────────── */
+#phone .vx-scrim { position: absolute; z-index: var(--vx-z-sheet); }
+#sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: calc(var(--vx-z-sheet) + 1);
+  max-height: 92%; max-width: none; overflow-y: auto; padding-bottom: 24px;
+}
+#sheet.vx-sheet--full { top: 0; max-height: none; border-radius: 0; padding: 0; background: var(--md-sys-color-surface); }
+#sheet.vx-sheet--full .md-sheet-handle { display: none; }
+#dialog {
+  position: absolute; inset: 0; z-index: var(--vx-z-modal); overflow-y: auto;
+  background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface);
+}
+#toast { position: absolute; left: 16px; right: 16px; bottom: 96px; z-index: var(--vx-z-toast); display: flex; justify-content: center; pointer-events: none; }
+#toast .md-snack { pointer-events: auto; width: 100%; opacity: 0; }
+.vx-toast.is-open { animation: vx-toast-rise var(--vx-dur-fade) var(--vx-ease-emphasized) both, vx-fade-in var(--vx-dur-fade) var(--vx-ease-fade) both; opacity: 1; }
+.vx-toast.is-closing { animation: vx-fade-out var(--vx-dur-state) var(--vx-ease-fade) both; }
+@keyframes vx-toast-rise { from { transform: translateY(16px); } to { transform: none; } }
+
+.vx-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.vx-sheet-head .md-sheet-title { flex: 1; }
+.vx-sub { margin: 16px 8px 4px; color: var(--md-sys-color-on-surface-variant); }
+.vx-pad { padding: 0 16px 16px; }
+
+/* ── Listas y filas ──────────────────────────────────────────────────────── */
+.vx-list { list-style: none; margin: 0; padding: 0; }
+.vx-row { width: 100%; border: 0; background: transparent; text-align: left; cursor: pointer; border-radius: var(--md-sys-shape-corner-medium); }
+.vx-switch-row { width: 100%; padding: 8px; }
+.vx-thumb-ph { width: 64px; height: 64px; flex: none; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--md-sys-shape-corner-medium); background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface-variant); }
+.vx-added { display: flex; gap: 16px; align-items: center; padding: 8px; }
+
+/* ── Avisos en vivo ──────────────────────────────────────────────────────── */
+.vx-aviso--hero { margin: 4px 8px 0; padding: 16px; border-radius: var(--md-sys-shape-corner-large); background: var(--md-sys-color-surface-container-high); display: grid; gap: 4px; }
+.vx-live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--md-sys-color-tertiary); vertical-align: middle; }
+.vx-live-tag { margin-left: 8px; font-weight: 400; display: inline-flex; align-items: center; gap: 6px; }
+.vx-count-row { display: flex; align-items: center; gap: 12px; margin: 4px 0; }
+.vx-urgent { display: inline-flex; align-items: center; gap: 4px; color: var(--md-sys-color-error); font-weight: 600; }
+.vx-is-urgent { color: var(--md-sys-color-error); }
+.vx-bar-track { display: block; height: 4px; border-radius: 2px; background: var(--md-sys-color-secondary-container); overflow: hidden; }
+.vx-bar-fill { display: block; height: 100%; background: var(--md-sys-color-secondary); }
+
+/* ── Estados comunes y esqueleto ─────────────────────────────────────────── */
+.vx-state-block { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 32px 24px; }
+.vx-state-block p { margin: 0; color: var(--md-sys-color-on-surface-variant); }
+.vx-state-ico { width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface-variant); }
+.vx-states section { border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 8px; }
+.vx-end { text-align: center; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 16px; }
+.vx-skeleton { padding: 16px; display: grid; gap: 12px; }
+.vx-skel { border-radius: var(--md-sys-shape-corner-medium); }
+.vx-skel-bar { height: 40px; width: 60%; }
+.vx-skel-hero { height: 140px; }
+.vx-skel-line { height: 16px; }
+.vx-skel-short { width: 55%; }
+.vx-skel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.vx-skel-card { height: 160px; }
+.vx-pending .vx-state-block { padding-top: 64px; }
+
+/* ── Barra inferior: la píldora se desliza entre pestañas ────────────────── */
+.vx-bar { position: relative; }
+.vx-bar .md-navitem { position: relative; z-index: 1; }
+.vx-bar .md-navitem--on .md-navitem-ind { background-color: transparent; }
+.vx-pill {
+  position: absolute; top: 12px; left: 0; width: 64px; height: 32px; border-radius: 16px; z-index: 0;
+  background: var(--md-sys-color-primary-container);
+  transition: transform var(--vx-dur-fade) var(--vx-ease-emphasized);
+}
+@media (prefers-reduced-motion: reduce) { .vx-pill { transition: none; } }
+:root[data-reduce-motion] .vx-pill { transition: none; }
+
+/* ── Arranque ────────────────────────────────────────────────────────────── */
+.vx-logo { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; margin: 0; }
+.vx-logo-x { color: var(--md-sys-color-primary); }
+.vx-splash {
+  min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px;
+  background: var(--md-sys-color-secondary); color: var(--md-sys-color-on-secondary);
+}
+.vx-splash-logo { font-size: 56px; line-height: 64px; animation: vx-fade-in 800ms var(--vx-ease-fade) both; }
+.vx-splash-tag { margin: 0; text-align: center; max-width: 260px; animation: vx-fade-in 800ms var(--vx-ease-fade) 200ms both; }
+.vx-splash-prog { width: 160px; margin-top: 32px; }
+@media (prefers-reduced-motion: reduce) { .vx-splash-logo, .vx-splash-tag { animation-duration: 300ms; } }
+:root[data-reduce-motion] .vx-splash-logo, :root[data-reduce-motion] .vx-splash-tag { animation-duration: 300ms; }
+
+/* ── Consentimiento ──────────────────────────────────────────────────────── */
+.vx-consent { display: flex; flex-direction: column; gap: 16px; padding: 48px 24px 32px; }
+.vx-consent h2, .vx-consent p { margin: 0; }
+.vx-consent-actions { display: grid; gap: 8px; margin-top: 8px; }
+.vx-consent-opt { align-items: flex-start; padding: 12px 0; }
+
+/* ═══ Panel del prototipo ════════════════════════════════════════════════════ */
+.panel {
+  flex: none; width: 340px; max-height: calc(100vh - 32px); overflow-y: auto; padding: 16px; border-radius: var(--md-sys-shape-corner-large);
+  background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); box-shadow: var(--md-sys-elevation-1);
+}
+.panel h1 { font-size: 18px; line-height: 24px; margin: 0 0 4px; }
+.panel h2 { margin: 16px 0 8px; color: var(--md-sys-color-on-surface-variant); }
+.panel .md-seg { display: flex; width: 100%; }
+.panel .md-seg-item { flex: 1; }
+.panel-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.panel details { border-top: 1px solid var(--md-sys-color-outline-variant); }
+.panel summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px; list-style: none; font-weight: 600; }
+.panel summary::-webkit-details-marker { display: none; }
+.panel summary::after { content: "+"; color: var(--md-sys-color-on-surface-variant); }
+.panel details[open] summary::after { content: "−"; }
+.idx { list-style: none; margin: 0 0 8px; padding: 0; }
+.idx a { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 4px 8px; border-radius: var(--md-sys-shape-corner-small); text-decoration: none; font-size: 14px; }
+.idx a:hover { background: var(--md-state-on-surface-8); }
+.idx a[aria-current="page"] { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+.idx .tag { font-size: 13px; color: var(--md-sys-color-on-surface-variant); white-space: nowrap; }
+.idx .ok { color: var(--md-sys-color-on-surface); font-weight: 600; }
+.panel-meta { font-size: 13px; line-height: 18px; color: var(--md-sys-color-on-surface-variant); margin: 0; }
