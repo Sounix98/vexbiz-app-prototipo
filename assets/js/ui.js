@@ -42,6 +42,11 @@ const I = {
   eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
   chat: 'M4 5h16v11H9l-5 4zM8 10h8M8 13h5', phone: 'M8 3h8v18H8zM11 18h2', desktop: 'M3 5h18v11H3zM8 20h8M12 16v4', more2: '<circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/>',
   star: 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z', logout: 'M10 5H5v14h5M14 8l4 4-4 4M18 12H9', globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>', doc: 'M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5', key: '<circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5L20 3M16 7l3 3"/>', gift: 'M4 9h16v4H4zM6 13v7h12v-7M12 9v11M12 9c-2 0-4-1-4-3s3-2 4 3zM12 9c2 0 4-1 4-3s-3-2-4 3z',
+  camera: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>', play: 'M8 5l11 7-11 7z', pause: 'M8 5v14M16 5v14',
+  thumb: 'M7 11v9H4v-9zM7 11l4-7c2 0 3 1 3 3v3h5a2 2 0 012 2l-1 6a2 2 0 01-2 2H7',
+  bookmark: 'M6 4h12v17l-6-4-6 4z', flag: 'M6 21V4M6 5h12l-2 4 2 4H6', calendar: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+  download: 'M12 4v11M7 11l5 5 5-5M5 20h14', video: 'M3 6h13v12H3zM16 10l5-3v10l-5-3', users: '<circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.4"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M16 14c3 0 5 1.6 5 4"/>',
+  pin: 'M12 21s-6-5.5-6-10a6 6 0 0112 0c0 4.5-6 10-6 10zM12 8.5a2 2 0 100 .01', car: 'M4 14l2-6h12l2 6v4H4zM4 14h16M7 18v2M17 18v2', umbrella: 'M3 12a9 9 0 0118 0zM12 12v7a2 2 0 004 0',
   menu: 'M4 6h16M4 12h16M4 18h16', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 };
 export const icon = (name, size = 24) => {

@@ -1,6 +1,7 @@
 // Estado en memoria del prototipo. localStorage solo guarda preferencias del panel (tema, reducir movimiento, modo).
 import { carritoInicial, producto, precioDe, tiendaDe, direcciones, pagosIni, sesionesIni, reclamosIni, devolucionesIni, avisosCuenta } from './data.js';
 import { round2 } from './format.js';
+import { PUNTOS_INI, historialPuntos, avanceIni, preguntasIni } from './data2.js';
 
 const PREF_KEY = 'vx-proto-prefs';
 const listeners = new Set();
@@ -23,6 +24,11 @@ const fresh = () => ({
   dosPasos: false,          // verificación en dos pasos activa
   empresaRegistrada: false, // «Registrar mi empresa» completado
   calificaciones: {},       // pedido → { nota, texto }
+  // Servicios y Academia (Fase 3)
+  ubicacion: null,          // auxilio vial: null | 'lista' | 'error' (la ubicación solo se pide al activar el interruptor)
+  academia: { puntos: PUNTOS_INI, historial: historialPuntos.map((h) => ({ ...h })), avance: JSON.parse(JSON.stringify(avanceIni)), inscritos: ['inv', 'gas', 'split'],
+    eventos: { solar: false, tableros: true }, offline: {}, preguntasHoy: 2 },
+  preguntas: preguntasIni.map((q) => ({ ...q, respuestas: q.respuestas.map((r) => ({ ...r })) })),
 });
 
 export const state = fresh();
