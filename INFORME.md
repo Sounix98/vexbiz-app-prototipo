@@ -1,11 +1,12 @@
 # INFORME · Prototipo de la app VEXBIZ
 
-Última actualización: 11/11/2026 · **Fase 3 terminada** (Servicios y Academia, M4 y M5). Las fases 4 a 6 siguen pendientes.
+Última actualización: 11/11/2026 · **Fase 4 terminada** (Modo Técnico, M8). Las fases 5 y 6 siguen pendientes.
 
 ## Cómo abrirlo
 
 - Por http (módulos ES): `python -m http.server 5173` dentro de `prototipo/` y abrir `http://localhost:5173/index.html`. Si editas un `.js` y no ves el cambio, recarga forzada (Ctrl + F5): el navegador guarda en caché los módulos.
 - Con doble clic (`file://`): `index.local.html`, que carga `prototipo.local.js` (todo en un solo script). Se regenera con `python tools/build_local.py` después de tocar cualquier `.js`.
+- En el panel hay dos interruptores del Modo Técnico: **Sin conexión** (arranca encendido, con «2 cambios guardados en el teléfono») y **País sin membresía** (cambia M8.12).
 - El panel de la derecha tiene el **Índice** (las 138 pantallas, «hecha» o «pendiente»), el modo, el tema, «Reducir movimiento», **Resultado del próximo pago** y «Reiniciar datos de la demo». Para recorrer todo desde el principio: Índice → M1.01.
 
 ## Cobertura (138 pantallas)
@@ -20,11 +21,11 @@
 | **M5 Academia** | 10 | **10** | **Fase 3** (incluye la pantalla de flujo M5.09) |
 | **M6 Cuenta** | 27 | **27** | **Fase 2** (incluye la hoja «Acciones de la dirección» y las pantallas de flujo M6.14 y M6.16) |
 | M7 Modo Tienda | 23 | 0 | Fase 5 |
-| M8 Modo Técnico | 13 | 0 | Fase 4 |
+| **M8 Modo Técnico** | 13 | **13** | **Fase 4** (incluye las dos variantes de Membresía) |
 | M9 Modo Empresa | 8 | 0 | Fase 6 |
 | Superposiciones | 9 | 8 | Falta «Detalle del período» (Fase 5) |
 
-El Índice muestra **93 de 138 entradas «hechas»**: cuenta por separado las hojas duplicadas de Figma (por ejemplo M3.07 y «Resumen de la compra»). Las pendientes abren una pantalla con su título y la fase en que se construye.
+El Índice muestra **106 de 138 entradas «hechas»**: cuenta por separado las hojas duplicadas de Figma (por ejemplo M3.07 y «Resumen de la compra»). Las pendientes abren una pantalla con su título y la fase en que se construye.
 
 ## Recorridos de la Fase 2 (con clics reales)
 
@@ -36,6 +37,64 @@ El Índice muestra **93 de 138 entradas «hechas»**: cuenta por separado las ho
 - **Cómo se ve VexBiz, de verdad:** el tamaño del texto (100 a 150 %) escala todo el contenido de la app, «Más contraste» refuerza bordes y textos secundarios, y «Menos movimiento» es el mismo interruptor del panel. Se guardan en este teléfono y, si no se toca nada, siguen los ajustes del sistema.
 - **Ayuda:** Ayuda e información → documentos (Términos, Privacidad, Aviso legal, Trabaja como técnico…) → Contacto; WhatsApp y redes avisan «Abre el sitio de VexBiz».
 - **Avisos:** «Marcar como leídos» apaga el punto de la pestaña Cuenta; cada aviso lleva a su pantalla.
+
+## Recorridos de la Fase 4 (con clics reales)
+
+- **Trabajos:** lista de solicitudes con vencimiento real (`quedan 5 h`, `quedan 21 h` avanzan solos), «Rechazar» con «Deshacer», «Quitar de la lista» en la caducada, y la pestaña «Mi trabajo» (en ejecución y cerrados) → **Solicitud entrante** (barra que se vacía a velocidad constante, pasa a error con ícono y texto bajo una hora) → «Aceptar» → **Trabajo en curso**.
+- **Sin conexión (Patrón 21):** el aviso «N cambios guardados en el teléfono · Se envían solos cuando vuelva la señal» entra bajando 12 px con un fundido de 300 ms (solo `transform` y `opacity`; con «Reducir movimiento» queda solo el fundido). Cada edición del parte suma un cambio; con señal pasa a «Enviando N cambios…» y luego a «Todo está al día» **sin movimiento**, y «Guardado en el teléfono» pasa a «Guardado».
+- **Cerrar el trabajo:** Cerrar el trabajo (mano de obra $ 45,00 + materiales $ 28,00 que salen de las compras del trabajo = **$ 73,00**, garantía de 3 meses → «Vigente hasta el 16/01/2027», todo calculado) → **Firma del cliente** (canvas que sigue el dedo o el mouse, «Borrar firma», no deja cerrar sin firma y nombre) → Trabajos con «Trabajo cerrado» y el trabajo cerrado en «Mi trabajo».
+- **Servicios:** cada servicio se pausa o se muestra con su interruptor; Mis oficios (apuntarse, quitar con «Deshacer», buscar); Cobertura y horario (radio de 5 a 100 km y un horario por día con validación de la hora final).
+- **Documentos:** subir, subir de nuevo o renovar (acepta JPG, PNG, WebP y PDF hasta 10 MB; el archivo no sale del navegador); «Te faltan N documentos obligatorios» se calcula, y el sello «Verificado» del perfil exige los obligatorios verificados.
+- **Perfil, Compras y Membresía:** presentación editable; «Gastado en este trabajo» suma las compras ($ 28,00 y $ 48,00); Membresía con Básico o Pro y la variante «País sin membresía».
+
+## QA de la Fase 4 (412 × 892, navegador del IDE, http)
+
+| Comprobación | Resultado |
+|---|---|
+| Consola | 0 errores y 0 avisos en las 13 rutas de la fase y en los recorridos |
+| Desborde horizontal | 0 en 13 rutas |
+| Texto menor a 13 px | Ninguno |
+| Objetivos táctiles | Todo ≥ 44 px (también los campos de hora) |
+| Un `<h1>` por pantalla | Cumplido en las 13 rutas |
+| Contraste calculado con los tokens | Sin pares nuevos (0 fallos en los pares en uso) |
+| Patrón 21 | El aviso usa 2 animaciones (`vx-drop-in` 300 ms: −12 px → ninguno, y `vx-fade-in` 300 ms); al sincronizar el texto cambia con 0 animaciones; con «Reducir movimiento» el desplazamiento es 0 |
+| Datos calculados | Total del trabajo, vigencia de la garantía, «quedan N h», contador de cambios, documentos que faltan, gastado por trabajo |
+| Regresión | 13 rutas de las fases 0 a 3 sin errores, desbordes ni objetivos pequeños |
+| Capturas | `capturas/fase-4/` (5 en claro, 1 en oscuro) |
+
+**No verificado todavía:** la firma con un dedo real en una pantalla táctil (se probó con eventos de puntero sintéticos y se comprobó que el canvas pinta); rendimiento con CPU reducida 4×; lector de pantalla; `index.local.html` por `file://`; tema oscuro en todas las pantallas (Fase 6). El primer cuadro del aviso se midió con la estructura de animaciones, no con una lectura de `opacity` en el cuadro cero.
+
+## Errores encontrados y corregidos durante la Fase 4
+
+- El sello «Verificado» del perfil aparecía con documentos solo «En revisión»; ahora exige que estén verificados.
+- «Guardado en el teléfono» seguía igual después de volver la señal; ahora pasa a «Guardado».
+- `setPointerCapture` falla con punteros sin captura; la firma sigue dibujando.
+
+## Conexiones añadidas respecto al Figma, Fase 4 (para confirmar)
+
+- M8.01: «Ver solicitud» → M8.02 con su id; «Continuar» (trabajo en curso) → M8.03; el ícono de campana abre la hoja «Avisos en vivo».
+- M8.02 «Aceptar» → M8.03 (Figma). M8.03 «Cerrar el trabajo» → M8.04 → M8.05 → M8.01 (Huecos, punto 5) y «Compras de trabajo» → M8.11.
+- M8.06 «Mis oficios» → M8.07 y «Cobertura y horario» → M8.08 (como en Figma, ahora con filas propias). M8.10 → M8.09, M8.07, M8.12, hoja de modo y «Ver mi perfil público» → M4.04 (el de Carlos Mendoza).
+- M8.11: cada compra → M8.03; «Comprar repuestos» → M2.01 en modo Comprador.
+
+## Textos y datos inventados, Fase 4
+
+- **Estructura que el anexo no describe:** la pestaña «Mi trabajo» de M8.01 (segmentos «Solicitudes» y «Mi trabajo»), los botones «Rechazar», «Ver solicitud», «Continuar», «Quitar de la lista», «Contactar», «Aceptar», «Probar conexión» y los de M8.03 («Añadir foto del trabajo», «Compras de trabajo», «Llamar al cliente», «Cómo llegar»).
+- **Campos y mensajes:** Diagnóstico, Materiales usados, Horas trabajadas, Lo que hiciste, Notas para el cliente (M8.03); Mano de obra, Materiales, Otros gastos, Garantía (M8.04); Nombre del cliente (M8.05); Radio de cobertura (M8.08); Buscar oficios; mensajes de validación; «Añadir servicio», «Apuntarme», «Quitar», «Subir», «Subir de nuevo», «Renovar», «Editar», «Ver mi perfil público», «Coordinar el pago con soporte», «Ver el trabajo», «Comprar repuestos».
+- **Datos:** la solicitud #S-1091 (total $ 25,00 y notas), #S-1066, el contenido del parte de Pedro Silva, la fecha de #VX-20512, el número de trabajo #T-0412, el aviso «Sin señal» cuando no hay cambios, y el texto «VexBiz está revisando tus documentos».
+
+## Datos del Figma que se contradicen, Fase 4
+
+1. **«Habilitado para recibir trabajos» (M8.01)** frente a «Sin verificar» y «faltan 2 documentos obligatorios» (M8.09, M8.10) y a «Para recibir solicitudes hace falta una membresía activa» (M8.12): se mantiene cada texto en su pantalla.
+2. **Aceptar la solicitud #S-1082 lleva a M8.03**, que es el trabajo de **Pedro Silva**, no el de María González (Figma conecta así las dos pantallas). La solicitud queda «Aceptada» y el trabajo en curso sigue siendo el de Pedro.
+3. **Fechas:** M8.01 muestra una solicitud «Caducó sin responder» del 14/10 y la compra #VX-20512 de 15/10 con la fecha de hoy 16/10/2026; se calcula todo contra esa fecha.
+4. **Horario:** Figma solo muestra la hora de Lunes, Viernes y Sábado; Martes a Jueves repiten Lunes (08:00 a 18:00) y Viernes cierra a las 17:00.
+
+## Diferencias respecto al Figma, Fase 4
+
+- Las horas se escriben con el selector de hora del navegador (muestra «08:00 a. m.» según el idioma del sistema).
+- «Trabajo cerrado» se anuncia con un aviso breve; la confirmación grande del Patrón 16 (anillo y palomita) no se aplicó a esta pantalla.
+- El archivo de un documento no se guarda ni se muestra después de subirlo; solo cambia su estado a «En revisión».
 
 ## Recorridos de la Fase 3 (con clics reales)
 
@@ -171,3 +230,6 @@ El Índice muestra **93 de 138 entradas «hechas»**: cuenta por separado las ho
 13. ¿La barra de nivel de M5.10 debe seguir los umbrales de la lista (34 %) o el 62 % de Figma?
 14. ¿Los cursos y foros de la demo (4 cursos, 3 preguntas) bastan, o el prototipo debe traer más contenido de Academia?
 15. ¿Se confirma que contratar un servicio, un seguro o un auxilio solo «abre WhatsApp» en el prototipo?
+16. ¿«Aceptar» una solicitud debe abrir el trabajo del mismo cliente (cambia M8.03) o se mantiene el de Pedro Silva como en Figma?
+17. ¿«Trabajo cerrado» necesita la confirmación grande (anillo y palomita) o basta el aviso breve?
+18. ¿El archivo de un documento debe poder verse después de subirlo?

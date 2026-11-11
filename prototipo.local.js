@@ -608,6 +608,114 @@
   ];
   var PUNTOS_INI = 1240;
 
+  // assets/js/data3.js
+  var H = 36e5;
+  var solicitudesIni = [
+    {
+      id: "#S-1082",
+      servicio: "Instalación de aire split 12.000 BTU",
+      cliente: "María González",
+      direccion: "Urb. El Viñedo, Calle 4, Casa 12",
+      ciudad: "Valencia",
+      cuando: "Sáb 18/10 · 9:00",
+      cuandoLargo: "Sábado 18/10/2026 · 9:00",
+      venceTxt: "hoy 18:00",
+      venceEn: 5 * H + 12 * 6e4,
+      total: 60,
+      recibida: "16/10/2026 a las 12:48",
+      notas: "El equipo ya está comprado, hace falta el kit de instalación. Hay estacionamiento frente a la casa.",
+      estado: "pendiente"
+    },
+    {
+      id: "#S-1091",
+      servicio: "Mantenimiento preventivo",
+      cliente: "José Ramírez",
+      direccion: "Av. Cedeño, Edif. Torre Norte, Piso 3",
+      ciudad: "Valencia",
+      cuando: "Lun 20/10 · 14:00",
+      cuandoLargo: "Lunes 20/10/2026 · 14:00",
+      // INVENTADO: id, total, notas
+      venceTxt: "el 17/10 10:00",
+      venceEn: 21 * H + 5 * 6e4,
+      total: 25,
+      recibida: "16/10/2026 a las 13:05",
+      notas: "Dos equipos en la oficina; hay que avisar en recepción.",
+      estado: "pendiente"
+    },
+    {
+      id: "#S-1066",
+      servicio: "Carga de gas refrigerante",
+      cliente: "Carmen Díaz",
+      direccion: "Calle Montes de Oca 18",
+      ciudad: "Valencia",
+      cuando: "Mar 14/10 · 11:00",
+      cuandoLargo: "Martes 14/10/2026 · 11:00",
+      // INVENTADO: id, total
+      venceTxt: "",
+      venceEn: -1,
+      total: 20,
+      recibida: "12/10/2026 a las 09:20",
+      notas: "",
+      estado: "caducada"
+    }
+  ];
+  var trabajoIni = {
+    id: "#T-0412",
+    titulo: "Instalación de una compra",
+    cliente: "Pedro Silva",
+    direccion: "Calle Páez 45, San Diego, Carabobo",
+    corta: "Calle Páez 45, San Diego",
+    empezo: "hoy a las 8:42",
+    estado: "ejecucion",
+    parte: { diagnostico: "Equipo split de 12.000 BTU instalado sin vacío previo", materiales: "Tuerca flare, 1 kg de gas R410A", horas: "3", hecho: "Cambié la tuerca flare de la condensadora, limpié el filtro y recargué 1 kg de gas R410A. El equipo enfría normal.", notas: "Dejar el control remoto en la mesa de la sala." },
+    // INVENTADO: diagnóstico, materiales, horas, notas
+    manoDeObra: 45,
+    otros: 0,
+    garantiaMeses: 3
+  };
+  var comprasTrabajo = [
+    { donde: "Calle Páez 45, San Diego", trabajo: true, items: [{ id: "#VX-20501", tienda: "Repuestos Frío", estado: "Entregado", total: 21.5, fecha: "15/10" }, { id: "#VX-20512", tienda: "Ferretería El Tornillo", estado: "En camino", total: 6.5, fecha: "15/10" }] },
+    // INVENTADO: fecha de #VX-20512
+    { donde: "Urb. El Viñedo, Calle 4, Casa 12", items: [{ id: "#VX-20530", tienda: "Herramientas Andina", estado: "Pago reportado", total: 48, fecha: "16/10" }] }
+  ];
+  var serviciosIni = [
+    { id: "sv1", titulo: "Instalación de aire split hasta 18.000 BTU", oficio: "Climatización", min: 180, texto: "Montaje de evaporadora y condensadora, vacío y prueba.", precio: 60, visible: true },
+    { id: "sv2", titulo: "Mantenimiento preventivo", oficio: "Climatización", min: 90, texto: "Limpieza de filtros, serpentines y drenaje.", precio: 25, visible: true },
+    { id: "sv3", titulo: "Carga de gas refrigerante", oficio: "Climatización", min: 60, texto: "Detección de fuga básica y recarga.", precio: 20, visible: false }
+  ];
+  var horarioIni = [
+    { d: "Lunes", on: true, de: "08:00", a: "18:00" },
+    { d: "Martes", on: true, de: "08:00", a: "18:00" },
+    { d: "Miércoles", on: true, de: "08:00", a: "18:00" },
+    { d: "Jueves", on: true, de: "08:00", a: "18:00" },
+    { d: "Viernes", on: true, de: "08:00", a: "17:00" },
+    { d: "Sábado", on: true, de: "09:00", a: "13:00" },
+    { d: "Domingo", on: false, de: "", a: "" }
+  ];
+  var oficiosIni = [
+    { id: "aa", nombre: "Aire acondicionado", estado: "certificado", fecha: "12/05/2026" },
+    { id: "rc", nombre: "Refrigeración comercial", estado: "revision" }
+  ];
+  var oficiosDisponibles = ["Electrodomésticos", "Electricidad residencial", "Energía solar", "Plomería"];
+  var docsIni = [
+    { id: "ced", nombre: "Cédula de identidad", obligatorio: true, estado: "verificado", ayuda: "Foto legible por ambas caras.", subido: "02/10", valido: "02/10/2031" },
+    { id: "ref", nombre: "Certificado de refrigeración", obligatorio: true, estado: "rechazado", ayuda: "Emitido por un instituto reconocido.", subido: "05/10", motivo: "La foto está borrosa; no se lee el número." },
+    { id: "ant", nombre: "Antecedentes penales", obligatorio: true, estado: "falta", ayuda: "Con menos de 6 meses." },
+    { id: "seg", nombre: "Seguro de responsabilidad", obligatorio: false, estado: "vencido", ayuda: "Recomendado para trabajos grandes.", vence: new Date(2026, 8, 30) }
+  ];
+  var perfilTecnico = {
+    rating: 4.8,
+    opiniones: 37,
+    trabajos: 112,
+    oficio: "Aire acondicionado",
+    anios: 12,
+    presentacion: "Trabajo con equipos split, inverter y de ventana desde 2014. Instalaciones limpias, con vacío y prueba."
+  };
+  var planes = [
+    { id: "basico", nombre: "Técnico Básico", precio: 9.9, lista: ["Apareces en el directorio de tu zona", "Hasta 20 solicitudes al mes", "Perfil verificado"] },
+    { id: "pro", nombre: "Técnico Pro", recomendado: true, precio: 24.9, lista: ["Solicitudes ilimitadas", "Prioridad en instalaciones de compras", "Insignia «Técnico Pro»", "Soporte por WhatsApp"] }
+  ];
+
   // assets/js/store.js
   var PREF_KEY = "vx-proto-prefs";
   var listeners = /* @__PURE__ */ new Set();
@@ -649,7 +757,26 @@
       offline: {},
       preguntasHoy: 2
     },
-    preguntas: preguntasIni.map((q) => ({ ...q, respuestas: q.respuestas.map((r) => ({ ...r })) }))
+    preguntas: preguntasIni.map((q) => ({ ...q, respuestas: q.respuestas.map((r) => ({ ...r })) })),
+    // Modo Técnico (Fase 4)
+    tec: {
+      offline: true,
+      cambios: 2,
+      enviando: false,
+      // sin señal: los cambios quedan «guardados en el teléfono» y se envían solos al volver
+      paisSinMembresia: false,
+      // variante de M8.12 según el país (lo cambia el panel)
+      solicitudes: solicitudesIni.map((s) => ({ ...s, venceAt: s.venceEn > 0 ? Date.now() + s.venceEn : 0 })),
+      trabajo: JSON.parse(JSON.stringify(trabajoIni)),
+      cerrados: [],
+      servicios: serviciosIni.map((s) => ({ ...s })),
+      horario: horarioIni.map((h2) => ({ ...h2 })),
+      radio: 25,
+      oficios: oficiosIni.map((o) => ({ ...o })),
+      docs: docsIni.map((d) => ({ ...d })),
+      presentacion: perfilTecnico.presentacion,
+      plan: null
+    }
   });
   var state = fresh();
   function set(patch) {
@@ -709,6 +836,29 @@
     try {
       localStorage.setItem(PREF_KEY, JSON.stringify({ ...loadPrefs(), ...patch }));
     } catch {
+    }
+  }
+  var syncTimer = null;
+  function tecCambio(n = 1) {
+    if (state.tec.offline) {
+      state.tec.cambios += n;
+      emit();
+    }
+  }
+  function tecSenal(offline) {
+    state.tec.offline = offline;
+    clearTimeout(syncTimer);
+    if (!offline && state.tec.cambios > 0) {
+      state.tec.enviando = true;
+      emit();
+      syncTimer = setTimeout(() => {
+        state.tec.cambios = 0;
+        state.tec.enviando = false;
+        emit();
+      }, 1200);
+    } else {
+      state.tec.enviando = false;
+      emit();
     }
   }
 
@@ -3174,9 +3324,9 @@
       <h2 class="md-label-large vx-sub vx-sub--list">Ya pasaron</h2><ul class="vx-list" role="list">${eventos.pasados.map((p) => row({ ic: "video", title: esc(p.titulo), end: `<span class="md-body-small vx-tab-num">${p.fecha}</span>`, attrs: 'data-toast="Abre el resumen del evento"' })).join("")}</ul></div>`);
       const paint = () => {
         el.querySelector("#evList").innerHTML = eventos.proximos.map((ev) => {
-          const ap = state.academia.eventos[ev.id], quedan = ev.cupo - ev.inscritos - (ap ? 1 : 0), llenos = quedan <= 0 && !ap;
+          const ap = state.academia.eventos[ev.id], quedan2 = ev.cupo - ev.inscritos - (ap ? 1 : 0), llenos = quedan2 <= 0 && !ap;
           return `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small">${esc(ev.titulo)}</span><span class="md-body-medium vx-tab-num">${ev.cuando} · ${ev.hora} (hora de tu teléfono) · ${ev.dur}</span>
-        <span class="md-body-medium vx-muted">${esc(ev.por)} · ${esc(ev.donde)}</span><span class="md-body-medium vx-tab-num">Quedan ${quedan} de ${ev.cupo} plazas</span>${ap ? `<span>${statusTag("success", "Apuntado")}</span>` : ""}</span></div>
+        <span class="md-body-medium vx-muted">${esc(ev.por)} · ${esc(ev.donde)}</span><span class="md-body-medium vx-tab-num">Quedan ${quedan2} de ${ev.cupo} plazas</span>${ap ? `<span>${statusTag("success", "Apuntado")}</span>` : ""}</span></div>
         <div class="vx-order-act">${ap ? btn("Cancelar mi lugar", { kind: "text", attrs: `data-ev="${ev.id}"` }) : btn(llenos ? "Sin plazas" : "Apuntarme", { kind: "tonal", attrs: `data-ev="${ev.id}"${llenos ? " disabled" : ""}` })}</div></li>`;
         }).join("");
       };
@@ -3632,9 +3782,9 @@
   });
   register("M6.11", {
     render() {
-      const dias = (d) => Math.round((d - HOY) / 864e5);
+      const dias2 = (d) => Math.round((d - HOY) / 864e5);
       return h(`<div>${topbar("Garantías")}<ul class="vx-orders vx-pad-h" role="list">${garantias.map((g) => {
-        const n = dias(g.hasta), ok = n > 0;
+        const n = dias2(g.hasta), ok = n > 0;
         return `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text">${statusTag(ok ? "success" : "error", ok ? `Vigente · quedan ${n} días` : "Vencida")}
         <span class="md-title-small">${esc(g.producto)}</span><span class="md-body-medium">Responde: ${esc(g.responde)}</span><span class="md-body-medium vx-muted vx-tab-num">hasta ${date(g.hasta)}</span><span class="md-body-medium vx-muted vx-tab-num">${g.ref}</span></span></div>
         ${ok ? `<div class="vx-order-act">${btn("Condiciones", { kind: "text", go: "M6.25?doc=garantia" })}</div>` : ""}</li>`;
@@ -3649,6 +3799,594 @@
         <div class="vx-order-act">${s.ok ? btn("Calificar", { kind: "tonal", attrs: 'data-toast="Gracias: tu calificación llega al técnico"' }) : btn("Ver detalle", { kind: "text", attrs: 'data-toast="La empresa te avisa cuando asigne al técnico"' })}${btn("Contactar", { kind: "text", attrs: 'data-toast="Abre WhatsApp de VexBiz: lunes a sábado, 8:00 a 18:00"' })}</div></li>`).join("")}</ul></div>`);
     }
   });
+
+  // assets/js/screens/m8.js
+  var T = () => state.tec;
+  var thumb3 = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon("box", n)}</span>`;
+  var sec2 = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
+  var avisosBtn = () => iconBtn("bell", "Avisos en vivo", 'data-go="O.AVI"');
+  function quedan(ms, { min = false } = {}) {
+    const m = Math.max(0, Math.floor(ms / 6e4)), hh = Math.floor(m / 60), mm = m % 60;
+    if (hh === 0) return `${mm} min`;
+    return min && mm ? `${hh} h ${mm} min` : `${hh} h`;
+  }
+  var restante = (s) => s.venceAt ? s.venceAt - Date.now() : -1;
+  var urgente = (ms) => ms > 0 && ms < 36e5;
+  var bandaHtml = () => `<div class="vx-offline vx-drop" id="banda" role="status" aria-live="polite"></div>`;
+  function paintBanda(root3) {
+    const b = $("#banda", root3);
+    if (!b) return;
+    const t = T(), n = t.cambios;
+    let ic = "phone", main, sub = "", act = "", cls = "info";
+    if (t.offline) {
+      main = n ? `${plural(n, "cambio guardado", "cambios guardados")} en el teléfono` : "Sin señal";
+      sub = n ? "Se envían solos cuando vuelva la señal" : "Lo que hagas queda guardado en el teléfono.";
+      act = btn("Probar conexión", { kind: "text", attrs: "data-senal" });
+    } else if (t.enviando) {
+      main = `Enviando ${plural(n, "cambio", "cambios")}…`;
+      ic = "upload";
+    } else {
+      main = "Todo está al día";
+      ic = "check";
+      cls = "success";
+    }
+    b.className = `vx-offline vx-offline--${cls}${b.dataset.in ? "" : " vx-drop"}`;
+    b.dataset.in = "1";
+    b.innerHTML = `${icon(ic, 20)}<div class="vx-offline-txt"><p class="md-body-large">${main}</p>${sub ? `<p class="md-body-medium">${sub}</p>` : ""}</div>${act}`;
+  }
+  function wireBanda(el) {
+    paintBanda(el);
+    el.addEventListener("click", (e) => {
+      if (e.target.closest("[data-senal]")) {
+        tecSenal(false);
+        toast("Volvió la señal: enviando tus cambios");
+      }
+    });
+    return subscribe(() => paintBanda(el));
+  }
+  register("M8.01", {
+    render(ctx) {
+      const el = h(`<div>${topbar("Trabajos", { back: false, trailing: avisosBtn() })}
+      <div class="vx-pad-h vx-stack"><p>${statusTag("success", "Habilitado para recibir trabajos")}</p>${bandaHtml()}
+        <div class="md-seg" role="tablist" aria-label="Ver">${[["sol", "Solicitudes"], ["trab", "Mi trabajo"]].map(([k, t], i) => `<button type="button" role="tab" class="md-seg-item md-sl md-label-large${i === 0 ? " md-seg-item--on" : ""}" data-seg="${k}" aria-selected="${i === 0}">${t}</button>`).join("")}</div></div>
+      <ul class="vx-orders vx-pad-h" role="list" id="trList" data-stagger></ul></div>`);
+      let seg2 = "sol";
+      const card = (s, i) => {
+        const ms = restante(s), vivo = s.estado === "pendiente" && ms > 0, venc = vivo && urgente(ms);
+        return `<li class="vx-order" style="--i:${i}" data-sid="${s.id}"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small">${esc(s.servicio)}</span>
+        <span class="md-body-medium">${esc(s.cliente)}</span><span class="md-body-medium vx-muted">${esc(s.direccion)}</span><span class="md-body-medium vx-tab-num">${s.cuando}</span>
+        ${vivo ? `<span>${statusTag(venc ? "error" : "warning", `Caduca ${s.venceTxt} · quedan ${quedan(ms)}`)}</span>` : s.estado === "aceptada" ? `<span>${statusTag("success", "Aceptada")}</span>` : s.estado === "rechazada" ? `<span>${statusTag("neutral", "Rechazada")}</span>` : `<span>${statusTag("neutral", "Caducó sin responder")}</span>`}</span></div>
+        <div class="vx-order-act">${vivo ? `${btn("Rechazar", { kind: "outlined", attrs: `data-rej="${s.id}"` })}${btn("Ver solicitud", { kind: "filled", go: `M8.02?id=${encodeURIComponent(s.id)}` })}` : btn("Quitar de la lista", { kind: "text", attrs: `data-quit="${s.id}"` })}</div></li>`;
+      };
+      const paint = () => {
+        const t = T(), host = el.querySelector("#trList");
+        if (seg2 === "sol") {
+          const l = t.solicitudes.filter((s) => !s.oculta);
+          host.innerHTML = l.map(card).join("") || `<li>${stateBlock({ icon: "inbox", title: "No tienes solicitudes" })}</li>`;
+          return;
+        }
+        const tr = t.trabajo, enCurso = tr && tr.estado === "ejecucion";
+        host.innerHTML = (enCurso ? `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small">${esc(tr.titulo)}</span><span class="md-body-medium">${esc(tr.cliente)}</span><span class="md-body-medium vx-muted">${esc(tr.direccion)}</span><span>${statusTag("info", `En ejecución · Empezó ${tr.empezo}`)}</span></span></div>
+        <div class="vx-order-act">${btn("Continuar", { kind: "filled", go: "M8.03" })}</div></li>` : "") + t.cerrados.map((c) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small">${esc(c.titulo)}</span><span class="md-body-medium">${esc(c.cliente)}</span><span class="md-body-medium vx-tab-num">${money(c.total)} · garantía hasta ${c.garantiaHasta}</span><span>${statusTag("success", "Trabajo cerrado")}</span></span></div></li>`).join("") || (enCurso ? "" : `<li>${stateBlock({ icon: "briefcase", title: "No tienes un trabajo en curso" })}</li>`);
+      };
+      el.addEventListener("click", (e) => {
+        const sg = e.target.closest("[data-seg]"), rej = e.target.closest("[data-rej]"), q = e.target.closest("[data-quit]");
+        if (sg) {
+          seg2 = sg.dataset.seg;
+          $$("[data-seg]", el).forEach((x) => {
+            const on = x === sg;
+            x.classList.toggle("md-seg-item--on", on);
+            x.setAttribute("aria-selected", on);
+          });
+          paint();
+        }
+        if (rej) {
+          const s = T().solicitudes.find((x) => x.id === rej.dataset.rej), prev = s.estado;
+          s.estado = "rechazada";
+          tecCambio(1);
+          set({ tec: T() });
+          toast(`Rechazaste ${s.id}`, { action: "Deshacer", onAction: () => {
+            s.estado = prev;
+            set({ tec: T() });
+          } });
+        }
+        if (q) {
+          T().solicitudes.find((x) => x.id === q.dataset.quit).oculta = true;
+          set({ tec: T() });
+        }
+      });
+      paint();
+      el.__un = [wireBanda(el), subscribe(paint)];
+      el.__tick = setInterval(paint, 3e4);
+      return el;
+    },
+    mount(el, ctx) {
+      if (ctx.first) $$("[data-stagger]", el).forEach(stagger);
+      return () => {
+        el.__un.forEach((f) => f());
+        clearInterval(el.__tick);
+      };
+    }
+  });
+  register("M8.02", {
+    render(ctx) {
+      const s = T().solicitudes.find((x) => x.id === decodeURIComponent(ctx.params.id || "#S-1082")) || T().solicitudes[0];
+      const bloque = (k, v) => `<section class="vx-pad-h"><h2 class="md-label-medium vx-eyebrow">${k}</h2>${v}</section>`;
+      const el = h(page(
+        topbar(`Solicitud ${s.id}`),
+        `
+      <section class="vx-pad-h" id="venceBox"></section>
+      ${bloque("SERVICIO PEDIDO", `<p class="md-title-small">${esc(s.servicio)}</p><p class="md-body-large vx-tab-num">Importe acordado: ${money(s.total)}</p>`)}
+      ${bloque("CLIENTE Y LUGAR", `<p class="md-title-small">${esc(s.cliente)}</p><p class="md-body-large">${esc(s.direccion)}, ${esc(s.ciudad)}</p>`)}
+      ${bloque("CUÁNDO", `<p class="md-body-large vx-tab-num">${s.cuandoLargo}</p><p class="md-body-medium vx-muted vx-tab-num">Recibida el ${s.recibida}</p>`)}
+      ${s.notas ? bloque("NOTAS DEL CLIENTE", `<p class="md-body-large">«${esc(s.notas)}»</p>`) : ""}`,
+        `${btn("Rechazar", { kind: "outlined", id: "sRej" })}${btn("Contactar", { kind: "outlined", attrs: 'data-toast="Abre WhatsApp con el cliente"' })}${btn("Aceptar", { kind: "filled", id: "sOk" })}`
+      ));
+      const paint = () => {
+        const ms = restante(s), vivo = s.estado === "pendiente" && ms > 0, u = urgente(ms);
+        el.querySelector("#venceBox").innerHTML = vivo ? `<p class="md-body-large">${statusTag(u ? "error" : "warning", `Caduca ${s.venceTxt}`)}</p><p class="md-title-medium vx-tab-num ${u ? "vx-is-urgent" : ""}">Quedan ${quedan(ms, { min: true })} para responder</p>
+           <span class="vx-bar-track" aria-hidden="true"><span class="vx-bar-fill vx-countbar" id="sBar"></span></span>${u ? `<p class="vx-urgent">${icon("warning", 18)} Queda menos de una hora</p>` : ""}` : `<p>${statusTag(s.estado === "aceptada" ? "success" : "neutral", s.estado === "aceptada" ? "Aceptada" : s.estado === "rechazada" ? "Rechazada" : "Caducó sin responder")}</p>`;
+        const bar = el.querySelector("#sBar");
+        if (bar && !bar.dataset.on) {
+          bar.dataset.on = "1";
+          bar.style.setProperty("--vx-count", ms + "ms");
+        }
+        ["sRej", "sOk"].forEach((i) => {
+          el.querySelector("#" + i).disabled = !vivo;
+        });
+      };
+      el.querySelector("#sRej").addEventListener("click", () => {
+        s.estado = "rechazada";
+        tecCambio(1);
+        set({ tec: T() });
+        toast(`Rechazaste ${s.id}`);
+        back();
+      });
+      el.querySelector("#sOk").addEventListener("click", () => {
+        s.estado = "aceptada";
+        tecCambio(1);
+        set({ tec: T() });
+        toast(`Aceptaste ${s.id}. Quedó en tu agenda.`);
+        go("M8.03", { kind: "push" });
+      });
+      paint();
+      el.__tick = setInterval(paint, 2e4);
+      return el;
+    },
+    mount(el) {
+      return () => clearInterval(el.__tick);
+    }
+  });
+  register("M8.03", {
+    render() {
+      const tr = T().trabajo;
+      if (!tr || tr.estado !== "ejecucion") return h(`<div>${topbar("Trabajo")}${stateBlock({ icon: "briefcase", title: "No tienes un trabajo en curso", action: btn("Ver solicitudes", { kind: "filled", go: "M8.01", kindNav: "swap" }) })}</div>`);
+      const p = tr.parte;
+      const el = h(page(
+        topbar("Trabajo", { trailing: iconBtn("phone", "Llamar al cliente", 'data-toast="Abre el teléfono con el número del cliente"') }),
+        `
+      <section class="vx-pad-h"><h2 class="md-title-large">${esc(tr.titulo)}</h2><p class="md-title-small">${esc(tr.cliente)}</p><p class="md-body-medium vx-muted">${esc(tr.direccion)}</p><p>${statusTag("info", `En ejecución · Empezó ${tr.empezo}`)}</p></section>
+      <div class="vx-pad-h">${bandaHtml()}</div>
+      <ul class="vx-list" role="list">${row({ ic: "map", title: "Cómo llegar", sup: esc(tr.corta), attrs: 'data-toast="Abre el mapa con la dirección"' })}${row({ ic: "bag", title: "Compras de este trabajo", sup: "Repuestos que compraste para esta obra", go: "M8.11", kind: "swap" })}</ul>
+      <section class="vx-pad-h"><div class="vx-sechead vx-sechead--0"><h2 class="md-title-medium">El parte</h2><span class="md-body-medium vx-save" id="saveSt" role="status" aria-live="polite"></span></div>
+        <form class="vx-form" novalidate onsubmit="return false">${field({ id: "pDiag", label: "Diagnóstico", value: p.diagnostico })}${field({ id: "pMat", label: "Materiales usados", value: p.materiales })}${field({ id: "pHoras", label: "Horas trabajadas", value: p.horas, inputmode: "decimal" })}
+          ${area({ id: "pHecho", label: "Lo que hiciste", value: p.hecho, rows: 4 })}${area({ id: "pNotas", label: "Notas para el cliente", value: p.notas, rows: 3 })}</form>
+        <div class="vx-stack vx-pad-v">${btn(`${icon("camera", 20)}Añadir foto del trabajo`, { kind: "tonal", block: true, attrs: 'data-toast="Foto guardada en el parte"' })}${btn("Compras de trabajo", { kind: "tonal", block: true, go: "M8.11", kindNav: "swap" })}${btn("Llamar al cliente", { kind: "tonal", block: true, attrs: 'data-toast="Abre el teléfono con el número del cliente"' })}</div></section>`,
+        btn("Cerrar el trabajo", { kind: "filled", block: true, go: "M8.04" })
+      ));
+      const st = el.querySelector("#saveSt");
+      let t = null, saving = false;
+      const lbl = () => T().offline ? "Guardado en el teléfono" : "Guardado";
+      st.innerHTML = `${icon("check", 16)} ${lbl()}`;
+      const map = { pDiag: "diagnostico", pMat: "materiales", pHoras: "horas", pHecho: "hecho", pNotas: "notas" };
+      el.addEventListener("input", (e) => {
+        const k = map[e.target.id];
+        if (!k) return;
+        p[k] = e.target.value;
+        st.textContent = "Guardando…";
+        saving = true;
+        clearTimeout(t);
+        t = setTimeout(() => {
+          saving = false;
+          st.innerHTML = `${icon("check", 16)} ${lbl()}`;
+          tecCambio(1);
+        }, 600);
+      });
+      const un = wireBanda(el), un2 = subscribe(() => {
+        if (!saving) st.innerHTML = `${icon("check", 16)} ${lbl()}`;
+      });
+      el.__un = () => {
+        un();
+        un2();
+      };
+      return el;
+    },
+    mount(el) {
+      return () => el.__un && el.__un();
+    }
+  });
+  var sumaMeses = (d, n) => new Date(d.getFullYear(), d.getMonth() + n, d.getDate());
+  var GAR = [["Sin garantía", 0], ["1 mes", 1], ["3 meses", 3], ["6 meses", 6]];
+  var compraGastada = () => round2(comprasTrabajo[0].items.reduce((s, i) => s + i.total, 0));
+  register("M8.04", {
+    render() {
+      const tr = T().trabajo;
+      if (!tr || tr.estado !== "ejecucion") return h(`<div>${topbar("Cerrar el trabajo")}${stateBlock({ icon: "briefcase", title: "No tienes un trabajo en curso" })}</div>`);
+      const c = tr.cierre || { mano: tr.manoDeObra, mat: compraGastada(), otros: tr.otros, hecho: tr.parte.hecho, meses: tr.garantiaMeses };
+      const el = h(page(
+        topbar("Cerrar el trabajo"),
+        `
+      <section class="vx-pad-h"><p class="md-title-small">${esc(tr.cliente)}</p><p class="md-body-medium vx-muted">${esc(tr.corta)}</p></section>
+      <div class="vx-pad-h">${banner("info", "VexBiz no cobra este trabajo. Aquí sólo queda registrado lo que costó.")}</div>
+      <div class="vx-pad-h vx-form">${field({ id: "cMano", label: "Mano de obra (USD)", value: num(c.mano), inputmode: "decimal" })}${field({ id: "cMat", label: "Materiales (USD)", value: num(c.mat), inputmode: "decimal", help: "Sale de las compras de este trabajo" })}${field({ id: "cOtros", label: "Otros gastos (USD)", value: num(c.otros), inputmode: "decimal" })}
+        <p class="md-title-large vx-tab-num vx-totrow"><span>Total</span><b id="cTotal"></b></p>
+        ${area({ id: "cHecho", label: "Lo que hiciste", value: c.hecho, rows: 4 })}${select({ id: "cGar", label: "Garantía", options: GAR.map(([t]) => t), value: GAR.find(([, m]) => m === c.meses)[0] })}
+        <p class="md-body-large" id="cVig" role="status"></p></div>`,
+        btn("Pedir la firma del cliente", { kind: "filled", block: true, id: "cGo" })
+      ));
+      const val = (id) => Number(String(el.querySelector("#" + id).value).replace(/\./g, "").replace(",", ".")) || 0;
+      const meses = () => GAR.find(([t]) => t === el.querySelector("#cGar").value)[1];
+      const paint = () => {
+        el.querySelector("#cTotal").textContent = money(round2(val("cMano") + val("cMat") + val("cOtros")));
+        const m = meses();
+        el.querySelector("#cVig").textContent = m ? `Vigente hasta el ${date(sumaMeses(HOY, m))}` : "Sin garantía";
+      };
+      el.addEventListener("input", paint);
+      el.addEventListener("change", paint);
+      el.querySelector("#cGo").addEventListener("click", () => {
+        const total = round2(val("cMano") + val("cMat") + val("cOtros")), hecho = el.querySelector("#cHecho").value.trim();
+        fieldError(el, "cMano", total <= 0 ? "Escribe lo que costó el trabajo" : "");
+        fieldError(el, "cHecho", !hecho ? "Cuenta qué hiciste" : "");
+        if (total <= 0 || !hecho) return;
+        tr.cierre = { mano: val("cMano"), mat: val("cMat"), otros: val("cOtros"), hecho, meses: meses() };
+        tecCambio(1);
+        set({ tec: T() });
+        go("M8.05", { kind: "push" });
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M8.05", {
+    render() {
+      const tr = T().trabajo, c = tr?.cierre;
+      if (!tr || !c) return h(`<div>${topbar("Firma del cliente")}${stateBlock({ icon: "edit", title: "Primero cierra el trabajo", action: btn("Ir a cerrar el trabajo", { kind: "filled", go: "M8.04" }) })}</div>`);
+      const total = round2(c.mano + c.mat + c.otros), vig = c.meses ? date(sumaMeses(HOY, c.meses)) : null;
+      const el = h(page(
+        topbar("Firma del cliente"),
+        `
+      <section class="vx-pad-h"><p class="md-body-large">${esc(c.hecho)}</p><p class="md-title-large vx-tab-num">Total ${money(total)}</p><p class="md-body-medium vx-tab-num">${c.meses ? `Garantía ${plural(c.meses, "mes", "meses")} · hasta ${vig}` : "Sin garantía"}</p></section>
+      <div class="vx-pad-h"><div class="vx-sign"><canvas id="firma" class="vx-canvas" role="img" aria-label="Zona de firma: el cliente firma aquí con el dedo"></canvas><p class="vx-sign-hint md-body-medium vx-muted" id="fHint">Firma aquí con el dedo</p></div>
+        <div class="vx-row-end">${btn("Borrar firma", { kind: "text", id: "fBorrar" })}</div>${field({ id: "fNombre", label: "Nombre del cliente", value: tr.cliente })}</div>`,
+        `${btn("Volver", { kind: "text", attrs: "data-back" })}${btn("Cerrar el trabajo", { kind: "filled", id: "fOk", attrs: "disabled" })}`
+      ));
+      const cv = el.querySelector("#firma"), g = cv.getContext("2d");
+      let dibujando = false, trazos = 0, last = null;
+      const medir = () => {
+        const r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+        cv.width = Math.round(r.width * d) || 600;
+        cv.height = Math.round(r.height * d) || 240;
+        g.lineWidth = 3 * d;
+        g.lineCap = "round";
+        g.lineJoin = "round";
+        g.strokeStyle = getComputedStyle(cv).color;
+      };
+      const pos = (e) => {
+        const r = cv.getBoundingClientRect();
+        return [(e.clientX - r.left) * (cv.width / r.width), (e.clientY - r.top) * (cv.height / r.height)];
+      };
+      const estado = () => {
+        el.querySelector("#fOk").disabled = !(trazos > 0 && el.querySelector("#fNombre").value.trim());
+        el.querySelector("#fHint").hidden = trazos > 0;
+      };
+      cv.addEventListener("pointerdown", (e) => {
+        try {
+          cv.setPointerCapture(e.pointerId);
+        } catch {
+        }
+        dibujando = true;
+        last = pos(e);
+        g.beginPath();
+        g.moveTo(...last);
+        g.lineTo(last[0] + 0.1, last[1] + 0.1);
+        g.stroke();
+        trazos++;
+        estado();
+      });
+      cv.addEventListener("pointermove", (e) => {
+        if (!dibujando) return;
+        const p = pos(e);
+        g.beginPath();
+        g.moveTo(...last);
+        g.lineTo(...p);
+        g.stroke();
+        last = p;
+      });
+      ["pointerup", "pointercancel"].forEach((ev) => cv.addEventListener(ev, () => {
+        dibujando = false;
+      }));
+      el.querySelector("#fBorrar").addEventListener("click", () => {
+        g.clearRect(0, 0, cv.width, cv.height);
+        trazos = 0;
+        estado();
+      });
+      el.querySelector("#fNombre").addEventListener("input", estado);
+      el.querySelector("#fOk").addEventListener("click", () => {
+        tr.estado = "cerrado";
+        T().cerrados.unshift({ titulo: tr.titulo, cliente: tr.cliente, total, garantiaHasta: vig || "—" });
+        tecCambio(1);
+        set({ tec: T() });
+        toast("Trabajo cerrado");
+        go("M8.01", { kind: "swap" });
+      });
+      el.__medir = medir;
+      return el;
+    },
+    mount(el) {
+      el.__medir && el.__medir();
+    }
+  });
+  register("M8.06", {
+    render() {
+      const el = h(`<div>${topbar("Servicios", { back: false })}<ul class="vx-orders vx-pad-h" role="list" id="svList"></ul>
+      <div class="vx-pad-h">${btn("Añadir servicio", { kind: "tonal", block: true, attrs: 'data-toast="Los servicios nuevos los revisa VexBiz antes de mostrarlos"' })}</div>
+      <ul class="vx-list" role="list">${row({ ic: "wrench", title: "Mis oficios", sup: "Lo que sabes hacer y su certificación", go: "M8.07" })}${row({ ic: "clock", title: "Cobertura y horario", sup: `${T().radio} km alrededor de Valencia · ${T().horario.filter((d) => d.on).length} días a la semana`, go: "M8.08" })}</ul></div>`);
+      const paint = () => {
+        el.querySelector("#svList").innerHTML = T().servicios.map((s) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small">${esc(s.titulo)}</span>
+      <span>${statusTag(s.visible ? "success" : "neutral", s.visible ? "Visible" : "Pausado")}</span><span class="md-body-medium vx-muted vx-tab-num">${s.oficio} · ${s.min} min</span><span class="md-body-medium">${esc(s.texto)}</span><b class="md-title-small vx-tab-num">${money(s.precio)}</b></span>
+      ${switchHtml("vis_" + s.id, '<span class="md-sr-only">Visible en tu perfil</span>', s.visible)}</div></li>`).join("");
+      };
+      wireControls(el);
+      el.addEventListener("change", (e) => {
+        const t = e.target.closest("input[role=switch]");
+        if (!t || !t.id.startsWith("vis_")) return;
+        const s = T().servicios.find((x) => "vis_" + x.id === t.id);
+        s.visible = t.checked;
+        tecCambio(1);
+        set({ tec: T() });
+        paint();
+        toast(`${s.titulo}: ${s.visible ? "visible" : "pausado"}`);
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M8.07", {
+    render() {
+      const el = h(`<div>${topbar("Mis oficios")}<p class="md-body-large vx-pad-h">Tú te apuntas; la certificación la da VexBiz al revisar tus documentos.</p>
+      <ul class="vx-orders vx-pad-h" role="list" id="ofMios"></ul>${sec2("Oficios disponibles")}<div class="vx-pad-h">${field({ id: "ofQ", label: "Buscar oficios", type: "search", autocomplete: "off" })}</div><ul class="vx-orders vx-pad-h" role="list" id="ofDisp"></ul></div>`);
+      let q = "";
+      const paint = () => {
+        const t = T(), mios = t.oficios, libres = oficiosDisponibles.filter((o) => !mios.some((m) => m.nombre === o) && o.toLowerCase().includes(q.toLowerCase()));
+        el.querySelector("#ofMios").innerHTML = mios.map((o) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small">${esc(o.nombre)}</span><span>${o.estado === "certificado" ? statusTag("success", `Certificado · ${o.fecha}`) : statusTag("info", "Apuntado · en revisión")}</span></span>
+        ${o.estado === "revision" ? btn("Quitar", { kind: "text", attrs: `data-qo="${o.id}"` }) : ""}</div></li>`).join("");
+        el.querySelector("#ofDisp").innerHTML = libres.map((o) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small">${esc(o)}</span></span>${btn("Apuntarme", { kind: "tonal", attrs: `data-ao="${esc(o)}"` })}</div></li>`).join("") || `<li>${stateBlock({ icon: "searchoff", title: "No hay más oficios para apuntarte" })}</li>`;
+      };
+      el.addEventListener("click", (e) => {
+        const a = e.target.closest("[data-ao]"), r = e.target.closest("[data-qo]");
+        if (a) {
+          T().oficios.push({ id: "o" + Date.now(), nombre: a.dataset.ao, estado: "revision" });
+          tecCambio(1);
+          set({ tec: T() });
+          toast(`Te apuntaste en ${a.dataset.ao}. VexBiz lo revisa con tus documentos.`);
+        }
+        if (r) {
+          const i = T().oficios.findIndex((o) => o.id === r.dataset.qo), [gone] = T().oficios.splice(i, 1);
+          tecCambio(1);
+          set({ tec: T() });
+          toast(`Quitaste ${gone.nombre}`, { action: "Deshacer", onAction: () => {
+            T().oficios.splice(i, 0, gone);
+            set({ tec: T() });
+          } });
+        }
+      });
+      el.querySelector("#ofQ").addEventListener("input", (e) => {
+        q = e.target.value.trim();
+        paint();
+      });
+      paint();
+      el.__un = subscribe(paint);
+      return el;
+    },
+    mount(el) {
+      return el.__un;
+    }
+  });
+  register("M8.08", {
+    render() {
+      const t = T(), hr = t.horario.map((d) => ({ ...d }));
+      const el = h(page(
+        topbar("Cobertura y horario"),
+        `
+      <section class="vx-pad-h"><h2 class="md-title-medium">Zona de cobertura</h2><p class="md-body-large" id="zTxt"></p><p class="md-body-medium vx-muted">${icon("pin", 14)} Punto base fijado en Valencia</p>${field({ id: "zKm", label: "Radio de cobertura (km)", value: String(t.radio), inputmode: "numeric" })}</section>
+      <section class="vx-pad-h"><h2 class="md-title-medium">Horario semanal</h2><ul class="vx-days" role="list">${hr.map((d, i) => `<li class="vx-day"><div class="vx-day-head"><span class="md-title-small">${d.d}</span>${switchHtml("dia" + i, `<span class="md-sr-only">${d.d} disponible</span>`, d.on)}</div>
+        <div class="vx-day-body" id="db${i}"></div></li>`).join("")}</ul></section>`,
+        btn("Guardar cambios", { kind: "filled", block: true, id: "hGo" })
+      ));
+      wireControls(el);
+      const body = (i) => {
+        const d = hr[i], b = el.querySelector("#db" + i);
+        b.innerHTML = d.on ? `<label class="vx-time"><span class="md-body-small vx-muted">De</span><input type="time" class="vx-timein" id="de${i}" value="${d.de}"></label><span class="md-body-medium">a</span><label class="vx-time"><span class="md-body-small vx-muted">Hasta</span><input type="time" class="vx-timein" id="a${i}" value="${d.a}"></label><p class="md-body-small vx-error-t" id="er${i}" role="alert"></p>` : '<p class="md-body-large vx-muted">No disponible</p>';
+      };
+      hr.forEach((_, i) => body(i));
+      el.addEventListener("change", (e) => {
+        const t2 = e.target;
+        const m = /^dia(\d)$/.exec(t2.id);
+        if (m) {
+          const i = Number(m[1]);
+          hr[i].on = t2.checked;
+          if (t2.checked && !hr[i].de) {
+            hr[i].de = "08:00";
+            hr[i].a = "17:00";
+          }
+          body(i);
+          return;
+        }
+        const n = /^(de|a)(\d)$/.exec(t2.id);
+        if (n) {
+          hr[Number(n[2])][n[1]] = t2.value;
+          el.querySelector("#er" + n[2]).textContent = "";
+        }
+      });
+      const zona = () => {
+        el.querySelector("#zTxt").textContent = `Recibes solicitudes a menos de ${el.querySelector("#zKm").value || "…"} km de Valencia.`;
+      };
+      el.querySelector("#zKm").addEventListener("input", zona);
+      zona();
+      el.querySelector("#hGo").addEventListener("click", () => {
+        const km = Number(el.querySelector("#zKm").value);
+        fieldError(el, "zKm", !(km >= 5 && km <= 100) ? "Escribe un radio entre 5 y 100 km" : "");
+        let bad = !(km >= 5 && km <= 100);
+        hr.forEach((d, i) => {
+          if (d.on && (!d.de || !d.a || d.a <= d.de)) {
+            bad = true;
+            el.querySelector("#er" + i).textContent = "La hora final debe ser después de la inicial";
+          }
+        });
+        if (bad) return;
+        t.radio = km;
+        t.horario = hr;
+        tecCambio(1);
+        set({ tec: t });
+        toast("Guardaste tu cobertura y horario");
+        back();
+      });
+      return el;
+    }
+  });
+  var DOC_TAG = { verificado: ["success", "Verificado"], rechazado: ["error", "Rechazado"], falta: ["warning", "Falta subirlo"], vencido: ["error", "Vencido"], revision: ["info", "En revisión"] };
+  var docsFaltan = () => T().docs.filter((d) => d.obligatorio && (d.estado === "rechazado" || d.estado === "falta")).length;
+  register("M8.09", {
+    render() {
+      const el = h(`<div>${topbar("Mis documentos")}<div class="vx-pad-h" id="docRes" role="status"></div><ul class="vx-orders vx-pad-h" role="list" id="docList"></ul></div>`);
+      const paint = () => {
+        const n = docsFaltan();
+        el.querySelector("#docRes").innerHTML = n ? banner("warning", `Te faltan ${plural(n, "documento obligatorio", "documentos obligatorios")}`) : banner("success", "Tus documentos obligatorios están al día");
+        el.querySelector("#docList").innerHTML = T().docs.map((d) => {
+          const vencido = d.vence && d.vence < HOY, est = vencido ? "vencido" : d.estado, [k, l] = DOC_TAG[est];
+          const accion = est === "rechazado" ? "Subir de nuevo" : est === "falta" ? "Subir" : est === "vencido" ? "Renovar" : null;
+          return `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small">${esc(d.nombre)}</span><span class="vx-tagrow">${statusTag(k, l)}<span class="vx-tag md-label-small">${d.obligatorio ? "Obligatorio" : "Opcional"}</span></span>
+          <span class="md-body-medium">${esc(d.ayuda)}</span>${d.subido ? `<span class="md-body-medium vx-muted vx-tab-num">Subido el ${d.subido}${d.valido ? ` · Válido hasta ${d.valido}` : ""}</span>` : ""}
+          ${est === "rechazado" ? `<span class="md-body-medium vx-reason">${icon("error", 16)} ${esc(d.motivo)}</span>` : ""}${vencido ? `<span class="md-body-medium vx-muted vx-tab-num">Venció el ${date(d.vence)}</span>` : ""}</span></div>
+          ${accion ? `<div class="vx-order-act"><input type="file" class="md-sr-only" id="f_${d.id}" accept="image/jpeg,image/png,image/webp,application/pdf" data-doc="${d.id}" tabindex="-1">${btn(`${icon("upload", 18)}${accion}`, { kind: "tonal", attrs: `data-sub="${d.id}"` })}</div>` : ""}</li>`;
+        }).join("");
+      };
+      el.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-sub]");
+        if (b) el.querySelector("#f_" + b.dataset.sub).click();
+      });
+      el.addEventListener("change", (e) => {
+        const f = e.target.closest("input[type=file]");
+        if (!f || !f.files[0]) return;
+        const file = f.files[0], d = T().docs.find((x) => x.id === f.dataset.doc);
+        if (file.size > 10 * 1024 * 1024) {
+          toast("El archivo pesa más de 10 MB");
+          return;
+        }
+        d.estado = "revision";
+        d.subido = date(HOY).slice(0, 5);
+        d.vence = null;
+        d.motivo = "";
+        d.valido = "";
+        tecCambio(1);
+        set({ tec: T() });
+        toast(`Subiste ${file.name}. VexBiz lo revisa en hasta 72 horas hábiles.`);
+      });
+      paint();
+      el.__un = subscribe(paint);
+      return el;
+    },
+    mount(el) {
+      return el.__un;
+    }
+  });
+  register("M8.10", {
+    render() {
+      const pf = perfilTecnico, el = h(`<div>${topbar("Perfil", { back: false, trailing: avisosBtn() })}
+      <section class="vx-profile vx-pad-h">${avatar("CM", true)}<div><p class="md-title-medium">Carlos Mendoza</p><p id="pfSello"></p></div></section>
+      <dl class="vx-stats3 vx-pad-h vx-stats3--3">${[[num(pf.rating, 1), "calificación"], [pf.opiniones, "opiniones"], [pf.trabajos, "trabajos"]].map(([n, l]) => `<div class="vx-stat vx-stat--c"><dd class="md-title-medium vx-tab-num">${n}</dd><dt class="md-body-small vx-muted">${l}</dt></div>`).join("")}</dl>
+      <section class="vx-pad-h"><p><span class="vx-tag md-label-medium">${pf.oficio}</span></p><div class="vx-sechead vx-sechead--0"><h2 class="md-title-medium">Presentación pública</h2>${btn("Editar", { kind: "text", id: "pfEd" })}</div>
+        <p class="md-body-large" id="pfTxt"></p><div id="pfForm" hidden>${area({ id: "pfArea", label: "Presentación pública", rows: 4 })}<div class="vx-row-end">${btn("Guardar", { kind: "filled", id: "pfSave" })}</div></div><p class="md-body-medium">${plural(pf.anios, "año", "años")} de experiencia</p>
+        ${btn("Ver mi perfil público", { kind: "text", go: "M4.04?id=cm" })}</section>
+      <ul class="vx-list" role="list">${row({ ic: "doc", title: "Mis documentos", go: "M8.09" })}${row({ ic: "wrench", title: "Mis oficios", go: "M8.07" })}${row({ ic: "wallet", title: "Membresía", go: "M8.12" })}${row({ ic: "swap", title: "Cambiar de modo", go: "O.MOD" })}</ul></div>`);
+      const paint = () => {
+        const oblig = T().docs.filter((d) => d.obligatorio), faltan = docsFaltan(), ok = oblig.every((d) => d.estado === "verificado");
+        el.querySelector("#pfSello").innerHTML = ok ? statusTag("success", "Verificado") : `${statusTag(faltan ? "warning" : "info", "Sin verificar")}<span class="md-body-medium vx-muted vx-block-t">${faltan ? "Sube tus documentos para obtener el sello" : "VexBiz está revisando tus documentos"}</span>${btn("Ir a mis documentos", { kind: "text", go: "M8.09" })}`;
+        el.querySelector("#pfTxt").textContent = T().presentacion;
+      };
+      el.querySelector("#pfEd").addEventListener("click", () => {
+        const f = el.querySelector("#pfForm");
+        f.hidden = !f.hidden;
+        if (!f.hidden) {
+          el.querySelector("#pfArea").value = T().presentacion;
+          el.querySelector("#pfArea").focus();
+        }
+      });
+      el.querySelector("#pfSave").addEventListener("click", () => {
+        const v = el.querySelector("#pfArea").value.trim();
+        fieldError(el, "pfArea", !v ? "Escribe tu presentación" : "");
+        if (!v) return;
+        T().presentacion = v;
+        tecCambio(1);
+        set({ tec: T() });
+        el.querySelector("#pfForm").hidden = true;
+        paint();
+        toast("Actualizaste tu presentación");
+      });
+      paint();
+      el.__un = subscribe(paint);
+      return el;
+    },
+    mount(el) {
+      return el.__un;
+    }
+  });
+  register("M8.11", {
+    render() {
+      const E = { Entregado: "success", "En camino": "info", "Pago reportado": "info" };
+      return h(`<div>${topbar("Compras de trabajo", { back: false })}
+      ${comprasTrabajo.map((g) => {
+        const gastado = round2(g.items.reduce((s, i) => s + i.total, 0));
+        return `<section class="vx-pad-h vx-cartgroup-t"><h2 class="md-title-medium">${esc(g.donde)}</h2><ul class="vx-orders vx-nopad" role="list">${g.items.map((i) => `<li class="vx-order"><button type="button" class="vx-order-main md-sl vx-press" data-go="M8.03">${thumb3()}
+          <span class="vx-order-text"><span class="md-body-large vx-tab-num">${i.id}</span><span class="md-body-medium vx-muted">${esc(i.tienda)}</span><span>${statusTag(E[i.estado] || "neutral", i.estado)}</span></span><span class="vx-order-end"><b class="md-title-small vx-tab-num">${money(i.total)}</b><span class="md-body-small vx-muted vx-tab-num">${i.fecha}</span></span></button></li>`).join("")}</ul>
+          <p class="vx-sumrow md-title-small vx-tab-num"><span>Gastado en este trabajo</span><b>${money(gastado)} USD</b></p><div class="vx-row-end">${btn("Ver el trabajo", { kind: "text", go: "M8.03" })}</div></section>`;
+      }).join("")}
+      <div class="vx-pad-h vx-stack"><p class="md-body-medium vx-muted">Aquí sólo salen las compras que marcaste para un trabajo al comprar.</p>${btn("Comprar repuestos", { kind: "text", go: "M2.01", kindNav: "mode" })}</div></div>`);
+    }
+  });
+  var membresia = (forzarSin) => ({
+    render() {
+      const sin = forzarSin ?? T().paisSinMembresia;
+      if (sin) return h(`<div>${topbar("Membresía")}<div class="vx-pad-h vx-stack">${banner("info", "En este país no hace falta membresía para recibir trabajos")}<p class="md-body-large">Mantén tus documentos y oficios al día para seguir apareciendo en el directorio.</p></div>
+      <ul class="vx-list" role="list">${row({ ic: "doc", title: "Mis documentos", go: "M8.09" })}${row({ ic: "wrench", title: "Mis oficios", go: "M8.07" })}</ul></div>`);
+      const sel = T().plan || "pro";
+      const el = h(page(
+        topbar("Membresía"),
+        `<p class="md-body-large vx-pad-h">Para recibir solicitudes hace falta una membresía activa.</p>
+      <div class="vx-options vx-pad-h" role="radiogroup" aria-label="Plan de membresía">${planes.map((p) => radioOpt({
+          name: "plan",
+          value: p.id,
+          checked: sel === p.id,
+          title: `${p.nombre}${p.recomendado ? ' <span class="vx-tag md-label-small">Recomendado</span>' : ""}`,
+          text: `<b class="md-title-medium vx-tab-num">${money(p.precio)}</b> USD · Se renueva cada 30 días`,
+          extra: `<ul class="vx-checklist vx-checklist--s" role="list">${p.lista.map((l) => `<li>${icon("check", 16)}<span class="md-body-medium">${l}</span></li>`).join("")}</ul>`
+        })).join("")}</div>
+      <p class="md-body-medium vx-muted vx-pad-h">El pago de la membresía se coordina con soporte.</p>`,
+        btn("Coordinar el pago con soporte", { kind: "filled", block: true, id: "mGo" })
+      ));
+      wireControls(el);
+      el.querySelector("#mGo").addEventListener("click", () => {
+        const id = el.querySelector("input[name=plan]:checked").value;
+        T().plan = id;
+        tecCambio(1);
+        set({ tec: T() });
+        toast(`Elegiste ${planes.find((p) => p.id === id).nombre}. Soporte te escribe por WhatsApp.`);
+      });
+      return el;
+    }
+  });
+  register("M8.12", membresia(void 0));
+  register("M8.12S", membresia(true));
 
   // assets/js/prefs.js
   var root = document.documentElement;
@@ -3696,7 +4434,7 @@
   }
 
   // assets/js/screens/m6b.js
-  var sec2 = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
+  var sec3 = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
   var mask = (doc) => {
     const d = doc.replace(/\D/g, "");
     return d.length >= 5 ? `${d.slice(0, 2)}.***.${d.slice(-3)}` : doc;
@@ -4107,10 +4845,10 @@
       const doc = (ic, t, d) => row({ ic, title: t, go: `M6.25?doc=${d}` });
       const ext = (ic, t) => row({ ic, title: t, attrs: SITIO, end: icon("globe", 20) });
       return h(`<div>${topbar("Ayuda e información")}<p class="md-body-medium vx-muted vx-pad-h">Lunes a sábado, 8:00 a 19:00</p>
-      ${sec2("Ayuda")}<ul class="vx-list" role="list">${doc("info", "Cómo comprar", "comprar")}${doc("truck", "Envíos", "envios")}${doc("receipt", "Devoluciones", "devoluciones")}</ul>
-      ${sec2("Legal y políticas")}<ul class="vx-list" role="list">${doc("doc", "Términos y condiciones", "terminos")}${doc("lock", "Política de privacidad", "privacidad")}${doc("doc", "Aviso legal", "aviso")}</ul>
-      ${sec2("VexBiz")}<ul class="vx-list" role="list">${doc("store", "Quiénes somos", "quienes")}${doc("tag", "Vender en VexBiz", "vender")}${doc("wrench", "Trabaja como técnico", "tecnico")}${doc("gift", "Franquicias", "franquicias")}</ul>
-      ${sec2("Más")}<ul class="vx-list" role="list">${row({ ic: "chat", title: "Contacto", go: "M6.26" })}${row({ ic: "eye", title: "Preferencias de accesibilidad", go: "M6.23" })}${row({ ic: "inbox", title: "Boletín", go: "M1.10" })}</ul>
+      ${sec3("Ayuda")}<ul class="vx-list" role="list">${doc("info", "Cómo comprar", "comprar")}${doc("truck", "Envíos", "envios")}${doc("receipt", "Devoluciones", "devoluciones")}</ul>
+      ${sec3("Legal y políticas")}<ul class="vx-list" role="list">${doc("doc", "Términos y condiciones", "terminos")}${doc("lock", "Política de privacidad", "privacidad")}${doc("doc", "Aviso legal", "aviso")}</ul>
+      ${sec3("VexBiz")}<ul class="vx-list" role="list">${doc("store", "Quiénes somos", "quienes")}${doc("tag", "Vender en VexBiz", "vender")}${doc("wrench", "Trabaja como técnico", "tecnico")}${doc("gift", "Franquicias", "franquicias")}</ul>
+      ${sec3("Más")}<ul class="vx-list" role="list">${row({ ic: "chat", title: "Contacto", go: "M6.26" })}${row({ ic: "eye", title: "Preferencias de accesibilidad", go: "M6.23" })}${row({ ic: "inbox", title: "Boletín", go: "M1.10" })}</ul>
       <section class="vx-pad-h vx-stack vx-pad-v"><h2 class="md-title-medium">¿Tienes dudas con un pedido?</h2>${btn("Ir a mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${whatsappBtn("Escríbenos por WhatsApp", 'data-toast="Abre el WhatsApp de VexBiz: lunes a sábado, 8:00 a 19:00"')}</section></div>`);
     }
   });
@@ -4130,7 +4868,7 @@
     render() {
       const red = (ic, t, d) => row({ ic, title: t, sup: d, attrs: SITIO, end: icon("globe", 20) });
       return h(`<div>${topbar("Contacto")}<div class="vx-pad-h vx-stack"><p class="md-body-medium vx-muted">Lunes a sábado, 8:00 a 19:00</p>${whatsappBtn("Escríbenos por WhatsApp", 'data-toast="Abre el WhatsApp de VexBiz: lunes a sábado, 8:00 a 19:00"')}</div>
-      ${sec2("Redes sociales")}<ul class="vx-list" role="list">${red("globe", "Instagram", "@vexbiz.ve")}${red("globe", "Facebook", "VexBiz Venezuela")}${red("globe", "YouTube", "VexBiz")}</ul>
+      ${sec3("Redes sociales")}<ul class="vx-list" role="list">${red("globe", "Instagram", "@vexbiz.ve")}${red("globe", "Facebook", "VexBiz Venezuela")}${red("globe", "YouTube", "VexBiz")}</ul>
       <section class="vx-pad-h vx-stack vx-pad-v"><h2 class="md-title-medium">¿Es por un pedido?</h2><p class="md-body-large">Desde el pedido puedes calificar, devolver o abrir un reclamo.</p>
         ${btn("Ir a mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${btn("Ver ayuda e información", { kind: "text", block: true, go: "M6.24" })}</section></div>`);
     }
@@ -4195,7 +4933,23 @@
     e.preventDefault();
     go(a.dataset.idx, { kind: "swap" });
   });
-  subscribe(() => paintSegs());
+  function paintTec() {
+    [["swOffline", state.tec.offline], ["swPais", state.tec.paisSinMembresia]].forEach(([id, on]) => {
+      const i = $("#" + id);
+      i.checked = on;
+      i.nextElementSibling.classList.toggle("md-switch-track--on", on);
+    });
+  }
+  $("#swOffline").addEventListener("change", (e) => tecSenal(e.target.checked));
+  $("#swPais").addEventListener("change", (e) => {
+    state.tec.paisSinMembresia = e.target.checked;
+    set({ tec: state.tec });
+  });
+  subscribe(() => {
+    paintSegs();
+    paintTec();
+  });
+  paintTec();
   window.addEventListener("hashchange", () => setTimeout(paintIndex, 400));
   document.addEventListener("click", (e) => {
     if (e.target.closest("#phone,#index")) setTimeout(paintIndex, 450);

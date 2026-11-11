@@ -345,6 +345,32 @@ a { color: inherit; }
 .vx-answers { padding-top: 0; } .vx-ans { display: grid; gap: 4px; justify-items: start; padding: 12px; border-radius: var(--md-sys-shape-corner-medium); background: var(--md-sys-color-surface-container); width: 100%; } .vx-ans p { margin: 0; }
 .vx-levelbox { display: grid; gap: 4px; } .vx-levelbox p, .vx-levelbox h2 { margin: 0; } .vx-neg { color: var(--md-sys-color-error); } .vx-here { background: var(--md-sys-color-secondary-container); border-radius: var(--md-sys-shape-corner-medium); }
 
+
+/* ═══ Fase 4 · Modo Técnico ═══════════════════════════════════════════════════ */
+/* Aviso «cambios guardados en el teléfono» (Patrón 21): baja 12 px y se aclara; después solo cambia el texto. Solo transform y opacity. */
+@keyframes vx-drop-in { from { transform: translateY(calc(var(--vx-rise) * -1)); } to { transform: none; } }
+.vx-drop { animation: vx-drop-in var(--vx-dur) var(--vx-ease-emphasized) both, vx-fade-in var(--vx-dur) var(--vx-ease-fade) both; }
+.vx-offline { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--md-sys-shape-corner-medium); border: 1px solid var(--_bd); background: var(--_bg); color: var(--_fg); }
+.vx-offline--info { --_bg: var(--vx-status-info-bg); --_fg: var(--vx-status-info-fg); --_bd: var(--vx-status-info-bd); }
+.vx-offline--success { --_bg: var(--vx-status-success-bg); --_fg: var(--vx-status-success-fg); --_bd: var(--vx-status-success-bd); }
+.vx-offline svg { flex: none; } .vx-offline-txt { flex: 1; min-width: 0; } .vx-offline-txt p { margin: 0; } .vx-offline .md-btn { min-height: 44px; padding: 0 8px; --_fg: var(--_fg); }
+.vx-sechead--0 { padding: 0; } .vx-save { display: inline-flex; align-items: center; gap: 4px; color: var(--vx-status-success-fg); }
+.vx-totrow { display: flex; justify-content: space-between; align-items: baseline; margin: 0; } .vx-totrow b { font-weight: 700; }
+.vx-eyebrow { margin: 0 0 4px; }
+/* Firma */
+.vx-sign { position: relative; } .vx-canvas { display: block; width: 100%; height: 200px; touch-action: none; cursor: crosshair; color: var(--md-sys-color-on-surface); background: var(--md-sys-color-surface-container-low); border-radius: var(--md-sys-shape-corner-medium); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline); }
+.vx-sign-hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; pointer-events: none; }
+/* Horario */
+.vx-days { list-style: none; margin: 0; padding: 0; } .vx-day { padding: 8px 0; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+.vx-day-head { display: flex; align-items: center; justify-content: space-between; } .vx-day-head .md-switch { min-height: 44px; }
+.vx-day-body { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; } .vx-day-body p { margin: 0; }
+.vx-time { display: grid; gap: 2px; } .vx-timein { min-height: 48px; padding: 0 12px; border: 0; border-radius: var(--md-sys-shape-corner-small); background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline); font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; }
+.vx-timein:focus { outline: none; box-shadow: inset 0 0 0 2px var(--md-sys-color-secondary); } .vx-error-t { flex-basis: 100%; color: var(--md-sys-color-error); }
+/* Perfil y compras */
+.vx-stats3--3 { grid-template-columns: repeat(3, 1fr); margin: 0; } .vx-stats3--3 .vx-stat { margin: 0; } .vx-stats3--3 dd, .vx-stats3--3 dt { margin: 0; }
+.vx-block-t { display: block; margin: 2px 0; } .vx-cartgroup-t { padding-top: 8px; } .vx-cartgroup-t h2 { margin: 8px 0; }
+.vx-order-end { display: grid; justify-items: end; gap: 2px; text-align: right; } .vx-checklist--s { gap: 4px; margin-top: 4px; }
+
 /* ═══ Panel del prototipo ════════════════════════════════════════════════════ */
 .panel {
   flex: none; width: 340px; max-height: calc(100vh - 32px); overflow-y: auto; padding: 16px; border-radius: var(--md-sys-shape-corner-large);

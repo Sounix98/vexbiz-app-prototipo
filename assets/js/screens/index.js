@@ -6,4 +6,5 @@ import './m3.js';
 import './m4.js';
 import './m5.js';
 import './m6a.js';
+import './m8.js';
 import './m6b.js';

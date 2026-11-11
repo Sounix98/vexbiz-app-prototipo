@@ -2,6 +2,7 @@
 import { carritoInicial, producto, precioDe, tiendaDe, direcciones, pagosIni, sesionesIni, reclamosIni, devolucionesIni, avisosCuenta } from './data.js';
 import { round2 } from './format.js';
 import { PUNTOS_INI, historialPuntos, avanceIni, preguntasIni } from './data2.js';
+import { solicitudesIni, trabajoIni, serviciosIni, horarioIni, oficiosIni, docsIni, perfilTecnico } from './data3.js';
 
 const PREF_KEY = 'vx-proto-prefs';
 const listeners = new Set();
@@ -29,6 +30,15 @@ const fresh = () => ({
   academia: { puntos: PUNTOS_INI, historial: historialPuntos.map((h) => ({ ...h })), avance: JSON.parse(JSON.stringify(avanceIni)), inscritos: ['inv', 'gas', 'split'],
     eventos: { solar: false, tableros: true }, offline: {}, preguntasHoy: 2 },
   preguntas: preguntasIni.map((q) => ({ ...q, respuestas: q.respuestas.map((r) => ({ ...r })) })),
+  // Modo Técnico (Fase 4)
+  tec: {
+    offline: true, cambios: 2, enviando: false,   // sin señal: los cambios quedan «guardados en el teléfono» y se envían solos al volver
+    paisSinMembresia: false,                      // variante de M8.12 según el país (lo cambia el panel)
+    solicitudes: solicitudesIni.map((s) => ({ ...s, venceAt: s.venceEn > 0 ? Date.now() + s.venceEn : 0 })),
+    trabajo: JSON.parse(JSON.stringify(trabajoIni)), cerrados: [],
+    servicios: serviciosIni.map((s) => ({ ...s })), horario: horarioIni.map((h) => ({ ...h })), radio: 25,
+    oficios: oficiosIni.map((o) => ({ ...o })), docs: docsIni.map((d) => ({ ...d })), presentacion: perfilTecnico.presentacion, plan: null,
+  },
 });
 
 export const state = fresh();
@@ -78,4 +88,19 @@ export function loadPrefs() {
 }
 export function savePrefs(patch) {
   try { localStorage.setItem(PREF_KEY, JSON.stringify({ ...loadPrefs(), ...patch })); } catch { /* sin almacenamiento: no pasa nada */ }
+}
+
+// ── Modo Técnico: trabajo sin conexión ──────────────────────────────────────
+let syncTimer = null;
+/** Registra un cambio hecho por el técnico. Sin señal queda «guardado en el teléfono»; con señal sale de inmediato. */
+export function tecCambio(n = 1) {
+  if (state.tec.offline) { state.tec.cambios += n; emit(); }
+}
+/** Pone o quita la señal. Al volver, los cambios guardados se envían solos (se simula 1,2 s). */
+export function tecSenal(offline) {
+  state.tec.offline = offline; clearTimeout(syncTimer);
+  if (!offline && state.tec.cambios > 0) {
+    state.tec.enviando = true; emit();
+    syncTimer = setTimeout(() => { state.tec.cambios = 0; state.tec.enviando = false; emit(); }, 1200);
+  } else { state.tec.enviando = false; emit(); }
 }

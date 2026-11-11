@@ -3,7 +3,7 @@ import './screens/index.js';
 import { start, go, goHome, currentCode } from './router.js';
 import { INDEX, MODULES, MODE_NAME, META } from './screens/catalog.js';
 import { defs } from './screens/registry.js';
-import { state, set, subscribe, reset, loadPrefs, savePrefs } from './store.js';
+import { state, set, subscribe, reset, loadPrefs, savePrefs, tecSenal } from './store.js';
 import { $, $$ } from './ui.js';
 import { esc } from './format.js';
 import { wireAdd } from './market.js';
@@ -59,7 +59,13 @@ $('#index').addEventListener('click', (e) => {
   e.preventDefault();
   go(a.dataset.idx, { kind: 'swap' });
 });
-subscribe(() => paintSegs());
+function paintTec() {
+  [['swOffline', state.tec.offline], ['swPais', state.tec.paisSinMembresia]].forEach(([id, on]) => { const i = $('#' + id); i.checked = on; i.nextElementSibling.classList.toggle('md-switch-track--on', on); });
+}
+$('#swOffline').addEventListener('change', (e) => tecSenal(e.target.checked));
+$('#swPais').addEventListener('change', (e) => { state.tec.paisSinMembresia = e.target.checked; set({ tec: state.tec }); });
+subscribe(() => { paintSegs(); paintTec(); });
+paintTec();
 window.addEventListener('hashchange', () => setTimeout(paintIndex, 400));
 document.addEventListener('click', (e) => { if (e.target.closest('#phone,#index')) setTimeout(paintIndex, 450); });
 addEventListener('resize', fit);
