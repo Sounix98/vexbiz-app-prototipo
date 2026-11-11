@@ -85,6 +85,12 @@
     { id: "tal", qty: 1 },
     { id: "llav", qty: 1 }
   ];
+  var pedidos = [
+    { id: "#VX-20431", tienda: "Frío Total C.A.", fecha: "15/10", total: 422.4, estado: "Falta pagar" },
+    { id: "#VX-20432", tienda: "Herramientas Andina", fecha: "15/10", total: 154.8, estado: "Pago reportado" },
+    { id: "#VX-20377", tienda: "Repuestos Express", fecha: "02/10", total: 45.6, estado: "En camino" },
+    { id: "#VX-20211", tienda: "ElectroHogar", fecha: "18/09", total: 39.2, estado: "Entregado" }
+  ];
   var compra = {
     pasarela: { total: 466.14, impuestoPct: 2, tasaDia: "16/10", intento: "SP-88123" },
     debitoPct: 3,
@@ -137,17 +143,81 @@
     { t: "compresor 12000 btu", n: "86 resultados" }
   ];
   var recientes = ["aire split 12000", "capacitor 35 uf"];
+  var HOY = new Date(2026, 9, 16);
+  var IMPUESTO_INCLUIDO = 19;
+  var garantias = [
+    { id: "g1", producto: "Aire split inverter 12.000 BTU", responde: "Samsung, por Frío Total C.A.", hasta: new Date(2027, 9, 16), ref: "Pedido #VX-20412" },
+    { id: "g2", producto: "Instalación de aire split", responde: "ClimaPro Servicios", hasta: new Date(2027, 0, 18), ref: "Solicitud #S-2041" },
+    { id: "g3", producto: "Capacitor de marcha 35+5 µF", responde: "Frío Total C.A.", hasta: new Date(2026, 8, 2), ref: "Pedido #VX-19870" }
+  ];
+  var detallePedidos = {
+    "#VX-20211|ElectroHogar": { emitido: "18/09/2026", envio: { empresa: "Zoom", despachado: "19/09/2026", guia: "1234 5678 90" }, factura: { n: "000-0458", fecha: "19/09/2026" }, lineas: [
+      { n: "Bombillo LED 12W · pack x4", q: 2, p: 9.8, garantia: "18/03/2027" },
+      { n: "Regleta con protector 6 tomas", q: 2, p: 9.8, garantia: "18/09/2027", devolucion: "1 de 2 en devolución" }
+    ] },
+    "#VX-20431|Frío Total C.A.": { emitido: "15/10/2026", lineas: [{ n: "Aire split inverter 12.000 BTU", q: 1, p: 389 }, { n: "Control remoto universal", q: 2, p: 12.5 }] },
+    "#VX-20432|Herramientas Andina": { emitido: "15/10/2026", lineas: [{ n: "Taladro percutor inalámbrico 18V", q: 1, p: 129.9 }, { n: "Juego de llaves 12 piezas", q: 1, p: 24.9 }] },
+    "#VX-20377|Repuestos Express": { emitido: "02/10/2026", envio: { empresa: "MRW", despachado: "03/10/2026", guia: "4019-882-113" }, lineas: [{ n: "Kit de mantenimiento para aire acondicionado", q: 1, p: 45.6 }] },
+    // INVENTADO
+    "#VX-20430|Frío Total C.A.": { emitido: "16/10/2026", lineas: [{ n: "Aire split inverter 12.000 BTU", q: 1, p: 389 }] },
+    "#VX-20431|ClimaRepuestos": { emitido: "16/10/2026", lineas: [{ n: "Tarjeta electrónica condensadora split 12K", q: 1, p: 64 }] }
+  };
+  var reclamosIni = [
+    {
+      id: "#R-0091",
+      pedido: "#VX-20301",
+      tienda: "Herramientas Andina",
+      total: 24.9,
+      fecha: "03/10",
+      abierto: "03/10/2026",
+      estado: "En mediación",
+      resumen: "El control remoto no es compatible con mi equipo…",
+      motivo: "El control remoto no es compatible con mi equipo y la tienda no me responde.",
+      ultimo: "VexBiz",
+      mensajes: [{ de: "Tú", hora: "10:12", t: "Pedí el control para un LG y me llegó uno que no lo reconoce." }, { de: "La tienda", hora: "15:40", t: "Podemos cambiarlo por el modelo correcto sin costo." }, { de: "VexBiz", hora: "09:00", t: "La tienda tiene hasta el 07/10 para enviar el cambio o aprobar el reembolso." }]
+    },
+    { id: "#R-0074", pedido: "#VX-20188", fecha: "18/09", estado: "Resuelto", resumen: "Me enviaron la tarjeta de un modelo distinto.", resolucion: "Reembolso total de $ 64,00 al comprador." }
+  ];
+  var devolucionesIni = [{ id: "#D-0031", pedido: "#VX-20211", item: "Regleta con protector 6 tomas", unidades: 1, estado: "En revisión", fecha: "20/09" }];
+  var avisosCuenta = [
+    { id: "a1", t: "La compra #VX-20430 vence en 2 horas", d: "Transfiere antes de las 18:00 o se cancela.", cuando: "hace 10 min", nuevo: true, to: "M3.09", ic: "clock" },
+    { id: "a2", t: "Tu pedido #VX-20412 va en camino", d: "MRW · guía 4019-882-113.", cuando: "hace 2 h", to: "M6.04", ic: "truck" },
+    { id: "a3", t: "ClimaPro te mandó una cotización", d: "$ 85,00 para el sábado 18/10.", cuando: "hace 5 h", to: "M6.12", ic: "wrench" },
+    { id: "a4", t: "Tu reclamo #R-0074 se resolvió a tu favor", d: "Reembolso de $ 64,00.", cuando: "hace 3 días", to: "M6.09", ic: "check" }
+  ];
+  var pagosIni = [
+    { id: "nomina", titulo: "Nómina", sub: "Cobro a tu cuenta", preferida: true, doc: "V-18.***.789", cuenta: "····4567", ultimo: "12/10/2026" },
+    { id: "banesco", titulo: "Banesco ····1234", sub: "Teléfono y banco", doc: "V-18.***.789", tel: "0414 ···1234", ultimo: "28/09/2026", falla: true },
+    { id: "binance", titulo: "Binance", sub: "Binance Pay", correo: "an***@correo.com" }
+  ];
+  var sesionesIni = [
+    { id: "s1", equipo: "App VexBiz", so: "Android 15", actual: true, ip: "200.84.12.6", desde: "02/10", ic: "phone" },
+    { id: "s2", equipo: "Chrome", so: "Windows 11", ip: "190.205.33.18", desde: "16/10", ic: "desktop" },
+    { id: "s3", equipo: "Safari", so: "iPhone", ip: "190.205.33.18", desde: "12/10", ic: "phone" }
+  ];
+  var serviciosPedidos = [
+    { id: "#S-2041", estado: "Aceptado · agendando", ok: false, servicio: "Instalación de aire split 12.000 BTU", quien: "ClimaPro Servicios", nota: "La empresa asignará al técnico", cuando: "Sáb 18/10 · 09:00", total: 85, donde: "Urb. El Viñedo, Calle 4, Valencia" },
+    { id: "#S-1977", estado: "Trabajo completado", ok: true, servicio: "Mantenimiento preventivo", quien: "Carlos Mendoza", rating: 4.8, cuando: "02/10 · 14:00", total: 35 }
+  ];
+  var estadosVE = { Carabobo: ["Valencia", "San Diego", "Naguanagua"], "Distrito Capital": ["Caracas"], Aragua: ["Maracay", "Turmero"], Lara: ["Barquisimeto"], Mérida: ["Mérida"] };
+  var bancosVE = ["Banesco", "Mercantil", "Banco de Venezuela", "BBVA Provincial", "Bancamiga"];
 
   // assets/js/format.js
   var nf = (min, max) => new Intl.NumberFormat("es-VE", { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: "always" });
   var nf2 = nf(2, 2);
   var nf0 = nf(0, 0);
+  var nf1 = nf(1, 1);
   var round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
   var money = (usd) => `$ ${nf2.format(usd)}`;
-  var num = (n, decimals = 2) => (decimals === 0 ? nf0 : nf2).format(n);
+  var num = (n, decimals = 2) => (decimals === 0 ? nf0 : decimals === 1 ? nf1 : nf2).format(n);
   var bs = (usd, { decimals = 2, tasa = TASA } = {}) => `Bs ${(decimals === 0 ? nf0 : nf2).format(usd * tasa)}`;
   var bsRef = (usd, tasaDia = "15/10", opts) => `≈ ${bs(usd, opts)} · tasa del ${tasaDia}`;
   var pct = (base, p) => round2(base * p / 100);
+  var date = (d) => {
+    const x = d instanceof Date ? d : new Date(d);
+    const p = (n) => String(n).padStart(2, "0");
+    return `${p(x.getDate())}/${p(x.getMonth() + 1)}/${x.getFullYear()}`;
+  };
   var plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
   var clock = (ms, { pad = false } = {}) => {
     const s = Math.max(0, Math.ceil(ms / 1e3));
@@ -377,7 +447,20 @@
     // pedidos creados en la demo
     flow: { demoPago: "aprobado", direccion: "casa", metodo: "debito", banco: "banesco", retiro: {}, filtros: { orden: "relevantes", marcas: [], nuevo: false, soloDisp: false, min: "", max: "" } },
     // paso actual de los flujos
-    sonidoAvisos: true
+    sonidoAvisos: true,
+    // Cuenta y postventa (Fase 2): todo editable en la demo y se reinicia con «Reiniciar datos»
+    dirs: direcciones.map((d) => ({ ...d })),
+    pagos: pagosIni.map((x) => ({ ...x })),
+    sesiones: sesionesIni.map((x) => ({ ...x })),
+    reclamos: reclamosIni.map((x) => ({ ...x, mensajes: x.mensajes ? x.mensajes.map((m) => ({ ...m })) : void 0 })),
+    devoluciones: devolucionesIni.map((x) => ({ ...x })),
+    avisosCuenta: avisosCuenta.map((x) => ({ ...x })),
+    dosPasos: false,
+    // verificación en dos pasos activa
+    empresaRegistrada: false,
+    // «Registrar mi empresa» completado
+    calificaciones: {}
+    // pedido → { nota, texto }
   });
   var state = fresh();
   function set(patch) {
@@ -473,14 +556,14 @@
     [...list.children].forEach((c, i) => c.style.setProperty("--i", i));
     list.classList.add("vx-stagger");
   }
-  function reveal(root2) {
+  function reveal(root3) {
     const io = new IntersectionObserver((es) => es.forEach((e) => {
       if (e.isIntersecting) {
         e.target.classList.add("is-in");
         io.unobserve(e.target);
       }
-    }), { threshold: 0.12, root: root2.closest(".screen") || null });
-    root2.querySelectorAll(".vx-reveal").forEach((n) => io.observe(n));
+    }), { threshold: 0.12, root: root3.closest(".screen") || null });
+    root3.querySelectorAll(".vx-reveal").forEach((n) => io.observe(n));
   }
   function play(el, cls) {
     if (!el) return;
@@ -560,6 +643,16 @@
     edit: "M4 20h4L19 9l-4-4L4 16zM13 7l4 4",
     truck: "M3 7h11v9H3zM14 10h4l3 3v3h-7",
     eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    chat: "M4 5h16v11H9l-5 4zM8 10h8M8 13h5",
+    phone: "M8 3h8v18H8zM11 18h2",
+    desktop: "M3 5h18v11H3zM8 20h8M12 16v4",
+    more2: '<circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/>',
+    star: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z",
+    logout: "M10 5H5v14h5M14 8l4 4-4 4M18 12H9",
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+    doc: "M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5",
+    key: '<circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5L20 3M16 7l3 3"/>',
+    gift: "M4 9h16v4H4zM6 13v7h12v-7M12 9v11M12 9c-2 0-4-1-4-3s3-2 4 3zM12 9c2 0 4-1 4-3s-3-2-4 3z",
     menu: "M4 6h16M4 12h16M4 18h16",
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'
   };
@@ -573,8 +666,8 @@
     t.innerHTML = html.trim();
     return t.content.firstElementChild;
   };
-  var $ = (sel, root2 = document) => root2.querySelector(sel);
-  var $$ = (sel, root2 = document) => [...root2.querySelectorAll(sel)];
+  var $ = (sel, root3 = document) => root3.querySelector(sel);
+  var $$ = (sel, root3 = document) => [...root3.querySelectorAll(sel)];
   var topbar = (title, { back: back3 = true, trailing = "", close = false } = {}) => `
   <header class="md-topbar"><div class="md-topbar-row">
     ${back3 ? `<button type="button" class="md-iconbtn md-iconbtn--standard md-sl" ${close ? "data-close" : "data-back"} aria-label="${close ? "Cerrar" : "Volver"}">${icon(close ? "close" : "back")}</button>` : ""}
@@ -663,7 +756,7 @@
   subscribe(paintCart);
 
   // assets/js/router.js
-  var ALIAS = Object.fromEntries(INDEX.filter((r) => r.alias).map((r) => [r.label.replace(" ▣", ""), r.id]));
+  var ALIAS = Object.fromEntries(INDEX.filter((r) => r.alias && !r.label.includes("▣")).map((r) => [r.label, r.id]));
   var resolve = (code) => ALIAS[code] || code;
   var stack = [];
   var visited = /* @__PURE__ */ new Set();
@@ -674,12 +767,12 @@
   var navId = 0;
   var view = () => $("#view");
   var parse = (hash) => {
-    const [path, qs = ""] = hash.replace(/^#\/?/, "").split("?");
-    return { code: resolve(decodeURIComponent(path)), params: Object.fromEntries(new URLSearchParams(qs)) };
+    const [path, qs2 = ""] = hash.replace(/^#\/?/, "").split("?");
+    return { code: resolve(decodeURIComponent(path)), params: Object.fromEntries(new URLSearchParams(qs2)) };
   };
   var hashOf = (code, params = {}) => {
-    const qs = new URLSearchParams(params).toString();
-    return `#/${code}${qs ? "?" + qs : ""}`;
+    const qs2 = new URLSearchParams(params).toString();
+    return `#/${code}${qs2 ? "?" + qs2 : ""}`;
   };
   function setHash(code, params) {
     internal = true;
@@ -859,8 +952,8 @@
         closeOverlay();
       }
       if (e.key === "Tab") {
-        const root2 = overlay.type === "dialog" ? $("#dialog") : $("#sheet");
-        const f = [...root2.querySelectorAll('button,a[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter((n) => !n.disabled && n.offsetParent !== null);
+        const root3 = overlay.type === "dialog" ? $("#dialog") : $("#sheet");
+        const f = [...root3.querySelectorAll('button,a[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter((n) => !n.disabled && n.offsetParent !== null);
         if (!f.length) return;
         const first2 = f[0], last = f[f.length - 1];
         if (e.shiftKey && document.activeElement === first2) {
@@ -898,7 +991,7 @@
   var closeBtn = () => iconBtn("close", "Cerrar", "data-close");
   register("O.MOD", {
     render() {
-      const row = (mode, ic, title, text) => `
+      const row2 = (mode, ic, title, text) => `
       <li><button type="button" class="md-li md-li--2 md-sl vx-press vx-row" data-mode="${mode}"${state.mode === mode ? ' aria-current="true"' : ""}>
         <span class="md-li-icon">${icon(ic)}</span>
         <span class="md-li-text"><span class="md-li-title md-body-large">${title}</span><span class="md-li-sup md-body-medium">${text}</span></span>
@@ -906,15 +999,16 @@
       </button></li>`;
       const el = h(`<div>${sheetHead("Cambiar de modo", closeBtn())}
       <ul class="vx-list" role="list">
-        ${row("comprador", "bag", "Comprador", "Compra productos y pide servicios.")}
-        ${row("tienda", "store", "Tienda", "Pedidos, productos y dinero de Frío Total.")}
-        ${row("tecnico", "wrench", "Técnico", "Tus trabajos, servicios y compras de trabajo.")}
+        ${row2("comprador", "bag", "Comprador", "Compra productos y pide servicios.")}
+        ${row2("tienda", "store", "Tienda", "Pedidos, productos y dinero de Frío Total.")}
+        ${row2("tecnico", "wrench", "Técnico", "Tus trabajos, servicios y compras de trabajo.")}
+        ${state.empresaRegistrada ? row2("empresa", "toolbox", "Empresa de servicio", "Solicitudes, catálogo y perfil de tu empresa.") : ""}
       </ul>
-      <p class="md-label-large vx-sub">Haz más con VexBiz</p>
+      ${state.empresaRegistrada ? "" : `<p class="md-label-large vx-sub">Haz más con VexBiz</p>
       <ul class="vx-list" role="list"><li><button type="button" class="md-li md-li--2 md-sl vx-press vx-row" data-empresa>
         <span class="md-li-icon">${icon("toolbox")}</span>
         <span class="md-li-text"><span class="md-li-title md-body-large">Registrar mi empresa de servicios</span></span>
-        <span class="md-li-end">${icon("chevron")}</span></button></li></ul></div>`);
+        <span class="md-li-end">${icon("chevron")}</span></button></li></ul>`}</div>`);
       el.addEventListener("click", async (e) => {
         const m = e.target.closest("[data-mode]");
         if (m) {
@@ -1107,10 +1201,10 @@
     <label class="md-tf-box"><span class="md-tf-content"><span class="md-tf-label md-body-small">${esc(label)}</span>
       <input class="md-tf-input md-body-large" id="${id}" name="${id}" type="${type}" value="${esc(value)}"${autocomplete ? ` autocomplete="${autocomplete}"` : ""}${inputmode ? ` inputmode="${inputmode}"` : ""}${placeholder ? ` placeholder="${esc(placeholder)}"` : ""} aria-describedby="${id}-help"${error ? ' aria-invalid="true"' : ""} ${attrs}></span>${trail}</label>
     <span class="md-tf-help md-body-small" id="${id}-help">${esc(error || help)}</span></div>`;
-  function fieldError(root2, id, msg) {
-    const wrap = $(`[data-field="${id}"]`, root2);
+  function fieldError(root3, id, msg) {
+    const wrap = $(`[data-field="${id}"]`, root3);
     if (!wrap) return;
-    const help = $(`#${id}-help`, wrap), input = $("input", wrap);
+    const help = $(`#${id}-help`, wrap), input = $("input,textarea,select", wrap);
     wrap.classList.toggle("md-tf--error", !!msg);
     msg ? input.setAttribute("aria-invalid", "true") : input.removeAttribute("aria-invalid");
     if (msg) {
@@ -1136,11 +1230,11 @@
     <span class="vx-opt-text"><span class="md-body-large">${title}</span>${text ? `<span class="md-body-medium vx-muted">${text}</span>` : ""}${extra}</span>${end}</label>`;
   var switchHtml = (id, label, on = false) => `<label class="md-switch vx-switch-row"><span class="md-body-large">${label}</span>
   <input class="md-sr-only" type="checkbox" role="switch" id="${id}"${on ? " checked" : ""}><span class="md-switch-track${on ? " md-switch-track--on" : ""}" aria-hidden="true"><span class="md-switch-handle vx-thumb"></span></span></label>`;
-  function wireControls(root2) {
-    root2.addEventListener("change", (e) => {
+  function wireControls(root3) {
+    root3.addEventListener("change", (e) => {
       const t = e.target;
       if (t.matches("input[role=switch]")) t.nextElementSibling.classList.toggle("md-switch-track--on", t.checked);
-      if (t.matches("input[type=radio]")) $$(`input[name="${t.name}"]`, root2).forEach((r) => r.closest(".vx-opt")?.classList.toggle("is-on", r.checked));
+      if (t.matches("input[type=radio]")) $$(`input[name="${t.name}"]`, root3).forEach((r) => r.closest(".vx-opt")?.classList.toggle("is-on", r.checked));
     });
   }
   var page = (top2, body, action = "") => `<div class="vx-page">${top2}<div class="vx-body">${body}</div>${action ? `<footer class="vx-actionbar">${action}</footer>` : ""}</div>`;
@@ -1149,8 +1243,8 @@
   <li class="vx-step${i + 1 < n ? " is-done" : ""}${i + 1 === n ? " is-on" : ""}"${i + 1 === n ? ' aria-current="step"' : ""}>
     <span class="vx-step-dot md-label-large">${i + 1 < n ? icon("check", 16) : i + 1}</span><span class="md-label-medium">${s}</span></li>
   ${i < 2 ? `<li class="vx-step-line" aria-hidden="true"><i data-full="${i + 1 < n ? 1 : 0}"></i></li>` : ""}`).join("")}</ol>`;
-  function fillSteps(root2) {
-    requestAnimationFrame(() => $$(".vx-step-line i", root2).forEach((i) => i.classList.toggle("is-full", i.dataset.full === "1")));
+  function fillSteps(root3) {
+    requestAnimationFrame(() => $$(".vx-step-line i", root3).forEach((i) => i.classList.toggle("is-full", i.dataset.full === "1")));
   }
   var banner = (kind, text, extra = "") => `<div class="vx-banner vx-banner--${kind}" role="${kind === "error" ? "alert" : "status"}">${icon({ info: "info", warning: "warning", error: "error", success: "check", neutral: "info" }[kind], 20)}<p class="md-body-medium">${text}</p>${extra}</div>`;
   var stepper = (key, qty, max = 99) => `<span class="vx-stepper" role="group" aria-label="Cantidad">
@@ -1188,8 +1282,8 @@
     if (e.target.closest("[data-go]")) closeOverlay({ silent: true });
   });
   var otpHtml = (id, n, prefill = "", label = "Código") => `<div class="vx-otp" id="${id}" role="group" aria-label="${label}" style="--n:${n}">${Array.from({ length: n }, (_, i) => `<input class="vx-otp-box md-title-large" inputmode="numeric" autocomplete="${i === 0 ? "one-time-code" : "off"}" maxlength="1" aria-label="Dígito ${i + 1} de ${n}" value="${prefill[i] || ""}">`).join("")}</div>`;
-  function wireOtp(root2, id, onChange) {
-    const boxes = $$("input", $(`#${id}`, root2));
+  function wireOtp(root3, id, onChange) {
+    const boxes = $$("input", $(`#${id}`, root3));
     const value = () => boxes.map((b) => b.value).join("");
     boxes.forEach((b, i) => {
       b.addEventListener("input", () => {
@@ -1213,6 +1307,19 @@
     });
     return { value, focusFirstEmpty: () => (boxes.find((b) => !b.value) || boxes[boxes.length - 1]).focus() };
   }
+  var area = ({ id, label, value = "", help = "", rows = 4, placeholder = "" }) => `
+  <div class="md-tf md-tf--outlined" data-field="${id}" data-help="${esc(help)}">
+    <label class="md-tf-box vx-area-box"><span class="md-tf-content"><span class="md-tf-label md-body-small">${esc(label)}</span>
+      <textarea class="md-tf-input md-body-large vx-area" id="${id}" name="${id}" rows="${rows}"${placeholder ? ` placeholder="${esc(placeholder)}"` : ""} aria-describedby="${id}-help">${esc(value)}</textarea></span></label>
+    <span class="md-tf-help md-body-small" id="${id}-help">${esc(help)}</span></div>`;
+  var statusTag = (kind, text) => `<span class="vx-stag vx-stag--${kind} md-label-medium">${icon({ success: "check", warning: "warning", error: "error", info: "info", neutral: "clock" }[kind], 14)}${esc(text)}</span>`;
+  var whatsappBtn = (label, attrs = "") => `<button type="button" class="md-btn vx-wa md-sl vx-press md-btn--block" ${attrs}>${icon("chat", 20)}${esc(label)}</button>`;
+  var row = ({ ic, title, sup = "", end = "", go: go2, kind, attrs = "", danger = false, dot = false }) => `<li><button type="button" class="md-li ${sup ? "md-li--2 " : ""}md-sl vx-press vx-row${danger ? " vx-danger" : ""}"${go2 ? ` data-go="${go2}"` : ""}${kind ? ` data-kind="${kind}"` : ""} ${attrs}>
+  ${ic ? `<span class="md-li-icon vx-relative">${icon(ic)}${dot ? '<span class="md-badge md-badge--small vx-dot-badge" aria-hidden="true"></span>' : ""}</span>` : ""}
+  <span class="md-li-text"><span class="md-li-title md-body-large">${title}</span>${sup ? `<span class="md-li-sup md-body-medium">${sup}</span>` : ""}</span>
+  <span class="md-li-end md-body-medium">${end || (go2 ? icon("chevron") : "")}</span></button></li>`;
+  var select = ({ id, label, options, value }) => `<div class="md-tf md-tf--outlined" data-field="${id}"><label class="md-tf-box"><span class="md-tf-content"><span class="md-tf-label md-body-small">${esc(label)}</span>
+  <select class="md-tf-input md-body-large" id="${id}">${options.map((o) => `<option${o === value ? " selected" : ""}>${esc(o)}</option>`).join("")}</select></span></label><span class="md-tf-help md-body-small"></span></div>`;
 
   // assets/js/screens/m1.js
   var wordmark = (cls = "") => `<div class="vx-logo ${cls}" role="img" aria-label="VexBiz">VE<span class="vx-logo-x">X</span>BIZ</div>`;
@@ -1539,18 +1646,18 @@
     return c;
   };
   var filtroBar = () => `<div class="vx-filterbar"><div class="vx-chips" data-chips></div>${btn(`${icon("sliders", 18)}Filtros y orden`, { kind: "tonal", go: "O.FIL" })}</div>`;
-  function paintChips(root2) {
-    const host = $("[data-chips]", root2);
+  function paintChips(root3) {
+    const host = $("[data-chips]", root3);
     if (!host) return;
     host.innerHTML = chipsAplicados().map(([k, t]) => `<span class="md-chip-wrap"><button type="button" class="md-chip md-chip--selected md-chip--trail md-sl md-label-large" data-unf="${k}" aria-label="Quitar filtro ${esc(t)}">${esc(t)}${icon("close", 18)}</button></span>`).join("");
   }
-  function wireFiltros(root2, universe, paint) {
+  function wireFiltros(root3, universe, paint) {
     state.flow.universe = universe;
     const sync = () => {
-      paintChips(root2);
+      paintChips(root3);
       paint(aplicar(universe()));
     };
-    root2.addEventListener("click", (e) => {
+    root3.addEventListener("click", (e) => {
       const b = e.target.closest("[data-unf]");
       if (!b) return;
       const f = state.flow.filtros, k = b.dataset.unf;
@@ -1950,7 +2057,7 @@
   var envioDe = (id) => ENVIO[id] || { costo: 6, km: 20, kg: 5, dias: "2–4 días" };
   var IMPUESTO = { debito: 3, binance: 0, transferencia: 0 };
   var METODO = { debito: "Débito bancario", binance: "Binance Pay", transferencia: "Transferencia a VexBiz" };
-  var dirActual = () => direcciones.find((d) => d.id === state.flow.direccion) || direcciones[0];
+  var dirActual = () => state.dirs.find((d) => d.id === state.flow.direccion) || state.dirs[0];
   var dirCorta = (d) => `${d.linea.split(",")[0]}, ${d.ciudad.split(",")[0]}`;
   function compraActual() {
     const lines = cartLines();
@@ -2051,7 +2158,7 @@
     render() {
       const sel = state.flow.direccion;
       const el = h(`<div class="vx-page"><header class="vx-sheet-head vx-flowhead"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">¿Dónde lo recibes?</h2>${iconBtn("close", "Cerrar", "data-close")}</header>
-      <div class="vx-body vx-pad-h"><div role="radiogroup" aria-label="Dirección de entrega" class="vx-options">${direcciones.slice(0, 2).map((d) => radioOpt({
+      <div class="vx-body vx-pad-h"><div role="radiogroup" aria-label="Dirección de entrega" class="vx-options">${state.dirs.map((d) => radioOpt({
         name: "dir",
         value: d.id,
         checked: sel === d.id,
@@ -2110,12 +2217,12 @@
     render() {
       const R = { km: 168, recta: 142, base: 8, porKm: 0.05, ivaPct: 16 };
       const kmImp = round2(R.porKm * R.km), imp = pct(R.base + kmImp, R.ivaPct);
-      const row = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
+      const row2 = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
       return h(`<div>${topbar("Ruta desde Frío Total")}
       <div class="vx-map vx-map--big" aria-hidden="true">${icon("map", 56)}</div>
       <div class="vx-pad-h vx-routestats vx-tab-num"><p><b class="md-title-large">${R.km} km</b><br><span class="md-body-small vx-muted">por carretera</span></p><p><b class="md-title-large">${R.recta} km</b><br><span class="md-body-small vx-muted">en línea recta</span></p><p><b class="md-title-large">2 h 10 min</b><br><span class="md-body-small vx-muted">estimados</span></p></div>
       <h2 class="md-title-medium vx-pad-h">Cómo se calculó</h2>
-      <dl class="vx-pad-h vx-dl">${row("Tramo", "Caracas → Valencia")}${row("Vehículo", "Camioneta de carga")}${row("Bultos · peso", "2 · 38 kg")}${row("Importe base", money(R.base))}${row("Por kilómetro", `${money(R.porKm)} × ${R.km} = ${money(kmImp)}`)}${row("Impuesto", money(imp))}</dl>
+      <dl class="vx-pad-h vx-dl">${row2("Tramo", "Caracas → Valencia")}${row2("Vehículo", "Camioneta de carga")}${row2("Bultos · peso", "2 · 38 kg")}${row2("Importe base", money(R.base))}${row2("Por kilómetro", `${money(R.porKm)} × ${R.km} = ${money(kmImp)}`)}${row2("Impuesto", money(imp))}</dl>
       <p class="md-body-small vx-muted vx-pad-h">El mapa es orientativo. El importe del envío es el que ves en el paso anterior.</p></div>`);
     }
   });
@@ -2169,16 +2276,16 @@
   register("O.RES", {
     render() {
       const c = compraActual(), d = dirActual(), b = compra.bancos.find((x) => x.id === state.flow.banco);
-      const row = (k, v, strong = false) => `<div class="vx-sumrow${strong ? " is-strong" : ""}"><dt class="md-body-large">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
+      const row2 = (k, v, strong = false) => `<div class="vx-sumrow${strong ? " is-strong" : ""}"><dt class="md-body-large">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
       const el = h(`<div><div class="vx-sheet-head"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">Resumen de la compra</h2>${iconBtn("close", "Cerrar", "data-close")}</div>
       <p class="md-body-medium vx-muted vx-pad-h">${plural(c.lines.length, "artículo", "artículos")}</p>
       <ul class="vx-list vx-pad-h" role="list"><li class="md-body-large">${esc(d.nombre)}<br><span class="md-body-medium vx-muted">${esc(dirCorta(d))}</span></li>
         <li class="md-body-large">${METODO[state.flow.metodo]}${state.flow.metodo === "debito" && b ? `<br><span class="md-body-medium vx-muted">${esc(b.nombre)}${b.tipo ? " · " + esc(b.tipo) : ""}</span>` : ""}</li></ul>
-      <dl class="vx-pad-h vx-dl">${row("Subtotal", money(c.subtotal))}
-        ${c.grupos.map((g) => row(`Envío · ${esc(g.t.nombre)}`, g.retiro ? "Retiro en tienda" : g.env.gratis ? "No te lo cobran" : money(g.envio))).join("")}
-        ${c.impPct ? row(`Impuesto del pago (${c.impPct} %)`, money(c.impuesto)) : ""}
-        ${state.flow.cupon ? row(`Cupón: ${esc(state.flow.cupon)}`, '<span class="md-body-medium vx-muted">se aplica al confirmar</span>') : ""}
-        ${row("Total a pagar", money(c.total), true)}</dl>
+      <dl class="vx-pad-h vx-dl">${row2("Subtotal", money(c.subtotal))}
+        ${c.grupos.map((g) => row2(`Envío · ${esc(g.t.nombre)}`, g.retiro ? "Retiro en tienda" : g.env.gratis ? "No te lo cobran" : money(g.envio))).join("")}
+        ${c.impPct ? row2(`Impuesto del pago (${c.impPct} %)`, money(c.impuesto)) : ""}
+        ${state.flow.cupon ? row2(`Cupón: ${esc(state.flow.cupon)}`, '<span class="md-body-medium vx-muted">se aplica al confirmar</span>') : ""}
+        ${row2("Total a pagar", money(c.total), true)}</dl>
       <p class="md-body-small vx-muted vx-pad-h vx-tab-num">Precios y envío con impuestos incluidos · ≈ ${bs(c.total)} referencial</p>
       <p class="md-body-medium vx-pad-h">Se crean ${plural(c.grupos.length, "pedido", "pedidos")}, uno por tienda, con un solo pago.</p>
       <div class="md-sheet-foot">${btn("Confirmar y pagar", { kind: "filled", go: "M3.08", kindNav: "push" })}</div></div>`);
@@ -2355,7 +2462,7 @@
   register("M3.11", {
     render(ctx) {
       const estado = ctx.params.estado || "aprobado", metodo = ctx.params.metodo || "debito", t = compraPasarela();
-      const row = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
+      const row2 = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
       const metTxt = { debito: "Débito · 0414 ···1234", binance: "Binance Pay · USDT", transferencia: "Transferencia bancaria" }[metodo];
       const ico = {
         aprobado: `<svg class="vx-ring vx-resico vx-resico--ok" viewBox="0 0 72 72" width="72" height="72" aria-hidden="true"><circle cx="36" cy="36" r="32" fill="none" stroke="currentColor" stroke-width="4"/><path class="vx-check" pathLength="1" d="M22 37l10 10 18-20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -2364,7 +2471,7 @@
         revision: `<span class="vx-resico vx-resico--wait">${icon("clock", 56)}</span>`
       }[estado];
       const title = { aprobado: "Pago aprobado", rechazado: "Pago rechazado", pendiente: "Pago pendiente", revision: "Transferencia reportada" }[estado];
-      const pedidos = `<h2 class="md-title-medium">Pedidos</h2><ul class="vx-list" role="list">${compra.pedidos.map((p) => `<li class="vx-sumrow"><span class="md-body-large">${p.id}<br><span class="md-body-medium vx-muted">${esc(p.tienda)}</span></span></li>`).join("")}</ul>`;
+      const pedidos2 = `<h2 class="md-title-medium">Pedidos</h2><ul class="vx-list" role="list">${compra.pedidos.map((p) => `<li class="vx-sumrow"><span class="md-body-large">${p.id}<br><span class="md-body-medium vx-muted">${esc(p.tienda)}</span></span></li>`).join("")}</ul>`;
       const acts = {
         aprobado: `${btn("Ver mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${btn("Seguir comprando", { kind: "outlined", block: true, go: "M2.01", kindNav: "swap" })}<div class="vx-twin">${btn("Descargar comprobante", { kind: "text", attrs: 'data-toast="Comprobante guardado en tu teléfono"' })}${btn("Compartir", { kind: "text", attrs: 'data-toast="Enlace al comprobante copiado"' })}</div>`,
         rechazado: `${btn("Reintentar el pago", { kind: "filled", block: true, go: "M3.09", kindNav: "mode" })}${btn("Cambiar forma de pago", { kind: "outlined", block: true, go: "M3.09", kindNav: "mode" })}${btn("Ver mis pedidos", { kind: "text", block: true, go: "M6.03", kindNav: "swap" })}`,
@@ -2375,8 +2482,8 @@
       ${estado === "rechazado" ? `<p class="md-body-large vx-reason">${icon("error", 18)} Tu banco rechazó el pago: «Fondos insuficientes»</p>` : ""}
       ${estado === "pendiente" ? `<div class="md-progress md-progress--indet vx-resprog" role="progressbar" aria-label="Esperando a tu banco" style="--_pct:30%"><span class="md-progress-track"></span><span class="md-progress-active"></span></div><p class="md-body-large">Estamos esperando la confirmación de tu banco. Te avisamos aquí.</p>` : ""}
       ${estado === "revision" ? '<p class="md-body-large">Reportar no es pagar: la compra queda en revisión hasta que se confirme el dinero.</p>' : ""}</div>
-      <dl class="vx-dl vx-pad-h">${row("Importe", `${money(t.total)}<br><span class="md-body-small vx-muted">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</span>`)}${row("Método", metTxt)}${metodo !== "transferencia" ? row("Transacción", compra.pasarela.intento) : ""}</dl>
-      <div class="vx-pad-h">${pedidos}</div><div class="vx-pad vx-stack">${acts}</div></div></div>`);
+      <dl class="vx-dl vx-pad-h">${row2("Importe", `${money(t.total)}<br><span class="md-body-small vx-muted">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</span>`)}${row2("Método", metTxt)}${metodo !== "transferencia" ? row2("Transacción", compra.pasarela.intento) : ""}</dl>
+      <div class="vx-pad-h">${pedidos2}</div><div class="vx-pad vx-stack">${acts}</div></div></div>`);
       return el;
     },
     mount(el, ctx) {
@@ -2457,19 +2564,801 @@
     }
   });
 
-  // assets/js/main.js
+  // assets/js/screens/m6a.js
+  var KIND = { "Falta pagar": "warning", "Pago reportado": "info", "En camino": "info", Entregado: "success", Pagado: "success", "En mediación": "info", Resuelto: "success", "En revisión": "info" };
+  var tag = (estado, extra = "") => statusTag(KIND[estado] || "neutral", estado + extra);
+  var thumb2 = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon("box", n)}</span>`;
+  var sec = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
+  var listaPedidos = () => [...state.orders, ...pedidos.filter((c) => !state.orders.some((o) => o.id === c.id))];
+  var buscarPedido = (id, t) => listaPedidos().find((o) => o.id === id && (!t || o.tienda === t)) || listaPedidos().find((o) => o.id === id) || pedidos.find((o) => o.id === "#VX-20211");
+  var detalleDe = (o) => detallePedidos[`${o.id}|${o.tienda}`] || { emitido: o.fecha, lineas: [{ n: "Artículos del pedido", q: 1, p: o.total }] };
+  var qs = (o) => `id=${encodeURIComponent(o.id)}&t=${encodeURIComponent(o.tienda)}`;
+  register("M6.01", {
+    render() {
+      const u = usuario, canonPagado = state.orders.some((o) => o.id === "#VX-20431") ? 1 : 0;
+      const resumen = { sinPagar: u.resumen.sinPagar - canonPagado, enCamino: u.resumen.enCamino + state.orders.length, entregados: u.resumen.entregados };
+      const total = resumen.sinPagar + resumen.enCamino + resumen.entregados, max = Math.max(...u.gastoMensual.map(([, v]) => v));
+      const tile = (n, l) => `<button type="button" class="vx-tile md-sl vx-press" data-go="M6.03" data-kind="swap"><b class="md-headline-small vx-tab-num">${n}</b><span class="md-body-small">${l}</span></button>`;
+      const nuevos = state.avisosCuenta.some((a) => a.nuevo);
+      return h(`<div>${topbar("Cuenta", { back: false })}
+      <section class="vx-profile vx-pad-h">${avatar(u.iniciales, true)}<div><p class="md-title-medium">${esc(u.nombre)}</p><p class="md-body-medium vx-muted">${esc(u.correo)}</p>${u.verificado ? statusTag("success", "Verificado") : ""}</div></section>
+      <div class="vx-pad-h vx-modebox"><p class="md-body-medium">Estás en modo ${MODE_NAME[state.mode]}</p>${btn("Cambiar", { kind: "text", go: "O.MOD" })}</div>
+      <div class="vx-tiles vx-pad-h">${tile(resumen.sinPagar, "Sin pagar")}${tile(resumen.enCamino, "En camino")}${tile(resumen.entregados, "Entregados")}</div>
+      <section class="vx-pad-h"><h2 class="md-title-medium">Gasto por mes (USD)</h2>
+        <div class="vx-chart" role="img" aria-label="Gasto por mes en USD: ${u.gastoMensual.map(([m, v]) => `${m} ${v}`).join(", ")}">${u.gastoMensual.map(([m, v]) => `<div class="vx-bar-col"><span class="md-label-medium vx-tab-num">${v}</span><i style="height:${Math.round(v / max * 100)}%"></i><span class="md-label-medium vx-muted">${m}</span></div>`).join("")}</div>
+        <p class="md-body-small vx-muted">Calculado sobre tus últimos ${total} pedidos.</p></section>
+      ${sec("Mis compras")}<ul class="vx-list" role="list">${row({ ic: "receipt", title: "Pedidos", go: "M6.03", kind: "swap" })}${row({ ic: "error", title: "Reclamos y devoluciones", go: "M6.09" })}${row({ ic: "shield", title: "Garantías", go: "M6.11" })}${row({ ic: "wrench", title: "Servicios que pedí", go: "M6.12" })}</ul>
+      ${sec("Mi cuenta")}<ul class="vx-list" role="list">${row({ ic: "person", title: "Datos personales", go: "M6.02" })}${row({ ic: "map", title: "Direcciones", go: "M6.13" })}${row({ ic: "wallet", title: "Formas de pago", go: "M6.15" })}${row({ ic: "bell", title: "Avisos", go: "M6.17", dot: nuevos })}${row({ ic: "lock", title: "Seguridad y contraseña", go: "M6.18" })}${row({ ic: "eye", title: "Cómo se ve VexBiz", go: "M6.23" })}</ul>
+      ${sec("Aprender")}<ul class="vx-list" role="list">${row({ ic: "school", title: "Academia", go: "M5.01" })}</ul>
+      ${sec("Ayuda")}<ul class="vx-list" role="list">${row({ ic: "info", title: "Ayuda e información", go: "M6.24" })}</ul>
+      <div class="vx-pad">${btn(`${icon("logout", 20)}Cerrar sesión`, { kind: "text", block: true, id: "btnSalir" })}</div></div>`);
+    },
+    mount(el) {
+      el.querySelector("#btnSalir").addEventListener("click", () => {
+        set({ sesion: false });
+        toast("Cerraste sesión");
+        go("M1.02", { kind: "mode" });
+      });
+    }
+  });
+  register("M6.02", {
+    render() {
+      const u = usuario, kv = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large">${v}</dd></div>`;
+      return h(`<div>${topbar("Datos personales")}<div class="vx-center vx-pad">${avatar(u.iniciales, true)}</div>
+      <dl class="vx-pad-h vx-dl">${kv("Nombre", esc(u.nombre))}${kv("Correo", esc(u.correo))}${kv("País activo", "Venezuela")}${kv("Verificación en dos pasos", state.dosPasos ? statusTag("success", "Activa") : "Sin activar")}</dl>
+      <div class="vx-pad-h vx-stack">${btn(state.dosPasos ? "Ver verificación en dos pasos" : "Activar verificación en dos pasos", { kind: "tonal", block: true, go: "M6.19" })}
+        <p class="md-body-medium vx-muted">Un archivo con tu cuenta, compras y servicios.</p>
+        ${btn(`${icon("upload", 20)}Descargar mis datos`, { kind: "outlined", block: true, attrs: 'data-toast="Preparando tu archivo. Te avisamos cuando esté listo."' })}</div></div>`);
+    }
+  });
+  register("M6.03", {
+    render() {
+      const lista = listaPedidos();
+      return h(`<div>${topbar("Pedidos", { back: false })}
+      <ul class="vx-list" role="list">${row({ ic: "error", title: "Reclamos y devoluciones", go: "M6.09" })}${row({ ic: "shield", title: "Garantías", go: "M6.11" })}
+        <li><button type="button" class="md-li md-sl vx-press vx-row" data-go="M6.12"><span class="md-li-icon">${icon("wrench")}</span><span class="md-li-text"><span class="md-li-title md-body-large">Servicios que pedí</span></span><span class="md-li-end"><span class="md-badge md-badge--large" aria-label="2 servicios">${serviciosPedidos.length}</span>${icon("chevron")}</span></button></li></ul>
+      <ul class="vx-orders vx-pad-h" role="list" data-stagger>${lista.map((o, i) => `<li class="vx-order" style="--i:${i}">
+        <button type="button" class="vx-order-main md-sl vx-press" data-go="M6.04?${qs(o)}" aria-label="Pedido ${o.id}, ${esc(o.tienda)}, ${o.estado}">${thumb2()}
+          <span class="vx-order-text"><span class="md-title-small">${esc(o.tienda)}</span><span class="md-body-medium vx-muted vx-tab-num">${o.id} · ${o.fecha}</span>${tag(o.estado, o.estado === "Pago reportado" ? " · en comprobación" : "")}</span>
+          <b class="md-title-medium vx-tab-num">${money(o.total)}</b></button>
+        ${o.estado === "Falta pagar" ? `<div class="vx-order-act">${btn(`Pagar ${money(o.total)}`, { kind: "filled", go: "M3.09" })}</div>` : ""}</li>`).join("")}</ul></div>`);
+    },
+    mount(el, ctx) {
+      if (ctx.first) $$("[data-stagger]", el).forEach(stagger);
+    }
+  });
+  register("M6.04", {
+    render(ctx) {
+      const o = buscarPedido(ctx.params.id, ctx.params.t), d = detalleDe(o);
+      const suma = round2(d.lineas.reduce((s, l) => s + l.q * l.p, 0)), envio = round2(Math.max(0, o.total - suma));
+      const subtotal = round2(o.total / (1 + IMPUESTO_INCLUIDO / 100)), imp = round2(o.total - subtotal);
+      const r = (k, v, strong) => `<div class="vx-sumrow${strong ? " is-strong" : ""}"><dt class="md-body-large">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
+      return h(page(
+        topbar(esc(o.tienda), { trailing: iconBtn("receipt", "Ayuda con el pedido", `data-go="M6.05?${qs(o)}"`) }),
+        `
+      <section class="vx-pad-h vx-stack"><p class="md-body-medium vx-muted">Emitido el ${d.emitido}</p><p>${tag(o.estado)}</p>
+        ${d.envio ? `<p class="md-body-medium">${esc(d.envio.empresa)} · despachado el ${d.envio.despachado}<br><span class="vx-tab-num">Guía ${d.envio.guia}</span></p>` : ""}
+        ${d.factura ? `<p class="md-body-medium vx-tab-num">Factura N.º ${d.factura.n} · ${d.factura.fecha}</p>` : ""}</section>
+      <section class="vx-pad-h"><h2 class="md-title-medium">Artículos (${d.lineas.length})</h2><ul class="vx-list" role="list">${d.lineas.map((l) => `<li class="vx-detline"><button type="button" class="vx-detline-main md-sl vx-press" data-go="M2.08?id=aa12">${thumb2(20)}
+        <span class="vx-order-text"><span class="md-body-large">${esc(l.n)}</span><span class="md-body-medium vx-muted vx-tab-num">${l.q} × ${money(l.p)}</span>${l.garantia ? `<span class="md-body-small vx-muted">Garantía hasta ${l.garantia}</span>` : ""}${l.devolucion ? `<span>${statusTag("info", l.devolucion + " · En revisión")}</span>` : ""}</span><b class="md-body-large vx-tab-num">${money(l.q * l.p)}</b></button></li>`).join("")}</ul></section>
+      <dl class="vx-pad-h vx-dl">${r("Subtotal", money(subtotal))}${r("Envío", envio ? money(envio) : "Gratis")}${r("Impuestos (incluidos)", money(imp))}${r("Total", money(o.total), true)}</dl>
+      <div class="vx-pad-h vx-stack">${d.factura ? btn("Ver factura", { kind: "text", attrs: 'data-toast="Abre la factura en tu visor de PDF"' }) : ""}${d.envio ? btn("Seguir el envío", { kind: "text", attrs: 'data-toast="Abre el seguimiento de la guía"' }) : ""}
+        ${btn("Ayuda con el pedido", { kind: "text", go: `M6.05?${qs(o)}` })}${o.estado === "Entregado" ? btn("Pedir devolución", { kind: "outlined", block: true, go: `M6.07?${qs(o)}` }) : ""}</div>`,
+        `<span class="md-body-medium vx-muted">Pedido ${o.id}</span>`
+      ));
+    }
+  });
+  register("M6.05", {
+    render(ctx) {
+      const o = buscarPedido(ctx.params.id, ctx.params.t), dev = state.devoluciones.some((x) => x.pedido === o.id);
+      return h(`<div>${topbar("Ayuda con el pedido")}
+      <section class="vx-card vx-pad-h"><div class="vx-order-main vx-static">${thumb2()}<span class="vx-order-text"><span class="md-title-small">${esc(o.tienda)}</span><span class="md-body-medium vx-muted vx-tab-num">${o.id}</span>${tag(o.estado)}</span></div></section>
+      <div class="vx-pad-h vx-stack vx-helpstack">
+        <p class="md-body-large">Cuenta cómo te fue con ${esc(o.tienda)}.</p>${btn("Calificar a la tienda", { kind: "tonal", block: true, go: `M6.06?${qs(o)}` })}
+        ${dev ? `<button type="button" class="md-li md-sl vx-press vx-row vx-note" data-go="M6.09">${statusTag("info", "En revisión")}<span class="md-body-large">Ya hay una devolución en curso</span></button>` : ""}
+        ${btn("Pedir devolución", { kind: "tonal", block: true, go: `M6.07?${qs(o)}` })}
+        <p class="md-body-large">Si no llegas a un acuerdo con la tienda, VexBiz interviene como mediador.</p>${btn("Abrir reclamo", { kind: "outlined", block: true, go: `M6.08?${qs(o)}` })}</div></div>`);
+    }
+  });
+  var LABEL = (n) => n <= 1 ? "Muy malo" : n <= 2 ? "Malo" : n <= 3 ? "Regular" : n <= 4 ? "Bueno" : "Muy bueno";
+  var star = (fill) => `<svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><defs><clipPath id="cp${String(fill).replace(".", "")}"><rect width="${fill * 24}" height="24"/></clipPath></defs>
+  <path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z" fill="currentColor" clip-path="url(#cp${String(fill).replace(".", "")})"/></svg>`;
+  register("M6.06", {
+    render(ctx) {
+      const o = buscarPedido(ctx.params.id, ctx.params.t), prev = state.calificaciones[o.id];
+      const el = h(page(
+        topbar("Calificar a la tienda"),
+        `
+      <section class="vx-pad-h"><p class="md-title-medium">${esc(o.tienda)}</p><p class="md-body-medium vx-muted vx-tab-num">Pedido ${o.id}</p></section>
+      <p class="md-body-large vx-pad-h">Calificas a la tienda, no al producto</p>
+      <div class="vx-rate vx-pad-h"><div class="vx-stars" role="slider" tabindex="0" aria-label="Calificación de la tienda" aria-valuemin="0.5" aria-valuemax="5" aria-valuenow="${prev?.nota ?? 4.5}" aria-valuetext="" id="rate"></div>
+        <p class="md-title-large vx-tab-num"><span id="rateN">4,5</span> · <span id="rateT">Muy bueno</span></p></div>
+      <div class="vx-pad-h">${area({ id: "comentario", label: "Cuéntanos más (opcional)", value: prev?.texto || "", rows: 4 })}</div>`,
+        btn(prev ? "Actualizar calificación" : "Enviar calificación", { kind: "filled", block: true, id: "btnCalif" })
+      ));
+      let nota = prev?.nota ?? 4.5;
+      const paint = () => {
+        const box = el.querySelector("#rate");
+        box.innerHTML = [1, 2, 3, 4, 5].map((i) => `<span class="vx-star">${star(Math.max(0, Math.min(1, nota - (i - 1))))}</span>`).join("");
+        box.setAttribute("aria-valuenow", nota);
+        box.setAttribute("aria-valuetext", `${num(nota, 1)} de 5, ${LABEL(nota)}`);
+        el.querySelector("#rateN").textContent = num(nota, 1);
+        el.querySelector("#rateT").textContent = LABEL(nota);
+      };
+      const rect = () => el.querySelector("#rate").getBoundingClientRect();
+      const fromX = (x) => {
+        const r = rect(), p = Math.min(1, Math.max(0, (x - r.left) / r.width));
+        return Math.max(0.5, Math.ceil(p * 10) / 2);
+      };
+      el.querySelector("#rate").addEventListener("click", (e) => {
+        nota = fromX(e.clientX);
+        paint();
+      });
+      el.querySelector("#rate").addEventListener("keydown", (e) => {
+        const d = { ArrowRight: 0.5, ArrowUp: 0.5, ArrowLeft: -0.5, ArrowDown: -0.5 }[e.key];
+        if (!d) return;
+        e.preventDefault();
+        nota = Math.min(5, Math.max(0.5, nota + d));
+        paint();
+      });
+      el.querySelector("#btnCalif").addEventListener("click", () => {
+        state.calificaciones[o.id] = { nota, texto: el.querySelector("#comentario").value.trim() };
+        set({ calificaciones: state.calificaciones });
+        toast(`Gracias: calificaste a ${o.tienda} con ${num(nota, 1)}`);
+        back();
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M6.07", {
+    render(ctx) {
+      const o = buscarPedido(ctx.params.id, ctx.params.t);
+      const items = [{ k: "cap", n: "Capacitor de marcha 35+5 µF", max: 2 }, { k: "ctrl", n: "Control remoto universal A/A", max: 1 }, { k: "aa", n: "Aire split inverter 12.000 BTU", max: 0 }];
+      const q = { cap: 1, ctrl: 0, aa: 0 };
+      const el = h(page(
+        topbar("Pedir devolución"),
+        `
+      <section class="vx-pad-h"><h2 class="md-title-medium">¿Qué devuelves?</h2><ul class="vx-list" role="list">${items.map((i) => `<li class="vx-detline vx-ret">${thumb2(20)}<span class="vx-order-text"><span class="md-body-large">${i.n}</span><span class="md-body-medium vx-muted">${i.max ? `Compraste ${i.max}` : "Ya devuelto"}</span></span>${i.max ? stepper(i.k, q[i.k], i.max) : ""}</li>`).join("")}</ul>
+        <p class="md-title-small vx-tab-num" id="retTot" aria-live="polite"></p></section>
+      <div class="vx-pad-h vx-form">${field({ id: "motivo", label: "Motivo" })}${area({ id: "detalle", label: "Describe el problema", help: "No se pueden adjuntar fotos. Describe el problema con detalle.", rows: 4 })}</div>`,
+        btn("Pedir devolución", { kind: "filled", block: true, id: "btnDev" })
+      ));
+      const paint = () => {
+        const n = Object.values(q).reduce((s, v) => s + v, 0);
+        el.querySelector("#retTot").textContent = plural(n, "unidad", "unidades");
+        items.forEach((i) => {
+          if (!i.max) return;
+          el.querySelector(`[data-qty="${i.k}"]`).textContent = q[i.k];
+          el.querySelector(`[data-dec="${i.k}"]`).disabled = q[i.k] <= 0;
+          el.querySelector(`[data-inc="${i.k}"]`).disabled = q[i.k] >= i.max;
+        });
+      };
+      el.addEventListener("click", (e) => {
+        const inc = e.target.closest("[data-inc]"), dec = e.target.closest("[data-dec]");
+        if (inc) {
+          q[inc.dataset.inc]++;
+          paint();
+          play(el.querySelector("#retTot"), "vx-tick");
+        }
+        if (dec) {
+          q[dec.dataset.dec]--;
+          paint();
+          play(el.querySelector("#retTot"), "vx-tick");
+        }
+      });
+      el.querySelector("#btnDev").addEventListener("click", () => {
+        const n = Object.values(q).reduce((s, v) => s + v, 0), mot = el.querySelector("#motivo").value.trim(), det = el.querySelector("#detalle").value.trim();
+        fieldError(el, "motivo", !mot ? "Escribe el motivo" : "");
+        fieldError(el, "detalle", !det ? "Describe el problema" : "");
+        if (!n) {
+          toast("Elige al menos una unidad");
+          return;
+        }
+        if (!mot || !det) return;
+        const item = items.filter((i) => q[i.k] > 0).map((i) => i.n).join(", ");
+        state.devoluciones.unshift({ id: `#D-00${31 + state.devoluciones.length}`, pedido: o.id, item, unidades: n, estado: "En revisión", fecha: date(HOY).slice(0, 5) });
+        state.flow.segReclamos = "dev";
+        set({ devoluciones: state.devoluciones });
+        toast("Pedimos tu devolución");
+        go("M6.09", { kind: "push" });
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M6.08", {
+    render(ctx) {
+      const o = ctx.params.id ? buscarPedido(ctx.params.id, ctx.params.t) : { id: "#VX-20301", tienda: "Herramientas Andina", total: 24.9 };
+      const kv = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
+      const el = h(page(
+        topbar("Abrir reclamo"),
+        `
+      <p class="md-body-large vx-pad-h">VexBiz revisa el caso y decide. La tienda verá lo que escribas.</p>
+      <dl class="vx-pad-h vx-dl">${kv("Pedido", o.id)}${kv("Tienda", esc(o.tienda))}${kv("Total", money(o.total))}</dl>
+      <div class="vx-pad-h vx-form">${field({ id: "motivo", label: "Motivo" })}${area({ id: "detalle", label: "Describe el problema", help: "No se pueden adjuntar fotos. Describe el problema con detalle.", rows: 4 })}</div>`,
+        btn("Abrir reclamo", { kind: "filled", block: true, id: "btnRec" })
+      ));
+      el.querySelector("#btnRec").addEventListener("click", () => {
+        const mot = el.querySelector("#motivo").value.trim(), det = el.querySelector("#detalle").value.trim();
+        fieldError(el, "motivo", !mot ? "Escribe el motivo" : "");
+        fieldError(el, "detalle", !det ? "Describe el problema" : "");
+        if (!mot || !det) return;
+        toast("Abrimos tu reclamo");
+        go("M6.10?id=%23R-0091", { kind: "push" });
+      });
+      return el;
+    }
+  });
+  register("M6.09", {
+    render() {
+      const dev = state.flow.segReclamos === "dev";
+      const el = h(`<div>${topbar("Reclamos y devoluciones")}
+      <div class="vx-pad-h"><div class="md-seg" role="tablist" aria-label="Ver">${[["rec", "Reclamos"], ["dev", "Devoluciones"]].map(([k, t]) => `<button type="button" role="tab" class="md-seg-item md-sl md-label-large${k === "dev" === dev ? " md-seg-item--on" : ""}" data-seg="${k}" aria-selected="${k === "dev" === dev}">${t}</button>`).join("")}</div></div>
+      <ul class="vx-orders vx-pad-h" role="list" id="recList"></ul></div>`);
+      const paint = () => {
+        const isDev = state.flow.segReclamos === "dev";
+        $$("[data-seg]", el).forEach((b) => {
+          const on = b.dataset.seg === "dev" === isDev;
+          b.classList.toggle("md-seg-item--on", on);
+          b.setAttribute("aria-selected", on);
+        });
+        el.querySelector("#recList").innerHTML = isDev ? state.devoluciones.map((d) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text"><span class="md-title-small vx-tab-num">${d.id} · Pedido ${d.pedido}</span><span class="md-body-medium vx-muted">${d.fecha} · ${esc(d.item)}</span><span class="md-body-medium">${plural(d.unidades, "unidad", "unidades")}</span>${tag(d.estado)}</span></div></li>`).join("") || `<li>${stateBlock({ icon: "inbox", title: "No tienes devoluciones" })}</li>` : state.reclamos.map((r) => `<li class="vx-order"><button type="button" class="vx-order-main md-sl vx-press" ${r.mensajes ? `data-go="M6.10?id=${encodeURIComponent(r.id)}"` : 'data-toast="Este reclamo ya está resuelto"'}>
+            <span class="vx-order-text"><span class="md-title-small vx-tab-num">${r.id} · Pedido ${r.pedido}</span><span class="md-body-medium vx-muted">${r.fecha}</span>${tag(r.estado)}<span class="md-body-medium">${esc(r.resumen)}</span>
+            ${r.ultimo ? `<span class="md-body-small vx-muted">Último mensaje: ${esc(r.ultimo)}</span>` : ""}${r.resolucion ? `<span class="md-body-medium"><b>Resolución de VexBiz</b><br>${esc(r.resolucion)}</span>` : ""}</span></button></li>`).join("");
+      };
+      el.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-seg]");
+        if (!b) return;
+        state.flow.segReclamos = b.dataset.seg;
+        paint();
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M6.10", {
+    render(ctx) {
+      const r = state.reclamos.find((x) => x.id === decodeURIComponent(ctx.params.id || "#R-0091")) || state.reclamos[0];
+      const el = h(`<div class="vx-page">${topbar(`Reclamo ${r.id}`, { trailing: btn("Ver pedido", { kind: "text", go: "M6.04?id=%23VX-20211&t=ElectroHogar" }) })}
+      <div class="vx-body"><section class="vx-pad-h"><p>${tag(r.estado)}</p><p class="md-body-medium vx-muted">Abierto el ${r.abierto}</p>
+        <h2 class="md-title-small vx-sub0">Motivo</h2><p class="md-body-large">${esc(r.motivo)}</p></section>
+        <ul class="vx-thread vx-pad-h" role="list" aria-live="polite" id="hilo"></ul></div>
+      <form class="vx-composer" id="fMsg"><label class="md-sr-only" for="msg">Escribe un mensaje</label><input class="md-body-large vx-msg" id="msg" autocomplete="off" placeholder="Escribe un mensaje…">
+        <button type="submit" class="md-iconbtn md-iconbtn--filled md-sl" aria-label="Enviar mensaje">${icon("chat")}</button></form></div>`);
+      const paint = () => {
+        el.querySelector("#hilo").innerHTML = r.mensajes.map((m) => `<li class="vx-msgrow${m.de === "Tú" ? " is-me" : ""}"><p class="md-label-medium vx-muted">${m.de} · ${m.hora}</p><p class="md-body-large vx-bubble">${esc(m.t)}</p></li>`).join("");
+      };
+      el.querySelector("#fMsg").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const i = el.querySelector("#msg"), t = i.value.trim();
+        if (!t) return;
+        const now = /* @__PURE__ */ new Date();
+        r.mensajes.push({ de: "Tú", hora: `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`, t });
+        i.value = "";
+        paint();
+        const last = el.querySelector("#hilo").lastElementChild;
+        play(last, "vx-tick");
+        last.scrollIntoView({ block: "nearest" });
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M6.11", {
+    render() {
+      const dias = (d) => Math.round((d - HOY) / 864e5);
+      return h(`<div>${topbar("Garantías")}<ul class="vx-orders vx-pad-h" role="list">${garantias.map((g) => {
+        const n = dias(g.hasta), ok = n > 0;
+        return `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text">${statusTag(ok ? "success" : "error", ok ? `Vigente · quedan ${n} días` : "Vencida")}
+        <span class="md-title-small">${esc(g.producto)}</span><span class="md-body-medium">Responde: ${esc(g.responde)}</span><span class="md-body-medium vx-muted vx-tab-num">hasta ${date(g.hasta)}</span><span class="md-body-medium vx-muted vx-tab-num">${g.ref}</span></span></div>
+        ${ok ? `<div class="vx-order-act">${btn("Condiciones", { kind: "text", go: "M6.25?doc=garantia" })}</div>` : ""}</li>`;
+      }).join("")}</ul></div>`);
+    }
+  });
+  register("M6.12", {
+    render() {
+      return h(`<div>${topbar("Servicios que pedí")}<ul class="vx-orders vx-pad-h" role="list">${serviciosPedidos.map((s) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text">
+        <span class="md-label-medium vx-tab-num vx-muted">${s.id}</span>${statusTag(s.ok ? "success" : "info", s.estado)}<span class="md-title-small">${esc(s.servicio)}</span><span class="md-body-medium">${esc(s.quien)}${s.rating ? ` · <span class="vx-tab-num">${stars(s.rating)}</span>` : ""}</span>
+        ${s.nota ? `<span class="md-body-medium vx-muted">${esc(s.nota)}</span>` : ""}<span class="md-body-medium vx-muted vx-tab-num">${s.cuando} · ${money(s.total)}</span>${s.donde ? `<span class="md-body-medium vx-muted">${esc(s.donde)}</span>` : ""}</span></div>
+        <div class="vx-order-act">${s.ok ? btn("Calificar", { kind: "tonal", attrs: 'data-toast="Gracias: tu calificación llega al técnico"' }) : btn("Ver detalle", { kind: "text", attrs: 'data-toast="La empresa te avisa cuando asigne al técnico"' })}${btn("Contactar", { kind: "text", attrs: 'data-toast="Abre WhatsApp de VexBiz: lunes a sábado, 8:00 a 18:00"' })}</div></li>`).join("")}</ul></div>`);
+    }
+  });
+
+  // assets/js/prefs.js
   var root = document.documentElement;
-  var prefs = loadPrefs();
+  var sys = (q) => {
+    try {
+      return matchMedia(q).matches;
+    } catch {
+      return false;
+    }
+  };
+  var prefs = { scale: 100, contrast: false, reduce: false };
+  function setScale(pct3) {
+    prefs.scale = Math.min(150, Math.max(100, Math.round(pct3)));
+    root.setAttribute("data-text-scale", String(prefs.scale));
+    root.style.setProperty("--vx-ts", String(prefs.scale / 100));
+    savePrefs({ scale: prefs.scale });
+  }
+  function setContrast(on) {
+    prefs.contrast = !!on;
+    on ? root.setAttribute("data-contrast", "more") : root.removeAttribute("data-contrast");
+    savePrefs({ contrast: prefs.contrast });
+  }
+  function setReduce(on) {
+    prefs.reduce = !!on;
+    root.toggleAttribute("data-reduce-motion", prefs.reduce);
+    savePrefs({ reduce: prefs.reduce });
+    const sw = document.getElementById("swReduce");
+    if (sw) {
+      sw.checked = prefs.reduce;
+      sw.nextElementSibling?.classList.toggle("md-switch-track--on", prefs.reduce);
+    }
+  }
+  function initPrefs() {
+    const p = loadPrefs();
+    setScale(p.scale ?? 100);
+    setContrast(p.contrast ?? sys("(prefers-contrast: more)"));
+    setReduce(p.reduce ?? false);
+    if (p.reduce === void 0) prefs.reduce = sys("(prefers-reduced-motion: reduce)");
+    const sw = document.getElementById("swReduce");
+    if (sw) {
+      sw.checked = prefs.reduce;
+      sw.nextElementSibling?.classList.toggle("md-switch-track--on", prefs.reduce);
+    }
+    return p;
+  }
+
+  // assets/js/screens/m6b.js
+  var sec2 = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
+  var mask = (doc) => {
+    const d = doc.replace(/\D/g, "");
+    return d.length >= 5 ? `${d.slice(0, 2)}.***.${d.slice(-3)}` : doc;
+  };
+  var copiar = async (txt, ok = "Copiado") => {
+    try {
+      await navigator.clipboard.writeText(txt);
+      toast(ok);
+    } catch {
+      toast("Selecciona el texto para copiarlo");
+    }
+  };
+  register("M6.13", {
+    render() {
+      const el = h(`<div>${topbar("Direcciones", { trailing: iconBtn("add", "Añadir dirección", 'data-go="M6.14"') })}<ul class="vx-orders vx-pad-h" role="list" id="dirList"></ul></div>`);
+      const paint = () => {
+        el.querySelector("#dirList").innerHTML = state.dirs.map((d) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text">
+      <span class="md-title-small">${esc(d.nombre)} ${d.predeterminada ? '<span class="vx-tag md-label-small">Predeterminada</span>' : ""}</span><span class="md-body-large">${esc(d.linea)}</span>${d.ref ? `<span class="md-body-medium vx-muted">${esc(d.ref)}</span>` : ""}
+      <span class="md-body-medium vx-muted vx-tab-num">${esc(d.ciudad)} · CP ${esc(d.cp)}</span><span class="md-body-medium vx-muted vx-tab-num">${esc(d.tel)}</span>${d.sinMapa ? `<span>${statusTag("warning", "Falta el punto en el mapa")}</span>` : ""}</span>
+      ${iconBtn("more2", `Acciones de ${d.nombre}`, `data-adir="${d.id}" data-go="O.ACC"`)}</div></li>`).join("");
+      };
+      el.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-adir]");
+        if (b) state.flow.accDir = b.dataset.adir;
+      });
+      paint();
+      el.__un = subscribe(paint);
+      return el;
+    },
+    mount(el) {
+      return el.__un;
+    }
+  });
+  register("O.ACC", {
+    render() {
+      const d = state.dirs.find((x) => x.id === state.flow.accDir) || state.dirs[0];
+      const el = h(`<div><div class="vx-sheet-head"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">${esc(d.nombre)}</h2>${iconBtn("close", "Cerrar", "data-close")}</div>
+      <ul class="vx-list" role="list">${row({ ic: "edit", title: "Editar", attrs: 'data-a="edit"' })}${d.predeterminada ? "" : row({ ic: "check", title: "Usar como predeterminada", attrs: 'data-a="def"' })}${row({ ic: "trash", title: "Quitar", attrs: 'data-a="del"', danger: true })}</ul></div>`);
+      el.addEventListener("click", async (e) => {
+        const a = e.target.closest("[data-a]");
+        if (!a) return;
+        const k = a.dataset.a;
+        if (k === "edit") {
+          await closeOverlay({ silent: true });
+          go("M6.14", { kind: "push", params: { id: d.id } });
+          return;
+        }
+        if (k === "def") {
+          state.dirs.forEach((x) => {
+            x.predeterminada = x.id === d.id;
+          });
+          state.flow.direccion = d.id;
+          set({ dirs: state.dirs });
+          toast(`${d.nombre} es tu dirección predeterminada`);
+        }
+        if (k === "del") {
+          const i = state.dirs.findIndex((x) => x.id === d.id), [gone] = state.dirs.splice(i, 1);
+          if (gone.predeterminada && state.dirs[0]) state.dirs[0].predeterminada = true;
+          if (state.flow.direccion === gone.id) state.flow.direccion = state.dirs[0]?.id;
+          set({ dirs: state.dirs });
+          toast(`Quitaste ${gone.nombre}`, { action: "Deshacer", onAction: () => {
+            state.dirs.splice(i, 0, gone);
+            set({ dirs: state.dirs });
+          } });
+        }
+        closeOverlay();
+      });
+      return el;
+    }
+  });
+  register("M6.14", {
+    render(ctx) {
+      const d = state.dirs.find((x) => x.id === ctx.params.id), edit = !!d;
+      const [est, ciu] = d ? [d.ciudad.split(", ")[1] || "Carabobo", d.ciudad.split(", ")[0]] : ["Carabobo", "Valencia"];
+      const el = h(`<div class="vx-page"><header class="vx-sheet-head vx-flowhead"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">${edit ? "Editar dirección" : "Nueva dirección"}</h2>${iconBtn("close", "Cerrar", "data-close")}</header>
+      <div class="vx-body vx-pad-h"><form class="vx-form" novalidate onsubmit="return false">
+        ${field({ id: "dNombre", label: "Nombre de la dirección", value: d?.nombre || "" })}${field({ id: "dLinea", label: "Calle y número", value: d?.linea || "", autocomplete: "street-address" })}${field({ id: "dRef", label: "Referencia (opcional)", value: d?.ref || "" })}
+        ${select({ id: "dEstado", label: "Estado", options: Object.keys(estadosVE), value: est })}${select({ id: "dCiudad", label: "Ciudad", options: estadosVE[est] || [], value: ciu })}
+        ${field({ id: "dCp", label: "Código postal", value: d?.cp || "", inputmode: "numeric" })}${field({ id: "dTel", label: "Teléfono", value: d?.tel || "", inputmode: "tel", autocomplete: "tel" })}</form>
+        <div class="vx-map" aria-hidden="true">${icon("map", 40)}</div><div class="vx-row-end">${btn("Marcar en el mapa", { kind: "text", id: "dMapa" })}</div>
+        ${switchHtml("dDef", "Usar como predeterminada", !!d?.predeterminada)}</div>
+      <footer class="vx-actionbar">${btn("Guardar dirección", { kind: "filled", block: true, id: "dSave" })}</footer></div>`);
+      wireControls(el);
+      el.querySelector("#dEstado").addEventListener("change", (e) => {
+        const c = el.querySelector("#dCiudad");
+        c.innerHTML = estadosVE[e.target.value].map((x) => `<option>${x}</option>`).join("");
+      });
+      let mapa = d ? !d.sinMapa : false;
+      el.querySelector("#dMapa").addEventListener("click", () => {
+        mapa = true;
+        toast("Punto marcado en el mapa");
+      });
+      el.querySelector("#dSave").addEventListener("click", async () => {
+        const v = (id) => el.querySelector("#" + id).value.trim();
+        const bad = { dNombre: !v("dNombre") && "Escribe un nombre", dLinea: !v("dLinea") && "Escribe la calle y el número", dTel: !/^[\d\s+-]{7,}$/.test(v("dTel")) && "Escribe un teléfono válido" };
+        Object.entries(bad).forEach(([k, m]) => fieldError(el, k, m || ""));
+        if (Object.values(bad).some(Boolean)) return;
+        const def = el.querySelector("#dDef").checked, rec = { nombre: v("dNombre"), linea: v("dLinea"), ref: v("dRef"), ciudad: `${v("dCiudad")}, ${v("dEstado")}`, cp: v("dCp") || "—", tel: v("dTel"), sinMapa: !mapa };
+        if (def) state.dirs.forEach((x) => {
+          x.predeterminada = false;
+        });
+        if (edit) Object.assign(d, rec, { predeterminada: def || d.predeterminada });
+        else state.dirs.push({ id: "d" + Date.now(), predeterminada: def || !state.dirs.length, ...rec });
+        if (def) state.flow.direccion = (edit ? d : state.dirs[state.dirs.length - 1]).id;
+        set({ dirs: state.dirs });
+        toast("Dirección guardada");
+        await closeOverlay();
+      });
+      return el;
+    }
+  });
+  register("M6.15", {
+    render() {
+      const el = h(`<div>${topbar("Formas de pago", { trailing: iconBtn("add", "Añadir forma de pago", 'data-go="M6.16"') })}
+      <p class="md-body-large vx-pad-h">Guarda tu cuenta para pagar más rápido. La clave del banco se pide siempre al pagar y no se guarda.</p>
+      <ul class="vx-orders vx-pad-h" role="list" id="pagoList"></ul><div class="vx-pad-h">${btn("Añadir forma de pago", { kind: "filled", block: true, go: "M6.16" })}</div></div>`);
+      const paint = () => {
+        el.querySelector("#pagoList").innerHTML = state.pagos.map((p) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="vx-order-text">
+      <span class="md-title-small">${esc(p.titulo)} ${p.preferida ? '<span class="vx-tag md-label-small">Preferida</span>' : ""}</span><span class="md-body-medium vx-muted">${esc(p.sub)}</span>
+      <span class="md-body-medium vx-tab-num">${[p.doc, p.cuenta, p.tel, p.correo].filter(Boolean).map(esc).join(" · ")}</span>${p.ultimo ? `<span class="md-body-small vx-muted">Último uso: ${p.ultimo}</span>` : ""}
+      ${p.falla ? `<span>${statusTag("warning", "Falló varias veces seguidas. Revisa los datos.")}</span>` : ""}</span>${iconBtn("trash", `Quitar ${p.titulo}`, `data-rmpago="${p.id}"`)}</div></li>`).join("") || `<li>${stateBlock({ icon: "wallet", title: "Todavía no guardas formas de pago" })}</li>`;
+      };
+      el.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-rmpago]");
+        if (!b) return;
+        const i = state.pagos.findIndex((x) => x.id === b.dataset.rmpago), [gone] = state.pagos.splice(i, 1);
+        set({ pagos: state.pagos });
+        toast(`Quitaste ${gone.titulo}`, { action: "Deshacer", onAction: () => {
+          state.pagos.splice(i, 0, gone);
+          set({ pagos: state.pagos });
+        } });
+      });
+      paint();
+      el.__un = subscribe(paint);
+      return el;
+    },
+    mount(el) {
+      return el.__un;
+    }
+  });
+  register("M6.16", {
+    render() {
+      const el = h(`<div class="vx-page"><header class="vx-sheet-head vx-flowhead"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">Nueva forma de pago</h2>${iconBtn("close", "Cerrar", "data-close")}</header>
+      <div class="vx-body vx-pad-h"><form class="vx-form" novalidate onsubmit="return false">
+        ${select({ id: "pTipoDoc", label: "Tipo de documento", options: ["V", "E", "J", "P"], value: "V" })}${field({ id: "pDoc", label: "Número de documento", inputmode: "numeric" })}
+        ${select({ id: "pBanco", label: "Banco", options: ["Elige tu banco", ...bancosVE], value: "Elige tu banco" })}${field({ id: "pTel", label: "Teléfono", inputmode: "tel", autocomplete: "tel" })}
+        ${field({ id: "pCuenta", label: "Número de cuenta (opcional)", inputmode: "numeric" })}${field({ id: "pAlias", label: "Alias (opcional)" })}</form>
+        <p class="vx-ready md-body-large" id="pEstado" role="status"></p></div>
+      <footer class="vx-actionbar">${btn("Guardar forma de pago", { kind: "filled", block: true, id: "pSave" })}</footer></div>`);
+      const v = (id) => el.querySelector("#" + id).value.trim();
+      const faltan = () => [!v("pDoc") && "documento", v("pBanco") === "Elige tu banco" && "banco", !/^[\d\s+-]{7,}$/.test(v("pTel")) && "teléfono"].filter(Boolean);
+      const paint = () => {
+        const f = faltan();
+        el.querySelector("#pEstado").innerHTML = f.length ? `${icon("info", 18)} Falta: ${f.join(", ")}.` : `${icon("check", 18)} Todo listo: documento, banco y teléfono completos.`;
+        el.querySelector("#pEstado").classList.toggle("is-ok", !f.length);
+      };
+      el.addEventListener("input", paint);
+      el.addEventListener("change", paint);
+      el.querySelector("#pSave").addEventListener("click", async () => {
+        fieldError(el, "pDoc", !v("pDoc") ? "Escribe tu documento" : "");
+        fieldError(el, "pTel", !/^[\d\s+-]{7,}$/.test(v("pTel")) ? "Escribe un teléfono válido" : "");
+        if (faltan().length) {
+          if (v("pBanco") === "Elige tu banco") toast("Elige tu banco");
+          return;
+        }
+        const tel = v("pTel").replace(/\D/g, "");
+        state.pagos.push({ id: "p" + Date.now(), titulo: `${v("pBanco")} ····${tel.slice(-4)}`, sub: v("pAlias") || "Teléfono y banco", doc: `${v("pTipoDoc")}-${mask(v("pDoc"))}`, tel: `${tel.slice(0, 4)} ···${tel.slice(-4)}` });
+        set({ pagos: state.pagos });
+        toast("Guardaste tu forma de pago");
+        await closeOverlay();
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M6.17", {
+    render() {
+      const el = h(`<div>${topbar("Avisos", { trailing: btn("Marcar como leídos", { kind: "text", id: "avLeer" }) })}
+      <div class="vx-pad-h"><div class="md-seg" role="tablist" aria-label="Ver">${[["todos", "Todos"], ["nuevos", "Sin leer"]].map(([k, t], i) => `<button type="button" role="tab" class="md-seg-item md-sl md-label-large${i === 0 ? " md-seg-item--on" : ""}" data-seg="${k}" aria-selected="${i === 0}">${t}</button>`).join("")}</div></div>
+      <ul class="vx-list" role="list" id="avList"></ul></div>`);
+      let seg2 = "todos";
+      const paint = () => {
+        const l = state.avisosCuenta.filter((a) => seg2 === "todos" || a.nuevo);
+        el.querySelector("#avList").innerHTML = l.map((a) => `<li><button type="button" class="md-li md-li--3 md-sl vx-press vx-row" data-go="${a.to}"><span class="md-li-icon">${icon(a.ic)}</span>
+        <span class="md-li-text"><span class="md-li-title md-body-large">${esc(a.t)} ${a.nuevo ? '<span class="vx-tag md-label-small">Nuevo</span>' : ""}</span><span class="md-li-sup md-body-medium">${esc(a.d)}</span></span><span class="md-li-end md-body-small">${a.cuando}</span></button></li>`).join("") || `<li>${stateBlock({ icon: "bell", title: "No tienes avisos sin leer" })}</li>`;
+        el.querySelector("#avLeer").disabled = !state.avisosCuenta.some((a) => a.nuevo);
+      };
+      el.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-seg]");
+        if (b) {
+          seg2 = b.dataset.seg;
+          $$("[data-seg]", el).forEach((x) => {
+            const on = x === b;
+            x.classList.toggle("md-seg-item--on", on);
+            x.setAttribute("aria-selected", on);
+          });
+          paint();
+        }
+      });
+      el.querySelector("#avLeer").addEventListener("click", () => {
+        state.avisosCuenta.forEach((a) => {
+          a.nuevo = false;
+        });
+        set({ avisosCuenta: state.avisosCuenta });
+        paint();
+        toast("Marcaste todo como leído");
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M6.18", {
+    render() {
+      const el = h(`<div>${topbar("Seguridad y contraseña")}
+      <section class="vx-pad-h"><h2 class="md-title-medium">Cambiar contraseña</h2><form class="vx-form" novalidate onsubmit="return false">
+        ${field({ id: "sActual", label: "Contraseña actual", type: "password", autocomplete: "current-password" })}${field({ id: "sNueva", label: "Contraseña nueva", type: "password", autocomplete: "new-password" })}${reqsHtml()}
+        ${field({ id: "sRepite", label: "Repite la contraseña nueva", type: "password", autocomplete: "new-password" })}</form>
+        <div class="vx-pad-v">${btn("Guardar contraseña", { kind: "filled", block: true, id: "sSave", attrs: "disabled" })}</div></section>
+      <ul class="vx-list" role="list" id="segList"></ul></div>`);
+      const reqs = el.querySelector(".vx-reqs");
+      paintReqs(reqs, "");
+      const check = () => {
+        const n = el.querySelector("#sNueva").value, ok = paintReqs(reqs, n);
+        el.querySelector("#sSave").disabled = !(el.querySelector("#sActual").value && ok && n === el.querySelector("#sRepite").value);
+      };
+      el.addEventListener("input", check);
+      el.querySelector("#sSave").addEventListener("click", () => {
+        toast("Contraseña actualizada. Cerramos tus otras sesiones.");
+        state.sesiones = state.sesiones.filter((s) => s.actual);
+        set({ sesiones: state.sesiones });
+        ["sActual", "sNueva", "sRepite"].forEach((i) => {
+          el.querySelector("#" + i).value = "";
+        });
+        check();
+      });
+      const paint = () => {
+        el.querySelector("#segList").innerHTML = row({ ic: "shield", title: "Verificación en dos pasos", end: `${state.dosPasos ? "Activa" : "Sin activar"}${""}`, go: "M6.19" }) + row({ ic: "desktop", title: "Sesiones abiertas", end: `<b class="vx-tab-num">${state.sesiones.length}</b>`, go: "M6.20" }) + row({ ic: "trash", title: "Eliminar cuenta", go: "M6.21", danger: true });
+      };
+      paint();
+      el.__un = subscribe(paint);
+      return el;
+    },
+    mount(el) {
+      return el.__un;
+    }
+  });
+  var CLAVE = "JBSW Y3DP EHPK 3PXP";
+  var RESPALDO = ["7F3K-92LD", "Q8MZ-4RTW", "2HNP-6VXA", "L9CE-1JQU", "W5BT-8KSN", "M3YG-0PDF"];
+  register("M6.19", {
+    render() {
+      const el = h(`<div>${topbar("Verificación en dos pasos")}<div class="vx-pad-h vx-stack">
+      <p id="dpEstado">${statusTag(state.dosPasos ? "success" : "neutral", state.dosPasos ? "Activa" : "Sin activar")}</p>
+      <p class="md-body-large">Al entrar te pediremos además un código de tu app de autenticación.</p>
+      <section id="dpPasos" ${state.dosPasos ? "hidden" : ""} class="vx-stack"><h2 class="md-title-medium">Paso 1 · Vincula tu app de autenticación</h2>
+        <p class="vx-key md-title-medium vx-tab-num" aria-label="Clave de configuración">${CLAVE}</p>
+        <div class="vx-twin">${btn(`${icon("copy", 18)}Copiar clave`, { kind: "outlined", id: "dpCopy" })}${btn("Mostrar código QR", { kind: "outlined", id: "dpQr", attrs: 'aria-expanded="false"' })}</div>
+        <div class="vx-qr" id="dpQrBox" hidden aria-label="Código QR de ejemplo">${icon("map", 56)}</div>
+        <h2 class="md-title-medium">Paso 2 · Escribe el código</h2>${field({ id: "dpCodigo", label: "Código de 6 dígitos", inputmode: "numeric", autocomplete: "one-time-code", attrs: 'maxlength="6"' })}
+        ${btn("Activar", { kind: "filled", block: true, id: "dpActivar" })}</section>
+      <section id="dpResp" hidden class="vx-stack"><h2 class="md-title-medium">Códigos de respaldo</h2><p class="md-body-large">Guárdalos ahora. No se volverán a mostrar.</p>
+        <ul class="vx-codes vx-tab-num" role="list">${RESPALDO.map((c) => `<li class="md-body-large">${c}</li>`).join("")}</ul>
+        <div class="vx-twin">${btn(`${icon("copy", 18)}Copiar códigos`, { kind: "tonal", id: "dpCopyR" })}${btn("Ya los guardé", { kind: "filled", id: "dpListo" })}</div></section>
+      <section id="dpOff" ${state.dosPasos ? "" : "hidden"} class="vx-stack">${btn("Desactivar verificación en dos pasos", { kind: "text", block: true, id: "dpDes" })}</section></div></div>`);
+      const q = (s) => el.querySelector(s);
+      q("#dpCopy").addEventListener("click", () => copiar(CLAVE.replace(/\s/g, ""), "Copiaste la clave"));
+      q("#dpQr").addEventListener("click", (e) => {
+        const box = q("#dpQrBox"), on = box.hidden;
+        box.hidden = !on;
+        e.currentTarget.textContent = on ? "Ocultar código QR" : "Mostrar código QR";
+        e.currentTarget.setAttribute("aria-expanded", on);
+      });
+      q("#dpActivar").addEventListener("click", () => {
+        const c = q("#dpCodigo").value.trim();
+        fieldError(el, "dpCodigo", !/^\d{6}$/.test(c) ? "Escribe los 6 dígitos" : c === "000000" ? "El código no es correcto" : "");
+        if (!/^\d{6}$/.test(c) || c === "000000") return;
+        state.dosPasos = true;
+        set({ dosPasos: true });
+        q("#dpPasos").hidden = true;
+        q("#dpResp").hidden = false;
+        q("#dpEstado").innerHTML = statusTag("success", "Activa");
+        toast("Activaste la verificación en dos pasos");
+      });
+      q("#dpCopyR").addEventListener("click", () => copiar(RESPALDO.join("\n"), "Copiaste los códigos"));
+      q("#dpListo").addEventListener("click", () => {
+        q("#dpResp").hidden = true;
+        q("#dpOff").hidden = false;
+        toast("Guardaste tus códigos de respaldo");
+      });
+      q("#dpDes").addEventListener("click", () => {
+        state.dosPasos = false;
+        set({ dosPasos: false });
+        q("#dpOff").hidden = true;
+        q("#dpPasos").hidden = false;
+        q("#dpEstado").innerHTML = statusTag("neutral", "Sin activar");
+        toast("Desactivaste la verificación en dos pasos");
+      });
+      return el;
+    }
+  });
+  register("M6.20", {
+    render() {
+      const el = h(`<div>${topbar("Sesiones abiertas")}<p class="md-body-large vx-pad-h">Aquí ves dónde está abierta tu cuenta.</p><ul class="vx-orders vx-pad-h" role="list" id="sesList"></ul>
+      <div class="vx-pad-h">${btn("Cerrar las otras sesiones", { kind: "filled", block: true, id: "sesCerrar" })}</div></div>`);
+      const paint = () => {
+        el.querySelector("#sesList").innerHTML = state.sesiones.map((s) => `<li class="vx-order"><div class="vx-order-main vx-static"><span class="md-li-icon vx-sesico">${icon(s.ic, 28)}</span><span class="vx-order-text">
+      <span class="md-title-small">${esc(s.equipo)} · ${esc(s.so)} ${s.actual ? '<span class="vx-tag md-label-small">Esta sesión</span>' : ""}</span><span class="md-body-medium vx-muted vx-tab-num">Venezuela · ${s.ip} · desde ${s.desde}</span></span></div></li>`).join("");
+        el.querySelector("#sesCerrar").disabled = state.sesiones.length < 2;
+      };
+      el.querySelector("#sesCerrar").addEventListener("click", () => {
+        const n = state.sesiones.filter((s) => !s.actual).length;
+        state.sesiones = state.sesiones.filter((s) => s.actual);
+        set({ sesiones: state.sesiones });
+        paint();
+        toast(`Cerraste ${plural(n, "sesión", "sesiones")}`);
+      });
+      paint();
+      return el;
+    }
+  });
+  register("M6.21", {
+    render() {
+      const bloqueos = [["2 compras en curso en Venezuela", "Ver mis compras", "M6.03"], ["1 trabajo técnico sin cerrar", "Ver trabajos", "M8.01"]];
+      const el = h(`<div>${topbar("Eliminar cuenta")}<div class="vx-pad-h vx-stack"><p class="md-body-large">Se borra tu cuenta en todos los países donde la usas. No se puede deshacer.</p>
+      <h2 class="md-title-medium">Antes tienes que terminar:</h2><ul class="vx-list" role="list">${bloqueos.map(([t, l, to]) => `<li class="vx-block">${statusTag("warning", t)}${btn(l, { kind: "text", go: to })}</li>`).join("")}</ul>
+      <h2 class="md-title-medium">Antes de irte puedes</h2>${btn(`${icon("upload", 20)}Descargar mis datos`, { kind: "text", block: true, attrs: 'data-toast="Preparando tu archivo. Te avisamos cuando esté listo."' })}
+      <h2 class="md-title-medium">Cuando no haya bloqueos:</h2>${field({ id: "delConf", label: "Escribe ELIMINAR para confirmar", autocomplete: "off" })}
+      <p class="md-body-medium vx-muted" id="delWhy">Todavía tienes ${bloqueos.length} pendientes, por eso este botón sigue apagado.</p>
+      ${btn("Eliminar mi cuenta", { kind: "filled", block: true, id: "delGo", attrs: 'disabled aria-describedby="delWhy"' })}</div></div>`);
+      return el;
+    }
+  });
+  register("M6.22", {
+    render() {
+      const chk = (id, t) => `<label class="md-check vx-chk"><span class="md-check-hit md-sl"><input class="md-check-input" type="checkbox" id="${id}"><span class="md-check-box"></span></span><span class="md-body-large">${t}</span></label>`;
+      const el = h(page(
+        topbar("Registrar mi empresa"),
+        `
+      <p class="md-body-large vx-pad-h">Lo justo para que tu empresa exista. La verificación tarda hasta 72 horas hábiles.</p><p class="vx-pad-h"><span class="vx-tag md-label-medium">${icon("globe", 14)}Venezuela</span> <span class="vx-tag md-label-medium">Sin cuota de entrada</span></p>
+      <section class="vx-pad-h"><h2 class="md-title-medium">¿Cómo operas?</h2><div class="vx-options" role="radiogroup" aria-label="¿Cómo operas?">${radioOpt({ name: "opera", value: "natural", checked: true, title: "Persona natural con actividad económica" })}${radioOpt({ name: "opera", value: "juridica", title: "Persona jurídica" })}</div></section>
+      <section class="vx-pad-h"><h2 class="md-title-medium">¿Qué hace tu empresa?</h2><div role="group" aria-label="¿Qué hace tu empresa?">${chk("aVender", "Vender productos")}${chk("aImportar", "Importar")}${chk("aServicios", "Prestar servicios técnicos")}</div>
+        <p class="md-body-medium vx-muted" id="aErr" role="alert"></p>
+        <p class="md-body-medium vx-muted">Aseguradoras y auxilio vial entran por acuerdo con VexBiz; escríbenos desde ${btn("Contacto", { kind: "text", go: "M6.26" })}.</p></section>
+      <div class="vx-pad-h vx-form">${field({ id: "eNombre", label: "Nombre de la empresa" })}${field({ id: "eDoc", label: "RIF o documento" })}${field({ id: "eTel", label: "Teléfono de contacto", inputmode: "tel" })}</div>`,
+        btn("Registrar mi empresa", { kind: "filled", block: true, id: "eGo" })
+      ));
+      wireControls(el);
+      el.addEventListener("change", (e) => {
+        const t = e.target.closest(".md-check-input");
+        if (t) {
+          const b = t.nextElementSibling;
+          b.classList.toggle("md-check-box--on", t.checked);
+          b.innerHTML = t.checked ? icon("check", 16) : "";
+          el.querySelector("#aErr").textContent = "";
+        }
+      });
+      el.querySelector("#eGo").addEventListener("click", () => {
+        const v = (id) => el.querySelector("#" + id).value.trim(), act = $$(".md-check-input", el).some((c) => c.checked);
+        fieldError(el, "eNombre", !v("eNombre") ? "Escribe el nombre de la empresa" : "");
+        fieldError(el, "eDoc", !v("eDoc") ? "Escribe el RIF o documento" : "");
+        fieldError(el, "eTel", !/^[\d\s+-]{7,}$/.test(v("eTel")) ? "Escribe un teléfono válido" : "");
+        el.querySelector("#aErr").textContent = act ? "" : "Elige al menos una actividad";
+        if (!act || !v("eNombre") || !v("eDoc") || !/^[\d\s+-]{7,}$/.test(v("eTel"))) return;
+        state.empresaRegistrada = true;
+        set({ empresaRegistrada: true, mode: "empresa" });
+        toast("Registramos tu empresa. La verificación tarda hasta 72 horas hábiles.");
+        go("M9.01", { kind: "mode" });
+      });
+      return el;
+    }
+  });
+  register("M6.23", {
+    render() {
+      const el = h(`<div>${topbar("Cómo se ve VexBiz")}<div class="vx-pad-h vx-stack">
+      <section><h2 class="md-title-medium">Tamaño del texto</h2><p class="md-headline-small vx-tab-num" id="tsVal">${prefs.scale} %</p>
+        <input type="range" class="vx-range" id="tsRange" min="100" max="150" step="10" value="${prefs.scale}" aria-label="Tamaño del texto" aria-valuetext="${prefs.scale} %"><div class="vx-rangelbl md-body-small vx-muted"><span>100 %</span><span>150 %</span></div>
+        <p class="md-body-large">Así se leerán los textos de la app.</p></section>
+      ${switchHtml("prContraste", "Más contraste", prefs.contrast)}${switchHtml("prMov", "Menos movimiento", prefs.reduce)}
+      <p class="md-body-medium vx-muted">Estas preferencias se guardan en este teléfono. Si no cambias nada, la app sigue los ajustes de accesibilidad del sistema.</p>
+      ${btn("Volver a los valores del sistema", { kind: "outlined", block: true, id: "prReset" })}</div></div>`);
+      wireControls(el);
+      const rng = el.querySelector("#tsRange");
+      rng.addEventListener("input", () => {
+        setScale(Number(rng.value));
+        el.querySelector("#tsVal").textContent = `${prefs.scale} %`;
+        rng.setAttribute("aria-valuetext", `${prefs.scale} %`);
+      });
+      el.querySelector("#prContraste").addEventListener("change", (e) => setContrast(e.target.checked));
+      el.querySelector("#prMov").addEventListener("change", (e) => setReduce(e.target.checked));
+      el.querySelector("#prReset").addEventListener("click", () => {
+        setScale(100);
+        setContrast(matchMedia("(prefers-contrast: more)").matches);
+        setReduce(matchMedia("(prefers-reduced-motion: reduce)").matches);
+        rng.value = 100;
+        el.querySelector("#tsVal").textContent = "100 %";
+        [["prContraste", prefs.contrast], ["prMov", prefs.reduce]].forEach(([id, on]) => {
+          const i = el.querySelector("#" + id);
+          i.checked = on;
+          i.nextElementSibling.classList.toggle("md-switch-track--on", on);
+        });
+        toast("Volviste a los valores del sistema");
+      });
+      return el;
+    }
+  });
+  var SITIO = 'data-toast="Abre el sitio de VexBiz"';
+  register("M6.24", {
+    render() {
+      const doc = (ic, t, d) => row({ ic, title: t, go: `M6.25?doc=${d}` });
+      const ext = (ic, t) => row({ ic, title: t, attrs: SITIO, end: icon("globe", 20) });
+      return h(`<div>${topbar("Ayuda e información")}<p class="md-body-medium vx-muted vx-pad-h">Lunes a sábado, 8:00 a 19:00</p>
+      ${sec2("Ayuda")}<ul class="vx-list" role="list">${doc("info", "Cómo comprar", "comprar")}${doc("truck", "Envíos", "envios")}${doc("receipt", "Devoluciones", "devoluciones")}</ul>
+      ${sec2("Legal y políticas")}<ul class="vx-list" role="list">${doc("doc", "Términos y condiciones", "terminos")}${doc("lock", "Política de privacidad", "privacidad")}${doc("doc", "Aviso legal", "aviso")}</ul>
+      ${sec2("VexBiz")}<ul class="vx-list" role="list">${doc("store", "Quiénes somos", "quienes")}${doc("tag", "Vender en VexBiz", "vender")}${doc("wrench", "Trabaja como técnico", "tecnico")}${doc("gift", "Franquicias", "franquicias")}</ul>
+      ${sec2("Más")}<ul class="vx-list" role="list">${row({ ic: "chat", title: "Contacto", go: "M6.26" })}${row({ ic: "eye", title: "Preferencias de accesibilidad", go: "M6.23" })}${row({ ic: "inbox", title: "Boletín", go: "M1.10" })}</ul>
+      <section class="vx-pad-h vx-stack vx-pad-v"><h2 class="md-title-medium">¿Tienes dudas con un pedido?</h2>${btn("Ir a mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${whatsappBtn("Escríbenos por WhatsApp", 'data-toast="Abre el WhatsApp de VexBiz: lunes a sábado, 8:00 a 19:00"')}</section></div>`);
+    }
+  });
+  var DOCS = { terminos: "Términos y condiciones", privacidad: "Política de privacidad", aviso: "Aviso legal", comprar: "Cómo comprar", envios: "Envíos", devoluciones: "Devoluciones", quienes: "Quiénes somos", vender: "Vender en VexBiz", franquicias: "Franquicias", garantia: "Condiciones de la garantía", tecnico: "Trabaja como técnico" };
+  register("M6.25", {
+    render(ctx) {
+      const k = ctx.params.doc in DOCS ? ctx.params.doc : "tecnico", t = DOCS[k];
+      const body = k === "tecnico" ? `<section><h2 class="md-title-medium">Qué ganas</h2><p class="md-body-large">Solicitudes de clientes de tu zona, con el precio que tú pones y pagos protegidos por VexBiz.</p></section>
+         <section><h2 class="md-title-medium">Qué te pedimos</h2><p class="md-body-large">Tu cédula, tus oficios, la zona donde trabajas y los documentos que pida tu país.</p></section>
+         <section><h2 class="md-title-medium">Cuánto tarda</h2><p class="md-body-large">Revisamos tu perfil en hasta 72 horas hábiles. Mientras tanto ya puedes comprar repuestos.</p></section>
+         <h2 class="md-title-medium">¿No encontraste lo que buscabas?</h2>
+         <div class="vx-stack">${btn("Crear mi cuenta", { kind: "filled", block: true, go: "M1.05" })}${btn("Escribirnos", { kind: "tonal", block: true, go: "M6.26" })}${btn("Contacto", { kind: "text", block: true, go: "M6.26" })}</div>` : `${banner("info", "Esta es una vista resumida. El texto completo está en el sitio de VexBiz.")}<div class="vx-stack">${btn("Abrir el sitio de VexBiz", { kind: "filled", block: true, attrs: SITIO })}${btn("Contacto", { kind: "text", block: true, go: "M6.26" })}</div>`;
+      return h(`<div>${topbar(t)}<div class="vx-pad-h vx-stack"><p class="md-body-medium vx-muted">Versión 1.0 · actualizado el 15/08/2026</p>${body}</div></div>`);
+    }
+  });
+  register("M6.26", {
+    render() {
+      const red = (ic, t, d) => row({ ic, title: t, sup: d, attrs: SITIO, end: icon("globe", 20) });
+      return h(`<div>${topbar("Contacto")}<div class="vx-pad-h vx-stack"><p class="md-body-medium vx-muted">Lunes a sábado, 8:00 a 19:00</p>${whatsappBtn("Escríbenos por WhatsApp", 'data-toast="Abre el WhatsApp de VexBiz: lunes a sábado, 8:00 a 19:00"')}</div>
+      ${sec2("Redes sociales")}<ul class="vx-list" role="list">${red("globe", "Instagram", "@vexbiz.ve")}${red("globe", "Facebook", "VexBiz Venezuela")}${red("globe", "YouTube", "VexBiz")}</ul>
+      <section class="vx-pad-h vx-stack vx-pad-v"><h2 class="md-title-medium">¿Es por un pedido?</h2><p class="md-body-large">Desde el pedido puedes calificar, devolver o abrir un reclamo.</p>
+        ${btn("Ir a mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${btn("Ver ayuda e información", { kind: "text", block: true, go: "M6.24" })}</section></div>`);
+    }
+  });
+
+  // assets/js/main.js
+  var root2 = document.documentElement;
+  var prefs2 = loadPrefs();
   var setTheme = (t) => {
-    root.setAttribute("data-theme", t);
+    root2.setAttribute("data-theme", t);
     savePrefs({ theme: t });
     paintSegs();
-  };
-  var setReduce = (on) => {
-    root.toggleAttribute("data-reduce-motion", on);
-    savePrefs({ reduce: on });
-    $("#swReduce").checked = on;
-    $("#swReduce").nextElementSibling.classList.toggle("md-switch-track--on", on);
   };
   function seg(host, items, current2, onPick) {
     host.innerHTML = items.map(([v, l]) => `<button type="button" class="md-seg-item md-sl md-label-large${v === current2 ? " md-seg-item--on" : ""}" data-v="${v}" aria-pressed="${v === current2}">${l}</button>`).join("");
@@ -2487,7 +3376,7 @@
       state.flow.demoPago = v;
       set({ flow: state.flow });
     });
-    seg($("#segTema"), [["light", "Claro"], ["dark", "Oscuro"]], root.getAttribute("data-theme"), setTheme);
+    seg($("#segTema"), [["light", "Claro"], ["dark", "Oscuro"]], root2.getAttribute("data-theme"), setTheme);
   }
   function paintIndex() {
     const cur = currentCode();
@@ -2509,10 +3398,8 @@
     const s = wide ? Math.min(1, (innerHeight - 32) / 892) : 1;
     $("#fit").style.setProperty("--fit", s.toFixed(3));
   }
-  if (prefs.theme) root.setAttribute("data-theme", prefs.theme);
-  if (prefs.reduce) root.setAttribute("data-reduce-motion", "");
-  $("#swReduce").checked = !!prefs.reduce;
-  $("#swReduce").nextElementSibling.classList.toggle("md-switch-track--on", !!prefs.reduce);
+  if (prefs2.theme) root2.setAttribute("data-theme", prefs2.theme);
+  initPrefs();
   $("#swReduce").addEventListener("change", (e) => setReduce(e.target.checked));
   $("#btnReset").addEventListener("click", () => {
     reset();

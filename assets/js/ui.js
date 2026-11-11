@@ -40,6 +40,8 @@ const I = {
   copy: 'M9 9h11v11H9zM5 15V5h10', upload: 'M12 16V5M7 9l5-5 5 5M5 19h14', map: 'M9 4l6 2 5-2v14l-5 2-6-2-5 2V6zM9 4v14M15 6v14',
   trash: 'M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13', edit: 'M4 20h4L19 9l-4-4L4 16zM13 7l4 4', truck: 'M3 7h11v9H3zM14 10h4l3 3v3h-7',
   eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  chat: 'M4 5h16v11H9l-5 4zM8 10h8M8 13h5', phone: 'M8 3h8v18H8zM11 18h2', desktop: 'M3 5h18v11H3zM8 20h8M12 16v4', more2: '<circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/>',
+  star: 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z', logout: 'M10 5H5v14h5M14 8l4 4-4 4M18 12H9', globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>', doc: 'M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5', key: '<circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5L20 3M16 7l3 3"/>', gift: 'M4 9h16v4H4zM6 13v7h12v-7M12 9v11M12 9c-2 0-4-1-4-3s3-2 4 3zM12 9c2 0 4-1 4-3s-3-2-4 3z',
   menu: 'M4 6h16M4 12h16M4 18h16', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 };
 export const icon = (name, size = 24) => {

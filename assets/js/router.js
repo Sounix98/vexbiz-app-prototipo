@@ -9,7 +9,9 @@ import { state, set } from './store.js';
 import { setBar, skeleton, h, $, icon, toast } from './ui.js';
 import { esc } from './format.js';
 
-const ALIAS = Object.fromEntries(INDEX.filter((r) => r.alias).map((r) => [r.label.replace(' ▣', ''), r.id]));
+// Solo las filas con un código propio (M0.03, M2.04…) son alias de una hoja. Las que llevan «▣» (M6.13 ▣, M7.12 ▣)
+// comparten el código de una pantalla real y se abren por su id (O.ACC, O.DET), nunca por el código.
+const ALIAS = Object.fromEntries(INDEX.filter((r) => r.alias && !r.label.includes('▣')).map((r) => [r.label, r.id]));
 export const resolve = (code) => ALIAS[code] || code;
 
 const stack = [];            // { code, params, scroll }

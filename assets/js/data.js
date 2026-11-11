@@ -150,3 +150,59 @@ export const sugerencias = [
   { t: 'compresor 12000 btu', n: '86 resultados' },
 ];
 export const recientes = ['aire split 12000', 'capacitor 35 uf'];
+
+// ── Fase 2 · Cuenta y postventa ─────────────────────────────────────────────
+/** «Hoy» de la demo (la tasa de las pantallas es del 16/10): las vigencias de garantía se calculan contra esta fecha. */
+export const HOY = new Date(2026, 9, 16);
+/** Impuestos que van incluidos en el total de un pedido (Figma: $ 39,20 = $ 32,94 + $ 6,26). */
+export const IMPUESTO_INCLUIDO = 19;
+
+export const garantias = [
+  { id: 'g1', producto: 'Aire split inverter 12.000 BTU', responde: 'Samsung, por Frío Total C.A.', hasta: new Date(2027, 9, 16), ref: 'Pedido #VX-20412' },
+  { id: 'g2', producto: 'Instalación de aire split', responde: 'ClimaPro Servicios', hasta: new Date(2027, 0, 18), ref: 'Solicitud #S-2041' },
+  { id: 'g3', producto: 'Capacitor de marcha 35+5 µF', responde: 'Frío Total C.A.', hasta: new Date(2026, 8, 2), ref: 'Pedido #VX-19870' },
+];
+
+/** Líneas de cada pedido (M6.04). El primero es el de Figma; los demás se inventaron para que cuadren con su total. */
+export const detallePedidos = {
+  '#VX-20211|ElectroHogar': { emitido: '18/09/2026', envio: { empresa: 'Zoom', despachado: '19/09/2026', guia: '1234 5678 90' }, factura: { n: '000-0458', fecha: '19/09/2026' }, lineas: [
+    { n: 'Bombillo LED 12W · pack x4', q: 2, p: 9.8, garantia: '18/03/2027' },
+    { n: 'Regleta con protector 6 tomas', q: 2, p: 9.8, garantia: '18/09/2027', devolucion: '1 de 2 en devolución' }] },
+  '#VX-20431|Frío Total C.A.': { emitido: '15/10/2026', lineas: [{ n: 'Aire split inverter 12.000 BTU', q: 1, p: 389 }, { n: 'Control remoto universal', q: 2, p: 12.5 }] },
+  '#VX-20432|Herramientas Andina': { emitido: '15/10/2026', lineas: [{ n: 'Taladro percutor inalámbrico 18V', q: 1, p: 129.9 }, { n: 'Juego de llaves 12 piezas', q: 1, p: 24.9 }] },
+  '#VX-20377|Repuestos Express': { emitido: '02/10/2026', envio: { empresa: 'MRW', despachado: '03/10/2026', guia: '4019-882-113' }, lineas: [{ n: 'Kit de mantenimiento para aire acondicionado', q: 1, p: 45.6 }] }, // INVENTADO
+  '#VX-20430|Frío Total C.A.': { emitido: '16/10/2026', lineas: [{ n: 'Aire split inverter 12.000 BTU', q: 1, p: 389 }] },
+  '#VX-20431|ClimaRepuestos': { emitido: '16/10/2026', lineas: [{ n: 'Tarjeta electrónica condensadora split 12K', q: 1, p: 64 }] },
+};
+
+export const reclamosIni = [
+  { id: '#R-0091', pedido: '#VX-20301', tienda: 'Herramientas Andina', total: 24.9, fecha: '03/10', abierto: '03/10/2026', estado: 'En mediación',
+    resumen: 'El control remoto no es compatible con mi equipo…', motivo: 'El control remoto no es compatible con mi equipo y la tienda no me responde.', ultimo: 'VexBiz',
+    mensajes: [{ de: 'Tú', hora: '10:12', t: 'Pedí el control para un LG y me llegó uno que no lo reconoce.' }, { de: 'La tienda', hora: '15:40', t: 'Podemos cambiarlo por el modelo correcto sin costo.' }, { de: 'VexBiz', hora: '09:00', t: 'La tienda tiene hasta el 07/10 para enviar el cambio o aprobar el reembolso.' }] },
+  { id: '#R-0074', pedido: '#VX-20188', fecha: '18/09', estado: 'Resuelto', resumen: 'Me enviaron la tarjeta de un modelo distinto.', resolucion: 'Reembolso total de $ 64,00 al comprador.' },
+];
+export const devolucionesIni = [{ id: '#D-0031', pedido: '#VX-20211', item: 'Regleta con protector 6 tomas', unidades: 1, estado: 'En revisión', fecha: '20/09' }]; // INVENTADO
+
+export const avisosCuenta = [
+  { id: 'a1', t: 'La compra #VX-20430 vence en 2 horas', d: 'Transfiere antes de las 18:00 o se cancela.', cuando: 'hace 10 min', nuevo: true, to: 'M3.09', ic: 'clock' },
+  { id: 'a2', t: 'Tu pedido #VX-20412 va en camino', d: 'MRW · guía 4019-882-113.', cuando: 'hace 2 h', to: 'M6.04', ic: 'truck' },
+  { id: 'a3', t: 'ClimaPro te mandó una cotización', d: '$ 85,00 para el sábado 18/10.', cuando: 'hace 5 h', to: 'M6.12', ic: 'wrench' },
+  { id: 'a4', t: 'Tu reclamo #R-0074 se resolvió a tu favor', d: 'Reembolso de $ 64,00.', cuando: 'hace 3 días', to: 'M6.09', ic: 'check' },
+];
+
+export const pagosIni = [
+  { id: 'nomina', titulo: 'Nómina', sub: 'Cobro a tu cuenta', preferida: true, doc: 'V-18.***.789', cuenta: '····4567', ultimo: '12/10/2026' },
+  { id: 'banesco', titulo: 'Banesco ····1234', sub: 'Teléfono y banco', doc: 'V-18.***.789', tel: '0414 ···1234', ultimo: '28/09/2026', falla: true },
+  { id: 'binance', titulo: 'Binance', sub: 'Binance Pay', correo: 'an***@correo.com' },
+];
+export const sesionesIni = [
+  { id: 's1', equipo: 'App VexBiz', so: 'Android 15', actual: true, ip: '200.84.12.6', desde: '02/10', ic: 'phone' },
+  { id: 's2', equipo: 'Chrome', so: 'Windows 11', ip: '190.205.33.18', desde: '16/10', ic: 'desktop' },
+  { id: 's3', equipo: 'Safari', so: 'iPhone', ip: '190.205.33.18', desde: '12/10', ic: 'phone' },
+];
+export const serviciosPedidos = [
+  { id: '#S-2041', estado: 'Aceptado · agendando', ok: false, servicio: 'Instalación de aire split 12.000 BTU', quien: 'ClimaPro Servicios', nota: 'La empresa asignará al técnico', cuando: 'Sáb 18/10 · 09:00', total: 85, donde: 'Urb. El Viñedo, Calle 4, Valencia' },
+  { id: '#S-1977', estado: 'Trabajo completado', ok: true, servicio: 'Mantenimiento preventivo', quien: 'Carlos Mendoza', rating: 4.8, cuando: '02/10 · 14:00', total: 35 },
+];
+export const estadosVE = { Carabobo: ['Valencia', 'San Diego', 'Naguanagua'], 'Distrito Capital': ['Caracas'], Aragua: ['Maracay', 'Turmero'], Lara: ['Barquisimeto'], Mérida: ['Mérida'] };
+export const bancosVE = ['Banesco', 'Mercantil', 'Banco de Venezuela', 'BBVA Provincial', 'Bancamiga'];

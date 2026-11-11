@@ -7,7 +7,7 @@ import { avatar, stars, page, banner, stepper, field, fieldError, radioOpt, swit
 import { go, closeOverlay } from '../router.js';
 import { state, set, subscribe, cartLines, cartSubtotal, cartCount, setQty, removeLine, lineKey } from '../store.js';
 import { play, countdown } from '../motion.js';
-import { direcciones, compra, producto, tienda, TASA } from '../data.js';
+import { compra, producto, tienda, TASA } from '../data.js';
 import { money, bs, bsRef, num, esc, plural, pct, round2 } from '../format.js';
 
 // ── Reglas de la compra (todo calculado, nada escrito a mano) ───────────────
@@ -16,7 +16,7 @@ const ENVIO = { ft: { costo: 8.4, km: 14, kg: 9, dias: '1–2 días' }, ha: { co
 const envioDe = (id) => ENVIO[id] || { costo: 6, km: 20, kg: 5, dias: '2–4 días' };
 const IMPUESTO = { debito: 3, binance: 0, transferencia: 0 }; // % del pago por método (M3.06). Binance: el Figma no dice impuesto.
 const METODO = { debito: 'Débito bancario', binance: 'Binance Pay', transferencia: 'Transferencia a VexBiz' };
-const dirActual = () => direcciones.find((d) => d.id === state.flow.direccion) || direcciones[0];
+const dirActual = () => state.dirs.find((d) => d.id === state.flow.direccion) || state.dirs[0];
 const dirCorta = (d) => `${d.linea.split(',')[0]}, ${d.ciudad.split(',')[0]}`;
 
 /** Agrupa el carrito por tienda y calcula envío, impuesto y total según las elecciones del flujo. */
@@ -109,7 +109,7 @@ register('M3.03', {
   render() {
     const sel = state.flow.direccion;
     const el = h(`<div class="vx-page"><header class="vx-sheet-head vx-flowhead"><h2 id="sheet-title" class="md-title-large md-sheet-title" tabindex="-1">¿Dónde lo recibes?</h2>${iconBtn('close', 'Cerrar', 'data-close')}</header>
-      <div class="vx-body vx-pad-h"><div role="radiogroup" aria-label="Dirección de entrega" class="vx-options">${direcciones.slice(0, 2).map((d) => radioOpt({
+      <div class="vx-body vx-pad-h"><div role="radiogroup" aria-label="Dirección de entrega" class="vx-options">${state.dirs.map((d) => radioOpt({
         name: 'dir', value: d.id, checked: sel === d.id, title: `${esc(d.nombre)}${d.predeterminada ? ' <span class="vx-tag md-label-small">Predeterminada</span>' : ''}`,
         text: `${esc(d.linea)}<br>${esc(d.ciudad)} ${d.cp}<br><span class="vx-tab-num">${d.tel.replace('-', ' ')}</span>`,
         extra: d.sinMapa ? `<span class="vx-tag md-label-small">${icon('warning', 14)}Sin punto en el mapa</span>` : '',

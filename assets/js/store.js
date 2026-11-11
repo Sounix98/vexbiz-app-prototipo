@@ -1,5 +1,5 @@
 // Estado en memoria del prototipo. localStorage solo guarda preferencias del panel (tema, reducir movimiento, modo).
-import { carritoInicial, producto, precioDe, tiendaDe } from './data.js';
+import { carritoInicial, producto, precioDe, tiendaDe, direcciones, pagosIni, sesionesIni, reclamosIni, devolucionesIni, avisosCuenta } from './data.js';
 import { round2 } from './format.js';
 
 const PREF_KEY = 'vx-proto-prefs';
@@ -13,6 +13,16 @@ const fresh = () => ({
   orders: [],               // pedidos creados en la demo
   flow: { demoPago: 'aprobado', direccion: 'casa', metodo: 'debito', banco: 'banesco', retiro: {}, filtros: { orden: 'relevantes', marcas: [], nuevo: false, soloDisp: false, min: '', max: '' } }, // paso actual de los flujos
   sonidoAvisos: true,
+  // Cuenta y postventa (Fase 2): todo editable en la demo y se reinicia con «Reiniciar datos»
+  dirs: direcciones.map((d) => ({ ...d })),
+  pagos: pagosIni.map((x) => ({ ...x })),
+  sesiones: sesionesIni.map((x) => ({ ...x })),
+  reclamos: reclamosIni.map((x) => ({ ...x, mensajes: x.mensajes ? x.mensajes.map((m) => ({ ...m })) : undefined })),
+  devoluciones: devolucionesIni.map((x) => ({ ...x })),
+  avisosCuenta: avisosCuenta.map((x) => ({ ...x })),
+  dosPasos: false,          // verificación en dos pasos activa
+  empresaRegistrada: false, // «Registrar mi empresa» completado
+  calificaciones: {},       // pedido → { nota, texto }
 });
 
 export const state = fresh();

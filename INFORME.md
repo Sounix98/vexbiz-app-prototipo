@@ -1,120 +1,115 @@
 # INFORME · Prototipo de la app VEXBIZ
 
-Última actualización: 11/11/2026 · **Fase 1 terminada** (Acceso, Descubrir y Compra). Esperando la revisión de Sounix antes de la Fase 2.
+Última actualización: 11/11/2026 · **Fase 2 terminada** (Cuenta y postventa, M6). Las fases 3 a 6 siguen pendientes.
 
 ## Cómo abrirlo
 
-- Por http (módulos ES): `python -m http.server 5173` dentro de `prototipo/` y abrir `http://localhost:5173/index.html`.
+- Por http (módulos ES): `python -m http.server 5173` dentro de `prototipo/` y abrir `http://localhost:5173/index.html`. Si editas un `.js` y no ves el cambio, recarga forzada (Ctrl + F5): el navegador guarda en caché los módulos.
 - Con doble clic (`file://`): `index.local.html`, que carga `prototipo.local.js` (todo en un solo script). Se regenera con `python tools/build_local.py` después de tocar cualquier `.js`.
-- El panel de la derecha tiene el **Índice** (las 138 pantallas, «hecha» o «pendiente»), el modo, el tema, «Reducir movimiento», **Resultado del próximo pago** (Aprobado, Rechazado o Pendiente) y «Reiniciar datos de la demo». Para recorrer el flujo desde el principio: Índice → M1.01.
+- El panel de la derecha tiene el **Índice** (las 138 pantallas, «hecha» o «pendiente»), el modo, el tema, «Reducir movimiento», **Resultado del próximo pago** y «Reiniciar datos de la demo». Para recorrer todo desde el principio: Índice → M1.01.
 
 ## Cobertura (138 pantallas)
 
 | Módulo | Pantallas | Hechas | Estado |
 |---|---|---|---|
 | M0 Transversales | 5 | 5 | Fase 0 |
-| M1 Acceso | 10 | 10 | Fase 0 (arranque) y Fase 1 (el resto) |
-| M2 Descubrir | 12 | 12 | Incluye las hojas M2.04 Filtros y M2.10 Otras tiendas |
-| M3 Compra | 12 | 12 | Incluye la hoja M3.07 Resumen y la pantalla de flujo M3.03 |
+| M1 Acceso | 10 | 10 | Fases 0 y 1 |
+| M2 Descubrir | 12 | 12 | Fase 1 |
+| M3 Compra | 12 | 12 | Fase 1 |
 | M4 Servicios | 9 | 0 | Fase 3 |
 | M5 Academia | 10 | 0 | Fase 3 |
-| M6 Cuenta | 27 | 0 | Fase 2 |
+| **M6 Cuenta** | 27 | **27** | **Fase 2** (incluye la hoja «Acciones de la dirección» y las pantallas de flujo M6.14 y M6.16) |
 | M7 Modo Tienda | 23 | 0 | Fase 5 |
 | M8 Modo Técnico | 13 | 0 | Fase 4 |
 | M9 Modo Empresa | 8 | 0 | Fase 6 |
-| Superposiciones | 9 | 7 | Faltan «Acciones de la dirección» (Fase 2) y «Detalle del período» (Fase 5) |
+| Superposiciones | 9 | 8 | Falta «Detalle del período» (Fase 5) |
 
-En el Índice aparecen **46 de 138 entradas «hechas»**, porque cuenta por separado las hojas duplicadas de Figma (por ejemplo M3.07 y «Resumen de la compra»). En pantallas únicas son 39 más 7 superposiciones. Las pendientes abren una pantalla con su título y la fase en que se construye.
+El Índice muestra **74 de 138 entradas «hechas»**: cuenta por separado las hojas duplicadas de Figma (por ejemplo M3.07 y «Resumen de la compra»). Las pendientes abren una pantalla con su título y la fase en que se construye.
 
-## Recorridos que funcionan de punta a punta (con clics reales)
+## Recorridos de la Fase 2 (con clics reales)
 
-- **Acceso:** Arranque → consentimiento → Entrar → Segundo factor → Inicio. Variantes: Crear cuenta (hoja) → Revisa tu correo → Unirse al país (comprar, técnico o empresa); Recuperar contraseña → Contraseña nueva → Entrar; correo `…+sinconfirmar` → M1.04.
-- **Comprar:** Inicio → Nicho → Ficha → Añadir al carrito (hoja) → Carrito → Entrega → Envío → Forma de pago → Resumen (hoja) → Sala de espera → Pago de la compra → Pasarela → Resultado.
-  - **Débito bancario** (paso 1 datos, paso 2 clave de 8 dígitos): aprobado, rechazado y pendiente.
-  - **Binance Pay:** M3.09 → M3.10 (variante con USDT) → M3.11.
-  - **Transferencia:** M3.09 → M3.12 → M3.11 («Transferencia reportada», en revisión).
-- **Descubrir:** Buscar con sugerencias → Resultados → Filtros y orden (conteos y resultados calculados) → Ficha → Otras tiendas → Galería; Nichos, Nicho, Categoría, Tiendas y Tienda.
-- **Carrito vivo:** cantidades, quitar con «Deshacer», total del carrito, envío, impuesto del pago y total a pagar se recalculan desde los datos.
+- **Postventa:** Cuenta → Pedidos → Detalle → Ayuda con el pedido → Calificar (estrellas con medios puntos y teclado) / Pedir devolución (cantidades por artículo, validación, aparece en «Devoluciones») / Abrir reclamo → Hilo del reclamo (se pueden enviar mensajes).
+- **Direcciones:** lista → hoja de acciones (editar, predeterminada, quitar con «Deshacer») → pantalla de flujo con validación. La dirección predeterminada la usa el pago (M3.02).
+- **Formas de pago:** agregar (con el estado «Falta: documento, banco, teléfono» → «Todo listo») y quitar con «Deshacer».
+- **Seguridad:** cambio de contraseña con requisitos en vivo; verificación en dos pasos (clave, QR, código, códigos de respaldo, desactivar) que se refleja en Datos personales y Seguridad; sesiones abiertas (cerrar las otras); Eliminar cuenta con el botón apagado mientras haya bloqueos.
+- **Registrar mi empresa** → M9.01 con la barra del modo Empresa; desde ahí «Cambiar de modo» ofrece «Empresa de servicio».
+- **Cómo se ve VexBiz, de verdad:** el tamaño del texto (100 a 150 %) escala todo el contenido de la app, «Más contraste» refuerza bordes y textos secundarios, y «Menos movimiento» es el mismo interruptor del panel. Se guardan en este teléfono y, si no se toca nada, siguen los ajustes del sistema.
+- **Ayuda:** Ayuda e información → documentos (Términos, Privacidad, Aviso legal, Trabaja como técnico…) → Contacto; WhatsApp y redes avisan «Abre el sitio de VexBiz».
+- **Avisos:** «Marcar como leídos» apaga el punto de la pestaña Cuenta; cada aviso lleva a su pantalla.
 
-## QA de la Fase 1 (412 × 892, navegador del IDE, http)
+## QA de la Fase 2 (412 × 892, navegador del IDE, http)
 
 | Comprobación | Resultado |
 |---|---|
-| Consola | 0 errores y 0 avisos en las 39 rutas y en los recorridos (se capturó `error` y `unhandledrejection` durante todo el recorrido) |
-| Desborde horizontal | 0 en 39 rutas (se mide `scrollWidth` del contenedor de cada pantalla u hoja, no solo del documento) |
+| Consola | 0 errores y 0 avisos en las 28 rutas de la fase y en los recorridos (se capturó `error` y `unhandledrejection`) |
+| Desborde horizontal | 0 en 28 rutas, y 0 en M6.01, M6.03, M2.01, M3.01 y M6.24 con el texto al 150 % |
 | Texto menor a 13 px | Ninguno |
-| Objetivos táctiles | Todo ≥ 44 px; los botones de ícono dibujan 40 × 40 y llegan a 44 con el `::before` del kit |
-| Contraste calculado con los tokens | **0 fallos en 44 pares** (22 en claro, 22 en oscuro): texto 4,5:1 (mínimo medido 5,39) y componentes 3:1 (mínimo 3,76) |
-| Primer cuadro | `opacity` es exactamente `0` en push, atrás, intercambio y cambio de modo |
-| Estructura del push | Exactamente 2 animaciones: `vx-move-fwd` 350 ms y `vx-fade-in` 200 ms; durante una navegación solo se animan `transform` y `opacity` |
-| Reducir movimiento | `--vx-shift` = 0 y el `transform` de la entrada no cambia (comprobado en la Fase 0, sin cambios) |
-| Datos calculados | Subtotal $ 568,80 → +1 taladro → $ 698,70; envío $ 8,40; 3 % del débito = $ 17,32 → total $ 594,52 (coincide con Figma); pasarela $ 457,00 + 2 % = $ 466,14 |
-| Flujos | Débito (aprobado, rechazado, pendiente), Binance Pay y Transferencia, de punta a punta |
-| Capturas | `capturas/fase-1/` (11 en claro y 2 en oscuro) |
+| Objetivos táctiles | Todo ≥ 44 px (los botones de ícono llegan a 44 con el `::before` del kit) |
+| Contraste calculado con los tokens | **0 fallos en los 49 pares en uso** (claro y oscuro). Un par del kit falla y se evitó (ver «Tokens que faltaron») |
+| Datos calculados | Contadores de Cuenta (1, 2, 14 → «últimos 17 pedidos»), gráfico de gasto por mes, vigencia de garantías contra la fecha de la demo, impuestos incluidos del pedido ($ 39,20 = $ 32,94 + $ 6,26), unidades a devolver |
+| Regresión | 14 rutas de las fases 0 y 1 sin errores, desbordes ni objetivos pequeños |
+| Capturas | `capturas/fase-2/` (8 en claro, 1 en oscuro) |
 
-**No verificado todavía:** rendimiento con la CPU reducida 4×; lector de pantalla; `index.local.html` por `file://` (se regenera, pero el panel del IDE lo abre como imagen estática); tema oscuro en todas las pantallas (solo 2 capturas; se completa en la Fase 6); escalonado y «revelar» en el primer cuadro con CPU lenta.
+**No verificado todavía:** rendimiento con la CPU reducida 4×; lector de pantalla; `index.local.html` por `file://`; tema oscuro en todas las pantallas (se completa en la Fase 6); primer cuadro y estructura de animaciones de las pantallas nuevas (solo usan los patrones ya medidos en la Fase 1: push, atrás, hoja, escalonada).
 
 ## Errores encontrados y corregidos durante la fase
 
-- El router descartaba un clic si otra navegación seguía en curso y dejaba pantallas viejas en el DOM. Ahora la última navegación gana y se limpia al terminar.
-- `mount()` recibía el contenedor y no el nodo que devuelve `render()`; fallaban el contador de cantidad de la ficha y otros ganchos.
-- En una pestaña oculta las animaciones no corren y la navegación esperaba para siempre; la espera de animaciones tiene ahora un tope de 700 ms.
-- Ids duplicados entre una hoja y la pantalla de debajo (`correo`, `clave` en M1.02 y M1.05) hacían que `aria-describedby` apuntara al campo equivocado; renombrados.
-- Rejillas que crecían con su contenido y desbordaban (Carrito, Ficha, M1.10); enlaces en línea de M1.05 con zona táctil de 16 px.
+- **Ruta de Direcciones:** la fila del Índice «M6.13 ▣» (la hoja) se registraba como alias del código `M6.13`, así que abrir Direcciones abría la hoja. Corregido (la misma causa habría pasado con M7.12).
+- **Valoraciones con dos decimales** («★ 4,70») desde la Fase 1: `num(x, 1)` no respetaba un decimal. Ahora sale «★ 4,7».
+- `fieldError` fallaba con áreas de texto (rompía «Pedir devolución» y «Abrir reclamo» al validar).
 
 ## Conexiones añadidas respecto al Figma (para confirmar)
 
-- **Acceso:** Entrar → M1.03 (o M1.04 con `+sinconfirmar`); M1.05 → M1.06; M1.06 «Ya abrí el enlace» → M1.07; M1.07 «Continuar» → M2.01, M8.01 o M6.22 según lo elegido; M1.03 y M1.04 «Usar otra cuenta» → M1.02.
-- **Compra** (cadena de «Huecos», punto 3): M3.01 → M3.02 → M3.04 → M3.06 → Resumen → M3.08 → M3.09 → M3.10 / M3.12 → M3.11.
-- M3.01: el aviso «Compra sin pagar» lleva a M3.09 con el botón «Pagar». M3.09: el botón de cerrar lleva a M2.01 (fundido) y «Pagar con transferencia» a M3.12.
-- M3.08: «Seguir sin esperar» → M3.09 (push) y la salida automática a M3.09 (fundido) cuando todas las tiendas contestan o se acaba el tiempo.
-- M3.02: «Editar» abre M6.14 (pendiente, Fase 2). M3.03: «Añadir otra dirección» y los lápices abren M6.14.
-- M2.08: el ícono de carrito del encabezado lleva a M3.01; M2.01: la campana lleva a M6.17.
-- M2.10: «Añadir al carrito» de otra tienda añade esa oferta (precio y tienda propios) y abre la hoja M0.05.
-- Las barras de búsqueda y el ícono de carrito de la ficha apilan la pantalla con un fundido de 200 ms (tipo `smart`), para que «Volver» regrese; la galería usa tipo `fade` (350 ms).
+- **Cuenta (M6.01):** «Seguridad y contraseña» → M6.18, «Cómo se ve VexBiz» → M6.23, «Academia» → M5.01 y «Ayuda e información» → M6.24 (Figma no los conecta); «Cambiar» abre la hoja de modo.
+- M6.03: cada pedido → M6.04 (con su id) y «Pagar» → M3.09. M6.04: ícono y texto «Ayuda con el pedido» → M6.05 (Huecos, punto 6); «Pedir devolución» solo en pedidos entregados.
+- M6.05: «Calificar» → M6.06, «Pedir devolución» → M6.07, «Abrir reclamo» → M6.08; la nota de devolución en curso → M6.09. M6.07 → M6.09 (pestaña Devoluciones). M6.08 → M6.10. M6.10 «Ver pedido» → M6.04.
+- M6.11 «Condiciones» → M6.25. M6.13: ícono de acciones → hoja; hoja «Editar» → M6.14; «+» → M6.14.
+- M6.17: cada aviso → M3.09, M6.04, M6.12 o M6.09 según su contenido.
+- M6.21: «Ver mis compras» → M6.03 y «Ver trabajos» → M8.01.
+- M6.24: todos los documentos → M6.25 con su `doc`; los enlaces a sitios externos muestran «Abre el sitio de VexBiz».
+- M6.22 «Registrar» marca la empresa como registrada y cambia a modo Empresa (la hoja de modo lo refleja).
 
 ## Textos y datos inventados
 
-- **Etiquetas de botón y avisos** que el anexo no escribe: «Buscar en VexBiz», «Escríbenos por WhatsApp», «Ver todos», «Ver todas», «Ver técnicos» (M2.06); «Pagar» (en el aviso del carrito, M3.01); «Continuar», «Editar», «Cambiar»; «Usar esta dirección» (M3.03); «Aceptar la propuesta», «Quitar esa línea», «Seguir sin esperar» (M3.08); «Confirmar y pagar» (Resumen); «Ver mis pedidos», «Seguir comprando», «Descargar comprobante», «Compartir» (M3.11); «Reintentar el pago», «Cambiar forma de pago»; «Subir foto», «Reportar la transferencia»; «Verificar», «No me llega el código», «Usar otra cuenta», «Ya abrí el enlace», «Enviar enlace», «Guardar contraseña», «Suscribirme», «Ir al inicio».
-- **Títulos de estado** de M3.11: «Pago rechazado», «Pago pendiente», «Transferencia reportada», y los textos «Estamos esperando la confirmación de tu banco» y «Tu banco rechazó el pago: «Fondos insuficientes»».
-- **Etiquetas de campo:** Correo, Contraseña, Nombre completo, País, Repite la contraseña, Código de invitación (opcional), Cupón (opcional), Número de referencia del banco, Monto transferido (USD), Buscar tienda; requisitos de contraseña («8 caracteres o más», «Una letra mayúscula», «Un número»); mensajes de validación («Escribe tu correo», «Escribe un correo válido», etc.).
-- **Variante Binance Pay de M3.10:** «Abre Binance, entra a Binance Pay y paga … USDT» y el botón «Ya pagué en Binance».
-- **Datos:** 10 productos más (aires de LG, Midea, Daikin, Carrier y Samsung 9K; compresores scroll, inverter y de nevera) y tres precios anteriores para las «Ofertas relámpago»; envío de $ 6,00 y 2–4 días para tiendas sin dato; ciudad y conteo de varias tiendas.
-- Cifras de catálogo fijas, como en Figma (no se calculan): 1.284, 642, 938… productos por nicho; 312, 86, 54, 41 por categoría; 86, 24, 41, 57 en los tipos de compresor.
+- **Etiquetas de botón y avisos** que el anexo no trae: «Marcar como leídos», «Sin leer», «Enviar calificación», «Actualizar calificación», «Cuéntanos más (opcional)», «Pedir devolución» (botón), «Motivo», «Describe el problema», «Condiciones» (ya existe), «Ver detalle», «Contactar», «Calificar» (servicios), «Guardar dirección», «Marcar en el mapa», «Guardar forma de pago», «Activar», «Copiar clave», «Copiar códigos», «Ya los guardé», «Desactivar verificación en dos pasos», «Cerrar las otras sesiones», «Ver mis compras», «Ver trabajos», «Registrar mi empresa» (botón), «Volver a los valores del sistema», «Ir a mis pedidos», «Escríbenos por WhatsApp», «Abrir el sitio de VexBiz», «Ver factura», «Seguir el envío», «Cerrar sesión» (con ícono).
+- **Etiquetas de la escala de la calificación** (solo «Muy bueno» está en Figma): Muy malo, Malo, Regular, Bueno.
+- **Campos:** Nombre de la dirección, Calle y número, Referencia, Código postal, Teléfono, Estado, Ciudad, Tipo de documento, Número de documento, Banco, Número de cuenta, Alias, Contraseña actual, Contraseña nueva, Nombre de la empresa, RIF o documento, Teléfono de contacto, «Escribe ELIMINAR para confirmar».
+- **Documentos legales:** solo «Trabaja como técnico» está escrito en Figma; los demás muestran el aviso «Esta es una vista resumida. El texto completo está en el sitio de VexBiz.»
+- **Datos:** devoluciones (#D-0031 y las que se crean), líneas y envío de los pedidos que Figma no detalla, listas de estados y ciudades, bancos, y las 3 fechas de la demo.
 
 ## Datos del Figma que se contradicen (se respetó cada pantalla y se señala)
 
-1. **Impuesto del pago:** M3.06 y M3.07 dicen 3 % (débito); M3.09 dice 2 %. En `data.js` están separados (`debitoPct` y `pasarela.impuestoPct`). Binance Pay: Figma no dice impuesto; se usa 0 %.
-2. **Envío:** M3.04 dice «14 km · 9 kg» y $ 8,40; M3.05 dice «168 km · 38 kg» con base $ 8,00 + $ 0,05 × 168 = $ 8,40 + impuesto 16 % = $ 2,62 (suma $ 19,02, no $ 8,40). Se muestran ambos tal cual, con las líneas de M3.05 calculadas.
-3. **La compra de la sala de espera** (M3.08 a M3.11) es la canónica del Figma (Frío Total y ClimaRepuestos, $ 466,14) y no el contenido del carrito de M3.01 (Frío Total y Herramientas Andina, $ 568,80). Al aprobarse el pago se crean los dos pedidos canónicos y se vacía el carrito.
-4. **«7 tiendas lo venden»** (M2.10) con 4 filas; se calcula «4». Frío Total muestra 12 unidades en la ficha y 8 u. en la hoja; se respeta cada una.
-5. **Conteos de resultados:** «128 publicaciones» y las marcas Samsung 24, LG 18… no suman; se calculan desde los 7 aires de la demo («7 publicaciones»).
-6. **Equivalente en bolívares:** Figma muestra ≈ Bs 21.937,79 en el resumen; con la tasa 36,89486 que reproduce $ 389,00 → Bs 14.352,10 y $ 466,14 → Bs 17.198, el cálculo da Bs 21.934,73.
-7. **Valoraciones** con punto (4.8) y con coma (4,8): se usa coma (es-VE). **Teléfono de Oficina** distinto en M3.03 y M6.13: se usa el de `direcciones`. **Correo** distinto en M1.04 y M1.06: se usa el escrito en Entrar o en Crear cuenta.
+1. **Garantía:** M6.11 dice «quedan 335 días» hasta 16/10/2027; con la fecha de la demo (16/10/2026, la de la tasa) quedan 365. La otra garantía («94 días» hasta 18/01/2027) sí cuadra. Se calcula.
+2. **Calificar:** M6.06 trae Frío Total y #VX-20412, pero se llega desde M6.05 (ElectroHogar, #VX-20211). Se usa el pedido desde el que se llega.
+3. **Reclamo:** M6.08 trae #VX-20301 (Herramientas Andina); abierto desde un pedido usa ese pedido. El hilo es siempre el #R-0091.
+4. **Impuestos incluidos:** $ 6,26 sobre $ 39,20 equivale a 19 %, no 16 %. Se usa 19 % para que cuadre con Figma.
+5. **Dirección sin mapa:** Figma marca «Sin punto en el mapa» en Oficina (M3.03) y «Falta el punto en el mapa» en Taller (M6.13). Ambas la llevan marcada.
+6. **Contadores de Cuenta:** 1, 2 y 14 son los de Figma y se ajustan con lo que pasa en la demo (al pagar, «Sin pagar» baja y «En camino» sube).
+7. **Pedidos:** al aprobarse el pago de la compra canónica desaparece la fila «Falta pagar #VX-20431» de Frío Total (el id coincide con el pedido de ClimaRepuestos que crea el pago).
 
 ## Diferencias respecto al Figma
 
-- **Íconos:** juego provisional trazado a mano (24 px, trazo 2 px); hay que sustituirlo por los SVG del kit.
-- **M2.01 Inicio:** no se pusieron los 4 chips «Assist» de Figma (su texto no está en el anexo) ni texto en el carrusel (solo placeholders).
-- **Patrón 18 (búsqueda):** la barra no se expande; la pantalla de búsqueda entra con fundido de 200 ms.
-- **Patrón 19 (galería):** la foto no crece con FLIP; entra con fundido de 350 ms.
-- **Aviso breve:** sube 16 px (como pide el catálogo) con un fotograma propio, `vx-toast-rise`; `motion.css` solo trae 12 px.
-- **Insignia del carrito:** usa `md-badge`, cuyo fondo es el rol `error` del kit.
-- **Fotos de producto:** todas son placeholders con ícono (el prompt no incluye imágenes).
+- **Tamaño del texto:** se implementa con `zoom` CSS sobre el contenido (pantallas, hojas, diálogos y barra): escala el texto **y** los íconos y espacios, como cuando el sistema agranda la letra, y el contenido se reacomoda. El rango (100 a 150 %) no está en el anexo; Figma solo muestra «120 %».
+- «Más contraste» reasigna en `prototipo.css` roles ya existentes (`outline`, `outline-variant`, `on-surface-variant`) y no crea colores.
+- **M6.21 Eliminar cuenta:** con bloqueos el botón nunca se habilita (es el estado de Figma).
+- **Íconos** provisionales (ver Fase 0) y fotos como placeholders.
 
 ## Tokens que faltaron
 
-- Ninguno bloqueante. Se propone sumar al sistema `--vx-toast-rise: 16px`, una duración para el deslizamiento de la píldora de la barra y un rol de «descuento» (hoy se usa `tertiary-container`).
+- **WhatsApp:** el par `whatsapp` / `on-whatsapp` del kit da **4,42:1 en claro** (el mínimo es 4,5). En claro se usa `whatsapp-container` con `on-surface` (10,96:1) y en oscuro el par del kit (6,62:1). Se propone corregir el tono de `whatsapp` en claro en `tokens.css`.
+- Siguen las propuestas de la Fase 1: `--vx-toast-rise: 16px`, una duración para la píldora de la barra y un rol de «descuento».
 
 ## Preguntas abiertas para Sounix
 
 1. ¿Hay una versión del Figma posterior al 4/11? (conector en vivo sin autorizar)
-2. ¿Nichos: 11 o 16? (se usa 11 hasta que digas otra cosa; Plomería aparece sin catálogo)
-3. ¿«Reducir movimiento» también como ajuste dentro de la app (M6.23)?
+2. ¿Nichos: 11 o 16? (se usa 11)
+3. ¿«Reducir movimiento» como ajuste dentro de la app? (ya está en M6.23; confirma que sea así)
 4. ¿Los 122 fotogramas clave de «Internal Only Canvas» se conservan?
 5. ¿Impuesto del pago: 3 % o 2 %? ¿Binance Pay lleva impuesto?
 6. ¿Cuál es el envío correcto de Frío Total (M3.04 o M3.05)?
-7. ¿La compra de la sala de espera debe salir del carrito (cambia los textos de M3.08 a M3.11)?
+7. ¿La compra de la sala de espera debe salir del carrito?
 8. ¿El splash de Drive se copia a `prototipo/` para reutilizarlo en M1.01?
-9. ¿Se confirman las etiquetas de botón inventadas de la lista de arriba?
-10. ¿Los dos códigos de demo («código incorrecto» con `000000` en M1.03, y correo `…+sinconfirmar`) deben ir visibles en el panel?
+9. ¿Se confirman las etiquetas de botón y los textos inventados de las listas de las fases 1 y 2?
+10. ¿El rango del tamaño del texto es 100 a 150 %? ¿Hace falta un valor por debajo de 100 %?
+11. ¿Se confirma tomar como «hoy» de la demo el 16/10/2026?
+12. ¿Se corrige el color de WhatsApp del kit en modo claro?

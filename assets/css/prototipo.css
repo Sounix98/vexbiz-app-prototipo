@@ -264,6 +264,56 @@ a { color: inherit; }
 .vx-resico { display: inline-flex; } .vx-resico--ok { color: var(--vx-status-success-fg); } .vx-resico--bad { color: var(--vx-status-danger-fg); } .vx-resico--wait { color: var(--md-sys-color-on-surface-variant); }
 .vx-reason { display: flex; align-items: center; gap: 6px; color: var(--vx-status-danger-fg); } .vx-resprog { width: 160px; }
 
+
+/* ═══ Fase 2 · cuenta y postventa ═════════════════════════════════════════════ */
+.vx-sub--list { padding: 0 16px; margin: 16px 0 4px; } .vx-sub0 { margin: 12px 0 4px; } .vx-pad-v { padding-top: 8px; padding-bottom: 8px; }
+.vx-relative { position: relative; display: inline-flex; } .vx-dot-badge { position: absolute; top: -2px; right: -2px; }
+.vx-danger, .vx-danger .md-li-icon { color: var(--md-sys-color-error); } .vx-danger .md-li-title { color: var(--md-sys-color-error); }
+.vx-profile { display: flex; gap: 16px; align-items: center; padding-top: 8px; padding-bottom: 8px; } .vx-profile p { margin: 0 0 4px; }
+.vx-modebox { display: flex; align-items: center; justify-content: space-between; border-radius: var(--md-sys-shape-corner-medium); background: var(--md-sys-color-surface-container); margin: 0 16px; padding: 4px 4px 4px 16px; } .vx-modebox p { margin: 0; }
+.vx-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-top: 12px; padding-bottom: 12px; }
+.vx-tile { display: grid; justify-items: center; gap: 2px; padding: 12px 4px; min-height: 72px; border: 0; border-radius: var(--md-sys-shape-corner-medium); background: var(--md-sys-color-surface-container); color: inherit; cursor: pointer; } .vx-tile b { margin: 0; }
+.vx-chart { display: flex; align-items: stretch; gap: 8px; height: 168px; padding-top: 8px; }
+.vx-bar-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; min-width: 0; }
+.vx-bar-col i { display: block; width: 100%; min-height: 3px; border-radius: 4px 4px 0 0; background: var(--md-sys-color-secondary); }
+/* Pedidos, reclamos, garantías, direcciones: tarjetas de lista */
+.vx-orders { list-style: none; margin: 0; padding: 8px 16px 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.vx-order { border-radius: var(--md-sys-shape-corner-large); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface); overflow: hidden; }
+.vx-order-main { display: flex; gap: 12px; align-items: flex-start; width: 100%; padding: 12px; border: 0; background: transparent; text-align: left; color: inherit; cursor: pointer; }
+.vx-order-main.vx-static { cursor: default; } .vx-order-text { flex: 1; display: grid; gap: 2px; justify-items: start; min-width: 0; } .vx-order-text > * { margin: 0; }
+.vx-order-act { display: flex; gap: 8px; justify-content: flex-end; padding: 0 12px 12px; }
+.vx-detline { display: flex; align-items: center; gap: 12px; } .vx-ret { padding: 8px 0; }
+.vx-detline-main { display: flex; gap: 12px; align-items: center; width: 100%; min-height: 56px; padding: 8px 0; border: 0; background: transparent; text-align: left; color: inherit; cursor: pointer; }
+.vx-note { padding: 8px 12px; gap: 8px; } .vx-helpstack { padding-top: 8px; }
+.vx-stag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: var(--md-sys-shape-corner-small); background: var(--_bg); color: var(--_fg); font-weight: 500; }
+.vx-stag--success { --_bg: var(--vx-status-success-bg); --_fg: var(--vx-status-success-fg); } .vx-stag--warning { --_bg: var(--vx-status-warning-bg); --_fg: var(--vx-status-warning-fg); }
+.vx-stag--error { --_bg: var(--vx-status-danger-bg); --_fg: var(--vx-status-danger-fg); } .vx-stag--info { --_bg: var(--vx-status-info-bg); --_fg: var(--vx-status-info-fg); } .vx-stag--neutral { --_bg: var(--vx-status-neutral-bg); --_fg: var(--vx-status-neutral-fg); }
+.vx-block { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding: 4px 0; }
+.vx-sesico { margin-top: 2px; }
+/* Calificar */
+.vx-rate { display: grid; gap: 4px; justify-items: center; padding-top: 8px; } .vx-rate p { margin: 0; }
+.vx-stars { display: flex; gap: 2px; min-height: 48px; cursor: pointer; color: var(--md-sys-color-secondary); touch-action: none; } .vx-stars:focus-visible { outline: 2px solid var(--md-sys-color-secondary); outline-offset: 4px; border-radius: 8px; } .vx-star { display: inline-flex; }
+/* Hilo del reclamo */
+.vx-thread { list-style: none; margin: 0; display: grid; gap: 12px; padding-bottom: 16px; } .vx-msgrow { display: grid; gap: 2px; justify-items: start; } .vx-msgrow.is-me { justify-items: end; } .vx-msgrow p { margin: 0; }
+.vx-bubble { max-width: 88%; padding: 8px 12px; border-radius: var(--md-sys-shape-corner-medium); background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface); }
+.vx-msgrow.is-me .vx-bubble { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+.vx-composer { position: sticky; bottom: 0; z-index: 3; display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--md-sys-color-surface-container); box-shadow: 0 -1px 0 var(--md-sys-color-outline-variant); }
+.vx-msg { flex: 1; min-width: 0; min-height: 48px; padding: 0 16px; border: 0; border-radius: var(--md-sys-shape-corner-full); background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline); font: inherit; font-size: 16px; } .vx-msg:focus { outline: none; box-shadow: inset 0 0 0 2px var(--md-sys-color-secondary); }
+/* Formularios */
+.vx-area-box { align-items: flex-start; padding-top: 8px; } .vx-area { resize: vertical; min-height: 96px; font: inherit; font-size: 16px; line-height: 24px; }
+.vx-ready { display: flex; align-items: center; gap: 6px; margin: 0; color: var(--md-sys-color-on-surface-variant); } .vx-ready.is-ok { color: var(--vx-status-success-fg); }
+.vx-key { padding: 12px; margin: 0; text-align: center; letter-spacing: .08em; border-radius: var(--md-sys-shape-corner-medium); background: var(--md-sys-color-surface-container-high); }
+.vx-codes { list-style: none; margin: 0; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-radius: var(--md-sys-shape-corner-medium); background: var(--md-sys-color-surface-container-high); text-align: center; letter-spacing: .06em; }
+.vx-range { width: 100%; min-height: 44px; accent-color: var(--md-sys-color-secondary); } .vx-rangelbl { display: flex; justify-content: space-between; }
+/* WhatsApp: el par whatsapp / on-whatsapp del kit da 4,42:1 en claro (mínimo 4,5), así que en claro se usa el contenedor del mismo rol
+   (10,96:1) y en oscuro el par del kit (6,62:1). Propuesta de ajuste de token en INFORME.md. */
+.vx-wa { --_bg: var(--md-sys-color-whatsapp-container); --_fg: var(--md-sys-color-on-surface); }
+[data-theme="dark"] .vx-wa { --_bg: var(--md-sys-color-whatsapp); --_fg: var(--md-sys-color-on-whatsapp); }
+
+/* «Cómo se ve VexBiz» (M6.23): efectos reales sobre toda la app */
+:root[data-text-scale] .screen, :root[data-text-scale] #sheet, :root[data-text-scale] #dialog, :root[data-text-scale] #bar { zoom: var(--vx-ts, 1); }
+:root[data-contrast="more"] { --md-sys-color-on-surface-variant: var(--md-sys-color-on-surface); --md-sys-color-outline-variant: var(--md-sys-color-outline); --md-sys-color-outline: var(--md-sys-color-on-surface); }
+
 /* ═══ Panel del prototipo ════════════════════════════════════════════════════ */
 .panel {
   flex: none; width: 340px; max-height: calc(100vh - 32px); overflow-y: auto; padding: 16px; border-radius: var(--md-sys-shape-corner-large);

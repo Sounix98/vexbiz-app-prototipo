@@ -5,6 +5,7 @@ import { TASA } from './data.js';
 const nf = (min, max) => new Intl.NumberFormat('es-VE', { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: 'always' });
 const nf2 = nf(2, 2);
 const nf0 = nf(0, 0);
+const nf1 = nf(1, 1);
 
 /** Redondeo a centavos sin errores de coma flotante. */
 export const round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
@@ -12,7 +13,7 @@ export const round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
 /** $ 1.284,50 */
 export const money = (usd) => `$ ${nf2.format(usd)}`;
 /** Sin símbolo: 1.284,50 */
-export const num = (n, decimals = 2) => (decimals === 0 ? nf0 : nf2).format(n);
+export const num = (n, decimals = 2) => (decimals === 0 ? nf0 : decimals === 1 ? nf1 : nf2).format(n);
 /** Bs 14.352,10 (equivalente a la tasa vigente). */
 export const bs = (usd, { decimals = 2, tasa = TASA } = {}) =>
   `Bs ${(decimals === 0 ? nf0 : nf2).format(usd * tasa)}`;

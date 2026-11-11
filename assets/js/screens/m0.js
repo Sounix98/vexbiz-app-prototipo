@@ -25,12 +25,13 @@ register('O.MOD', {
         ${row('comprador', 'bag', 'Comprador', 'Compra productos y pide servicios.')}
         ${row('tienda', 'store', 'Tienda', 'Pedidos, productos y dinero de Frío Total.')}
         ${row('tecnico', 'wrench', 'Técnico', 'Tus trabajos, servicios y compras de trabajo.')}
+        ${state.empresaRegistrada ? row('empresa', 'toolbox', 'Empresa de servicio', 'Solicitudes, catálogo y perfil de tu empresa.') : ''}
       </ul>
-      <p class="md-label-large vx-sub">Haz más con VexBiz</p>
+      ${state.empresaRegistrada ? '' : `<p class="md-label-large vx-sub">Haz más con VexBiz</p>
       <ul class="vx-list" role="list"><li><button type="button" class="md-li md-li--2 md-sl vx-press vx-row" data-empresa>
         <span class="md-li-icon">${icon('toolbox')}</span>
         <span class="md-li-text"><span class="md-li-title md-body-large">Registrar mi empresa de servicios</span></span>
-        <span class="md-li-end">${icon('chevron')}</span></button></li></ul></div>`);
+        <span class="md-li-end">${icon('chevron')}</span></button></li></ul>`}</div>`);
     el.addEventListener('click', async (e) => {
       const m = e.target.closest('[data-mode]');
       if (m) { // Apéndice B: ▣ Cambiar de modo → M2.01 / M7.01 / M8.01 (fundido 350) y reinicia la pila

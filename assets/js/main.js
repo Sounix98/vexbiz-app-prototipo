@@ -7,13 +7,13 @@ import { state, set, subscribe, reset, loadPrefs, savePrefs } from './store.js';
 import { $, $$ } from './ui.js';
 import { esc } from './format.js';
 import { wireAdd } from './market.js';
+import { initPrefs, setReduce } from './prefs.js';
 
 const root = document.documentElement;
 const prefs = loadPrefs();
 
 // ── Tema y reducir movimiento ───────────────────────────────────────────────
 const setTheme = (t) => { root.setAttribute('data-theme', t); savePrefs({ theme: t }); paintSegs(); };
-const setReduce = (on) => { root.toggleAttribute('data-reduce-motion', on); savePrefs({ reduce: on }); $('#swReduce').checked = on; $('#swReduce').nextElementSibling.classList.toggle('md-switch-track--on', on); };
 
 function seg(host, items, current, onPick) {
   host.innerHTML = items.map(([v, l]) => `<button type="button" class="md-seg-item md-sl md-label-large${v === current ? ' md-seg-item--on' : ''}" data-v="${v}" aria-pressed="${v === current}">${l}</button>`).join('');
@@ -50,9 +50,7 @@ function fit() {
 
 // ── Inicio ──────────────────────────────────────────────────────────────────
 if (prefs.theme) root.setAttribute('data-theme', prefs.theme);
-if (prefs.reduce) root.setAttribute('data-reduce-motion', '');
-$('#swReduce').checked = !!prefs.reduce;
-$('#swReduce').nextElementSibling.classList.toggle('md-switch-track--on', !!prefs.reduce);
+initPrefs();
 $('#swReduce').addEventListener('change', (e) => setReduce(e.target.checked));
 $('#btnReset').addEventListener('click', () => { reset(); go('M1.01', { kind: 'none' }); });
 $('#index').addEventListener('click', (e) => {

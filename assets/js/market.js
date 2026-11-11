@@ -63,7 +63,7 @@ export const field = ({ id, label, type = 'text', value = '', help = '', error =
 /** Muestra u oculta el error de un campo (con texto e ícono de color de error; no solo color). */
 export function fieldError(root, id, msg) {
   const wrap = $(`[data-field="${id}"]`, root); if (!wrap) return;
-  const help = $(`#${id}-help`, wrap), input = $('input', wrap);
+  const help = $(`#${id}-help`, wrap), input = $('input,textarea,select', wrap);
   wrap.classList.toggle('md-tf--error', !!msg);
   msg ? input.setAttribute('aria-invalid', 'true') : input.removeAttribute('aria-invalid');
   if (msg) { help.textContent = msg; play(wrap, 'vx-shake'); } else help.textContent = wrap.dataset.help || '';
@@ -167,3 +167,27 @@ export function wireOtp(root, id, onChange) {
   });
   return { value, focusFirstEmpty: () => (boxes.find((b) => !b.value) || boxes[boxes.length - 1]).focus() };
 }
+
+// ── Fase 2 ──────────────────────────────────────────────────────────────────
+/** Área de texto M3 (contorno). 16 px. */
+export const area = ({ id, label, value = '', help = '', rows = 4, placeholder = '' }) => `
+  <div class="md-tf md-tf--outlined" data-field="${id}" data-help="${esc(help)}">
+    <label class="md-tf-box vx-area-box"><span class="md-tf-content"><span class="md-tf-label md-body-small">${esc(label)}</span>
+      <textarea class="md-tf-input md-body-large vx-area" id="${id}" name="${id}" rows="${rows}"${placeholder ? ` placeholder="${esc(placeholder)}"` : ''} aria-describedby="${id}-help">${esc(value)}</textarea></span></label>
+    <span class="md-tf-help md-body-small" id="${id}-help">${esc(help)}</span></div>`;
+
+/** Etiqueta de estado: ícono + texto, con el color del estado (éxito, atención, error, información, neutro). */
+export const statusTag = (kind, text) => `<span class="vx-stag vx-stag--${kind} md-label-medium">${icon({ success: 'check', warning: 'warning', error: 'error', info: 'info', neutral: 'clock' }[kind], 14)}${esc(text)}</span>`;
+
+/** Botón de WhatsApp (roles propios del sistema). */
+export const whatsappBtn = (label, attrs = '') => `<button type="button" class="md-btn vx-wa md-sl vx-press md-btn--block" ${attrs}>${icon('chat', 20)}${esc(label)}</button>`;
+
+/** Fila de lista tocable con ícono, título, apoyo y extremo. */
+export const row = ({ ic, title, sup = '', end = '', go, kind, attrs = '', danger = false, dot = false }) => `<li><button type="button" class="md-li ${sup ? 'md-li--2 ' : ''}md-sl vx-press vx-row${danger ? ' vx-danger' : ''}"${go ? ` data-go="${go}"` : ''}${kind ? ` data-kind="${kind}"` : ''} ${attrs}>
+  ${ic ? `<span class="md-li-icon vx-relative">${icon(ic)}${dot ? '<span class="md-badge md-badge--small vx-dot-badge" aria-hidden="true"></span>' : ''}</span>` : ''}
+  <span class="md-li-text"><span class="md-li-title md-body-large">${title}</span>${sup ? `<span class="md-li-sup md-body-medium">${sup}</span>` : ''}</span>
+  <span class="md-li-end md-body-medium">${end || (go ? icon('chevron') : '')}</span></button></li>`;
+
+/** Selector (desplegable) M3 con contorno. */
+export const select = ({ id, label, options, value }) => `<div class="md-tf md-tf--outlined" data-field="${id}"><label class="md-tf-box"><span class="md-tf-content"><span class="md-tf-label md-body-small">${esc(label)}</span>
+  <select class="md-tf-input md-body-large" id="${id}">${options.map((o) => `<option${o === value ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></span></label><span class="md-tf-help md-body-small"></span></div>`;
