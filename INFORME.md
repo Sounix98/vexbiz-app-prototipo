@@ -1,6 +1,6 @@
 # INFORME · Prototipo de la app VEXBIZ
 
-Última actualización: 11/11/2026 · **Fase 5 terminada** (Modo Tienda, M7). Solo falta la Fase 6 (Modo Empresa y pulido).
+Última actualización: 12/11/2026 · **Fase 6 terminada: las 138 pantallas están hechas** (Modo Empresa, M9, más el pulido general).
 
 ## Cómo abrirlo
 
@@ -22,10 +22,72 @@
 | **M6 Cuenta** | 27 | **27** | **Fase 2** (incluye la hoja «Acciones de la dirección» y las pantallas de flujo M6.14 y M6.16) |
 | **M7 Modo Tienda** | 23 | **23** | **Fase 5** (incluye «Más», las pantallas de flujo M7.07 y M7.21 y la hoja «Detalle del período») |
 | **M8 Modo Técnico** | 13 | **13** | **Fase 4** (incluye las dos variantes de Membresía) |
-| M9 Modo Empresa | 8 | 0 | Fase 6 |
+| **M9 Modo Empresa** | 8 | **8** | **Fase 6** (incluye la pantalla de flujo M9.06) |
 | Superposiciones | 9 | 9 | Completas |
 
-El Índice muestra **130 de 138 entradas «hechas»**: cuenta por separado las hojas duplicadas de Figma (por ejemplo M3.07 y «Resumen de la compra»). Las pendientes abren una pantalla con su título y la fase en que se construye.
+El Índice muestra **138 de 138 entradas «hechas»** y sus 138 enlaces abren su pantalla. Los 9 códigos que se repiten (`O.MOD`, `O.AVI`, `O.CAR`, `O.CON`, `O.FIL`, `O.OTR`, `O.RES`, `O.ACC`, `O.DET`) son las hojas de Figma que se listan dos veces (su fotograma y su superposición); no hay códigos sueltos ni pantallas repetidas por error.
+
+## Recorridos de la Fase 6 (con clics reales)
+
+- **Responder y cerrar (M9):** Solicitudes (chips «Sin responder 1 · Fecha pasada 1 · En curso 1 · Terminadas 48», todos calculados) → **Cotizar** (mano de obra, materiales y desplazamiento; el total se calcula; «Mano de obra» es obligatoria) → la solicitud pasa a «Cotización enviada» y sale de «Sin responder» → **Solicitud** de una fecha pasada → **Cerrar con garantía** (total y «Vigente hasta el 16/01/2027» calculados con la garantía elegida) → Solicitudes con fundido de 350 ms y el aviso «Trabajo cerrado»; «Terminadas» sube de 48 a 49 y «Fecha pasada» baja a 0.
+- **Catálogo:** servicios con «Pedido 23/41 veces», interruptor de visibilidad («1 servicio pausado» se calcula) → **Servicio** (pantalla de flujo con validación de nombre, precio y duración; también crea servicios nuevos).
+- **Perfil:** «Los clientes no pueden llamarte» desaparece al guardar un teléfono público (con validación); verificación con RIF «Verificado» y Registro Mercantil «Pendiente»; «Trabajos» sale de las terminadas (48 + las que se cierren). **Membresía:** «Vence en 12 días» sale de 28/09/2026 + 30 días frente al 16/10/2026.
+- **Cambio de modo:** con la empresa registrada, «Cambiar de modo» ofrece «Empresa de servicio» y abre M9.01 con la barra Solicitudes · Catálogo · Perfil.
+
+## QA de la Fase 6 (412 × 892, navegador del IDE, http)
+
+| Comprobación | Resultado |
+|---|---|
+| Barrido de las 138 rutas, claro **y oscuro** (`tools/qa-sweep.js`) | 0 errores de consola, 0 desbordes horizontales, 0 textos menores a 13 px, 0 pantallas con marcador de «pendiente», un `<h1>` por pantalla |
+| Contraste calculado sobre el texto visible | 0 fallos reales en las 138 pantallas en claro y oscuro. El barrido marca la «X» del logotipo (1,14 a 1,94:1): es la marca, exenta de contraste |
+| Objetivos táctiles | Todo ≥ 44 px; los iconos y chips miden 40 × 32 y tienen su área de 48 px en `::before` |
+| Catálogo de movimiento (los 24 patrones) | Todos se dispararon al menos una vez y se comprobó su animación real (tabla abajo) |
+| «Reducir movimiento» | `--vx-shift` y `--vx-rise` pasan a 0 (los fotogramas de Push y Atrás quedan en `translateX(0)`), el esqueleto, el punto en vivo, el temblor y el pop se detienen; la hoja sigue subiendo, pero en 200 ms (decisión de `motion.css`). El recorrido «cotizar y cerrar» se completa igual |
+| Capturas | `capturas/fase-6/` (8 en claro, 1 en oscuro) |
+
+| Patrón | Lo que se observó |
+|---|---|
+| 1 Push · 2 Atrás | `vx-move-fwd` + `vx-fade-in` · `vx-move-back` + `vx-fade-in` |
+| 3 Intercambio · 24 Arranque | `vx-fade-in` sin desplazamiento · `vx-rise-in`, `vx-fade-in` y el progreso indeterminado del arranque |
+| 4 Hoja · 5 Diálogo · 6 Flujo | `vx-sheet-in` / `vx-sheet-out` · `vx-fade-in` + `vx-rise-in` · `vx-sheet-in` (M9.06) |
+| 7 Entrada escalonada · 14 Esqueleto | `vx-rise-in` solo en la primera carga · `vx-shimmer` |
+| 8 Revelar · 9 Pulsación · 10 Selección | `vx-rise-in` al hacer scroll · `.vx-press:active` a 0,97 · transición de `transform` en el interruptor |
+| 11 Añadir al carrito · 12 Cifra · 13 Precio | `vx-pop` + `vx-tick` + hoja · `vx-tick` en badge y total · `vx-flash` 0,9 s en la línea «Cambió de precio» |
+| 15 Cuenta regresiva · 22 Punto en vivo | `vx-count` de 89,5 s en la barra (duración real) · `vx-live` |
+| 16 Resultado · 17 Pasos | rechazado `vx-shake`, aprobado `vx-pop` + `vx-draw`, pendiente progreso indeterminado · `vx-draw` / `vx-pop` |
+| 18 Búsqueda · 19 Galería · 23 Carrusel | `vx-fade-in` con expansión por `transform` · transición de `transform` · `scroll-snap-type: x mandatory` |
+| 20 Toast · 21 Aviso de conexión | `vx-toast-rise` + `vx-fade-in` · `vx-drop-in` + `vx-fade-in` |
+
+## Errores encontrados y corregidos durante la Fase 6
+
+- **Interruptor con rótulo oculto que aplastaba el texto de la fila** (Fase 4 y 5, no detectado antes): en las listas con un interruptor sin texto visible (Servicios del técnico M8.06, Envíos M7.15 y el Catálogo M9.05) el interruptor ocupaba todo el ancho de la fila y el título quedaba en 0 px, partido letra a letra. Se arregló con una regla de CSS (`.vx-order-main > .vx-switch-row`) y se midió en las tres pantallas: el texto vuelve a 260 px y el interruptor a 84 px.
+- **Dato inventado por error:** «Pedido N/N+18 veces» en el Catálogo era una cuenta mía; ahora solo el primer servicio muestra «23/41» (Figma) y los demás «Pedido N veces».
+- **Mi edición de `data5.js`** dejó un comentario que se tragó el resto de la línea y rompió la carga de todos los módulos; se vio en consola, se corrigió y el barrido completo corrió después.
+
+## Conexiones añadidas respecto al Figma, Fase 6 (para confirmar)
+
+- Cotizar y Rechazar tienen botón en la tarjeta de Solicitudes (M9.01 → M9.03) y en M9.02; una solicitud ya aceptada ofrece «Cerrar con garantía» (M9.02 → M9.04).
+- Perfil: «Ver mi perfil público» abre M4.05 (el perfil de empresa del comprador) y «Avisos en vivo» lleva a O.AVI.
+- Cotizar, al enviar, vuelve a Solicitudes con un intercambio (200 ms); la solicitud pasa a «Cotización enviada».
+
+## Textos y datos inventados, Fase 6
+
+- Solicitud #S-2041: «hace 2 h», preferencia «Sáb 18/10 · mañana», notas del cliente y cuenta atrás de 20 h 14 min desde que se abre la demo; razón social, dirección, notas y hora de recepción de #S-2036 y #S-2030.
+- Catálogo: «Pedido 12 veces» en la carga de gas, y el precio, la duración y el texto de «Reparación de tarjeta electrónica» (pausado).
+- Perfil: «ClimaPro Servicios C.A.», zonas (Valencia, Naguanagua, San Diego), correo, web y dirección.
+- Opciones de vigencia de la cotización (24 h, 48 h, 7 días) y la lista de ventajas de la membresía.
+
+## Datos del Figma que se contradicen, Fase 6
+
+- **Los contadores de Solicitudes:** Figma muestra «Sin responder · Fecha pasada · En curso 48 · Terminadas» sin separar las cifras con claridad. Aquí se calculan desde las solicitudes; «Terminadas» arranca en 48 (el número del Figma) y suma las que se cierran. Si el 48 era de «En curso», hay que cambiar una constante (`TERMINADAS_BASE`).
+- **«Caduca … 17/10 · 08:14» de la solicitud:** se mostraba una hora fija que choca con el «hoy» del 16/10; se reemplazó por «Caduca en 20 h», que corre con el reloj.
+
+## Diferencias respecto al Figma, Fase 6
+
+- «Reparación de tarjeta electrónica» aparece pausado para mostrar «1 servicio pausado».
+- La hoja de la membresía y el pago se coordinan con soporte (como en M8.12); no se paga dentro del prototipo.
+
+**No verificado todavía:** rendimiento con CPU reducida 4× (el navegador del IDE no lo permite); lector de pantalla; `index.local.html` por `file://` (se regeneró, pero no se abrió desde el disco); firma con un dedo real; el selector de archivos y los permisos de ubicación reales; la emulación `prefers-reduced-motion` del sistema (se probó el interruptor del panel, que activa las mismas reglas).
 
 ## Recorridos de la Fase 2 (con clics reales)
 
@@ -296,3 +358,6 @@ El Índice muestra **130 de 138 entradas «hechas»**: cuenta por separado las h
 19. ¿El neto de la liquidación se calcula restando el reembolso ($ 3.056,40) o se mantiene $ 3.120,40?
 20. ¿Qué reloj manda para la venta pendiente: 04:32 (Inicio) o 01:48 (Confirmación pendiente)?
 21. ¿Los contadores de «Más» se calculan desde las listas (como ahora) o se fijan a los de Figma?
+22. ¿El 48 de Solicitudes (M9.01) es de «Terminadas» o de «En curso»?
+23. ¿«Pedido 23/41 veces» del Catálogo es «este mes de 41 en total» o «23 de 41 solicitudes»? (se muestra tal cual)
+24. ¿Cotizar necesita el desplazamiento y la vigencia como campos, o basta el total? (se añadieron ambos)

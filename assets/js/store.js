@@ -3,6 +3,7 @@ import { carritoInicial, producto, precioDe, tiendaDe, direcciones, pagosIni, se
 import { round2 } from './format.js';
 import { PUNTOS_INI, historialPuntos, avanceIni, preguntasIni } from './data2.js';
 import { pedidosTiendaIni, pedidosMasIni, pendientesIni, productosTiendaIni, carritosIni, apartadasIni, reclamosTiendaIni, cuponesIni, reglasEnvioIni, docsTiendaIni, fichasIni, ajustesIni, tiendaPublica, cuentasBanco } from './data4.js';
+import { solicitudesEmpIni, catalogoEmpIni, perfilEmpIni } from './data5.js';
 import { solicitudesIni, trabajoIni, serviciosIni, horarioIni, oficiosIni, docsIni, perfilTecnico } from './data3.js';
 
 const PREF_KEY = 'vx-proto-prefs';
@@ -39,6 +40,11 @@ const fresh = () => ({
     reclamos: reclamosTiendaIni.map((r) => ({ ...r })), cupones: cuponesIni.map((c) => ({ ...c })), reglas: reglasEnvioIni.map((r) => ({ ...r })), docs: docsTiendaIni.map((d) => ({ ...d })), docsEnviados: false,
     fichas: fichasIni.map((f) => ({ ...f, lista: f.lista.map((x) => ({ ...x })) })), ajustes: JSON.parse(JSON.stringify(ajustesIni)), publica: { ...tiendaPublica },
     cobroInmediato: true, cuentas: cuentasBanco.map((c) => ({ ...c })), despacho: {},
+  },
+  // Modo Empresa de servicio (Fase 6)
+  emp: {
+    solicitudes: solicitudesEmpIni.map((s) => ({ ...s, venceAt: s.venceEn ? Date.now() + s.venceEn : 0 })), cerradas: 0, catalogo: catalogoEmpIni.map((c) => ({ ...c })),
+    perfil: { ...perfilEmpIni, zonas: [...perfilEmpIni.zonas], docs: perfilEmpIni.docs.map((d) => ({ ...d })) }, informe: '',
   },
   // Modo Técnico (Fase 4)
   tec: {

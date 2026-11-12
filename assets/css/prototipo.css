@@ -389,6 +389,11 @@ a { color: inherit; }
 .vx-split { display: flex; width: 100%; height: 8px; border-radius: 4px; overflow: hidden; } .vx-split i { display: block; } .vx-split-a { background: var(--md-sys-color-secondary); } .vx-split-b { background: var(--md-sys-color-primary); }
 .vx-fig { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; } .vx-fig p { margin: 0; }
 
+/* ═══ Fase 6 · pulido ═══ */
+/* El interruptor con rótulo oculto (solo para lector de pantalla) no debe ocupar todo el ancho de la fila: se quedaba con el texto en 0 px. */
+.vx-order-main > .vx-switch-row, .vx-day-head > .vx-switch-row { width: auto; flex: 0 0 auto; margin-inline-start: auto; }
+.vx-order-act { flex-wrap: wrap; }
+
 /* ═══ Panel del prototipo ════════════════════════════════════════════════════ */
 .panel {
   flex: none; width: 340px; max-height: calc(100vh - 32px); overflow-y: auto; padding: 16px; border-radius: var(--md-sys-shape-corner-large);

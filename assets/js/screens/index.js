@@ -9,4 +9,5 @@ import './m6a.js';
 import './m7a.js';
 import './m7b.js';
 import './m8.js';
+import './m9.js';
 import './m6b.js';
