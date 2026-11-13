@@ -11,6 +11,8 @@ import { initPrefs, setReduce } from './prefs.js';
 
 const root = document.documentElement;
 const prefs = loadPrefs();
+// Piel «Ámbar sobre tinta» (piloto): activa por defecto; ?piel=0 vuelve al diseño anterior para comparar.
+if (new URLSearchParams(location.search).get('piel') !== '0') root.setAttribute('data-piel', '');
 
 // ── Tema y reducir movimiento ───────────────────────────────────────────────
 const setTheme = (t) => { root.setAttribute('data-theme', t); savePrefs({ theme: t }); paintSegs(); };

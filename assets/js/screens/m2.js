@@ -2,7 +2,7 @@
 // otras tiendas, tiendas y tienda.
 import { register } from './registry.js';
 import { h, icon, btn, iconBtn, topbar, stateBlock, toast, $, $$ } from '../ui.js';
-import { productCard, storeRow, nicheTile, avatar, stars, stockHtml, stock, pct, page, banner, stepper, field, closeOnGo, wireControls } from '../market.js';
+import { productCard, storeRow, nicheTile, avatar, stars, stockHtml, stock, pct, page, banner, stepper, field, closeOnGo, wireControls, teselaAttrs } from '../market.js';
 import { go, closeOverlay } from '../router.js';
 import { state, set, subscribe, cartCount } from '../store.js';
 import { stagger, reveal, play, countdown } from '../motion.js';
@@ -67,7 +67,7 @@ register('M2.01', {
         <button type="button" class="md-search md-sl vx-searchbtn" data-go="M2.02" data-kind="smart" aria-label="Buscar en VexBiz">${icon('search')}<span class="md-body-large vx-muted">Buscar en VexBiz</span></button>
         <h1 class="md-sr-only" tabindex="-1">Inicio</h1>
       </header>
-      <section class="vx-hero" aria-label="Promociones"><div class="vx-carousel" tabindex="0" aria-label="Promociones, desliza para ver más">${[1, 2, 3].map((n) => `<div class="vx-slide" role="group" aria-label="Promoción ${n} de 3"><span aria-hidden="true">${icon('tag', 40)}</span></div>`).join('')}</div>
+      <section class="vx-hero" aria-label="Promociones"><div class="vx-carousel" tabindex="0" aria-label="Promociones, desliza para ver más">${[1, 2, 3].map((n) => `<div class="vx-slide vx-tile" style="--tone:var(--md-sys-color-${['tertiary-container', 'secondary-container', 'surface-container-highest'][n - 1]})" role="group" aria-label="Promoción ${n} de 3"><span aria-hidden="true">${icon('tag', 40)}</span></div>`).join('')}</div>
         <div class="vx-dots" aria-hidden="true">${[0, 1, 2].map((i) => `<i class="vx-dot${i === 0 ? ' is-on' : ''}"></i>`).join('')}</div></section>
       <section class="vx-sec vx-reveal">${sectionHead('Nichos', btn('Ver todos', { kind: 'text', go: 'M2.05', kindNav: 'swap' }))}
         <ul class="vx-nichesq" role="list">${nichos.slice(0, 5).map((n) => `<li><button type="button" class="vx-nsq md-sl vx-press" data-go="M2.06?id=${n.id}"><span>${icon(n.id === 'clima' ? 'sliders' : 'box', 28)}</span><span class="md-label-medium">${esc(n.nombre)}</span></button></li>`).join('')}</ul></section>
@@ -258,7 +258,7 @@ register('M2.08', {
         ${iconBtn('share', 'Compartir', 'data-toast="Enlace copiado"')}
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl" id="fav" aria-pressed="false" aria-label="Guardar en favoritos">${icon('heart')}</button>
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl vx-cartbtn" data-go="M3.01" data-kind="smart" data-cart-btn aria-label="Carrito, ${plural(cartCount(), 'artículo', 'artículos')}">${icon('cart')}<span class="md-badge md-badge--large vx-cartbadge" id="fCart"${cartCount() ? '' : ' hidden'}>${cartCount()}</span></button></header>`, `
-      <button type="button" class="vx-gallery md-sl" data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${icon('box', 64)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
+      <button type="button" class="vx-gallery vx-tile md-sl" ${teselaAttrs(p)} data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${icon('box', 64)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
       <div class="vx-pad-h vx-ficha">
         <p class="md-body-small vx-muted">${esc(p.categoria)}</p>
         <h1 class="md-headline-small" tabindex="-1">${esc(p.nombre)}${p.id === 'aa12' ? ' · 220V' : ''}</h1>

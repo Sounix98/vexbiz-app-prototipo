@@ -1,0 +1,127 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   VEXBIZ · Piel «Ámbar sobre tinta» (piloto)
+   Se carga después de prototipo.css y solo actúa con <html data-piel>.
+   Para comparar con el diseño anterior: abrir con ?piel=0.
+   Reglas: solo tokens (--md-sys-*, --vx-*), nada de hex; la tinta aparece una
+   vez por pantalla; el ámbar solo en acción; movimiento solo transform/opacity.
+   Pantallas del piloto: M2.08 ficha, M3.11 pago aprobado, M7.01 inicio de tienda.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root[data-piel] {
+  --piel-figure: 2.25rem;        /* cifra de héroe: 36 px                      */
+  --piel-figure-lg: 3rem;        /* cifra de momento: 48 px                    */
+  --piel-card: var(--md-sys-color-surface-container);
+  --piel-r: var(--vx-r-lg);
+}
+
+/* ── Cifra de héroe ──────────────────────────────────────────────────────── */
+:root[data-piel] .vx-figure {
+  margin: 0; font-family: var(--font-display); font-size: var(--piel-figure); line-height: 1.1;
+  font-weight: 700; letter-spacing: var(--vx-ls-display); font-variant-numeric: tabular-nums;
+}
+:root[data-piel] .vx-figure--lg { font-size: var(--piel-figure-lg); }
+
+/* ── Superficies tonales: sin contorno, con relleno ──────────────────────── */
+:root[data-piel] .vx-order,
+:root[data-piel] .vx-pcard {
+  box-shadow: none; background: var(--piel-card); border-radius: var(--piel-r);
+}
+:root[data-piel] .vx-pcard { background: var(--md-sys-color-surface-container-low); }
+:root[data-piel] .vx-kpi { background: var(--piel-card); border-radius: var(--piel-r); min-height: 104px; gap: 4px; }
+:root[data-piel] .vx-kpi b { font-size: 1.75rem; line-height: 1.1; font-weight: 700; letter-spacing: var(--vx-ls-display); }
+:root[data-piel] .vx-kpi > span:first-child { font-weight: 500; }
+
+/* ── Cabecera: el modo como etiqueta, no como línea suelta ───────────────── */
+:root[data-piel] .vx-modolbl {
+  display: inline-flex; align-items: center; gap: 6px; margin: 0 0 12px 16px; padding: 2px 10px;
+  border-radius: var(--vx-r-pill); background: var(--md-sys-color-surface-container-high);
+  font-size: var(--vx-fs-xs); font-weight: 600; letter-spacing: var(--vx-ls-caps); color: var(--md-sys-color-on-surface);
+}
+
+/* ── Héroe de tinta (M7.01 «Contestar ahora») ────────────────────────────── */
+:root[data-piel] .vx-nowcard {
+  --_on: var(--vx-on-ink); --_muted: var(--vx-on-ink-muted);
+  position: relative; overflow: hidden; margin: 8px 0; padding: 20px; gap: 6px;
+  background: var(--vx-ink); color: var(--_on); box-shadow: none; border-radius: var(--vx-r-xl);
+}
+:root[data-piel] .vx-nowcard .md-title-medium { color: var(--_muted); font-family: var(--font-body); font-weight: 500; }
+:root[data-piel] .vx-nowcard .md-body-medium { color: var(--_muted); }
+:root[data-piel] .vx-nowcard #ahoraT { font-size: var(--piel-figure-lg); line-height: 1.05; font-weight: 700; letter-spacing: var(--vx-ls-display); color: var(--_on); margin: 2px 0 6px; }
+:root[data-piel] .vx-nowcard .vx-bar-track { background: var(--vx-ink-2); height: 6px; border-radius: 3px; margin-bottom: 8px; }
+:root[data-piel] .vx-nowcard .vx-bar-fill { background: var(--_on); border-radius: 3px; }   /* el ámbar no anima estados: la barra va en claro */
+:root[data-piel] .vx-nowcard .vx-urgent,
+:root[data-piel] .vx-nowcard #ahoraT.vx-is-urgent { color: var(--vx-danger-300); }   /* texto + ícono, y legible sobre tinta */
+:root[data-piel] .vx-eyebrow { font-size: var(--vx-fs-xs); text-transform: none; }
+
+/* ── Imagen de producto: tesela por oficio ───────────────────────────────── */
+/* --tone viene de data-oficio (ver tesela() en market.js); si falta, neutro.   */
+:root[data-piel] .vx-tile {
+  --_a: var(--tone, var(--md-sys-color-surface-container-high));
+  position: relative; overflow: hidden; isolation: isolate; display: flex; align-items: center; justify-content: center;
+  color: var(--md-sys-color-on-surface);
+  background:
+    radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--_a) 100%, transparent) 0%, transparent 62%),
+    linear-gradient(160deg, color-mix(in srgb, var(--_a) 70%, var(--md-sys-color-surface)) 0%, var(--_end, var(--md-sys-color-surface-container-high)) 100%);
+}
+/* anillos concéntricos suaves detrás del glifo */
+:root[data-piel] .vx-tile::before, :root[data-piel] .vx-tile::after {
+  content: ""; position: absolute; z-index: -1; border-radius: 50%; pointer-events: none;
+  left: 50%; top: 50%; translate: -50% -50%; border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface) 10%, transparent);
+}
+/* Los anillos se miden contra el lado corto de la tesela: en una tesela 4:3 un aro de 92 % del ancho se cortaba arriba y abajo. */
+:root[data-piel] .vx-tile::before { height: 56%; aspect-ratio: 1; }
+:root[data-piel] .vx-tile::after  { height: 86%; aspect-ratio: 1; }
+:root[data-piel] .vx-gallery.vx-tile::before { height: 62%; }
+:root[data-piel] .vx-gallery.vx-tile::after  { height: 92%; }
+:root[data-piel] .vx-tile > svg { filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--md-sys-color-shadow) 18%, transparent)); }
+:root[data-piel] .vx-gallery.vx-tile { background-color: transparent; color: var(--md-sys-color-on-surface); }
+:root[data-piel] .vx-gallery.vx-tile > svg { width: 96px; height: 96px; }
+:root[data-piel] .vx-pimg.vx-tile { border-radius: 0; --_end: var(--md-sys-color-surface-container-low); }  /* la tarjeta ya recorta las esquinas; la tesela se funde con su fondo */
+/* En la ficha la tesela entra con el producto (la View Transition la une con la tarjeta si el navegador la soporta). */
+:root[data-piel] .vx-tile > svg { animation: vx-pop 500ms var(--vx-ease-bounce) 80ms both; }
+
+/* ── Ficha: precio como cifra y chips con una sola regla ─────────────────── */
+:root[data-piel] .vx-price-now { font-size: var(--piel-figure); line-height: 1.1; letter-spacing: var(--vx-ls-display); }
+:root[data-piel] .vx-badges .vx-tag {
+  background: var(--vx-ink); color: var(--vx-on-ink); border-radius: var(--vx-r-pill);
+}
+
+/* Descuento real: el único chip en ámbar suave (con texto oscuro, nunca ámbar como texto sobre blanco). */
+:root[data-piel] .vx-off { background: var(--vx-accent-soft); color: var(--md-sys-color-on-primary-container); border-radius: var(--vx-r-pill); padding: 1px 8px; }
+
+/* ── Momento firma: pago aprobado (M3.11) ────────────────────────────────── */
+:root[data-piel] .vx-win {
+  position: relative; padding: 32px 16px 20px; gap: 8px; border-radius: 0 0 var(--vx-r-xl) var(--vx-r-xl);
+  background: radial-gradient(90% 70% at 50% 0%, var(--vx-status-success-bg) 0%, transparent 72%);
+}
+:root[data-piel] .vx-win .vx-resico { position: relative; margin-bottom: 4px; }
+:root[data-piel] .vx-win .vx-resico svg { width: 96px; height: 96px; }
+:root[data-piel] .vx-win .vx-ring { animation: none; }                     /* el aro se dibuja; el halo hace el rebote */
+:root[data-piel] .vx-win .vx-ring circle { stroke-dasharray: 1; stroke-dashoffset: 1; animation: vx-draw 520ms var(--vx-ease-emphasized) both; }
+:root[data-piel] .vx-win .vx-check { animation-delay: 380ms; animation-duration: 420ms; }
+/* halo único que se abre desde el sello y se apaga */
+:root[data-piel] .vx-win .vx-resico::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 50%; pointer-events: none;
+  border: 2px solid var(--vx-status-success-bd); opacity: 0;
+  animation: vx-halo 900ms var(--vx-ease-emphasized) 700ms both;
+}
+@keyframes vx-halo { 0% { transform: scale(0.9); opacity: 0.9 } 100% { transform: scale(1.7); opacity: 0 } }
+:root[data-piel] .vx-win h1 { font-size: var(--vx-fs-sm); font-family: var(--font-body); font-weight: 600; letter-spacing: var(--vx-ls-caps); color: var(--vx-status-success-fg); }
+:root[data-piel] .vx-win-amt { margin-top: 4px; animation: vx-fade-in var(--vx-dur-fade) var(--vx-ease-fade) 520ms both, vx-rise-in var(--vx-dur-sheet) var(--vx-ease-emphasized) 520ms both; }
+:root[data-piel] .vx-win-bs { animation: vx-fade-in var(--vx-dur-fade) var(--vx-ease-fade) 700ms both; }
+/* resumen en una superficie tonal, filas que caen en cascada */
+:root[data-piel] .vx-result { padding-top: 0; }
+:root[data-piel] .vx-result .vx-dl { margin: 12px 16px 0; padding: 4px 16px; border-radius: var(--piel-r); background: var(--piel-card); }
+:root[data-piel] .vx-result .vx-kv { border-bottom-color: var(--md-sys-color-outline-variant); }
+:root[data-piel] .vx-result .vx-kv:last-child { border-bottom: 0; }
+:root[data-piel] .vx-result .vx-stack { margin-top: auto; padding-top: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-piel] .vx-tile > svg, :root[data-piel] .vx-win-amt, :root[data-piel] .vx-win-bs { animation: none; }
+  :root[data-piel] .vx-win .vx-resico::after { animation: none; opacity: 0; }
+  :root[data-piel] .vx-win .vx-ring circle { animation: none; stroke-dashoffset: 0; }
+}
+:root[data-piel][data-reduce-motion] .vx-tile > svg,
+:root[data-piel][data-reduce-motion] .vx-win-amt,
+:root[data-piel][data-reduce-motion] .vx-win-bs { animation: none; }
+:root[data-piel][data-reduce-motion] .vx-win .vx-resico::after { animation: none; opacity: 0; }
+:root[data-piel][data-reduce-motion] .vx-win .vx-ring circle { animation: none; stroke-dashoffset: 0; }

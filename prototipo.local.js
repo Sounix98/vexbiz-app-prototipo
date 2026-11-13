@@ -1823,11 +1823,24 @@
     const s = stock(n);
     return `<span class="vx-stock vx-stock--${s.level} md-body-small">${icon(s.ic, 14)}${s.label}${extra}</span>`;
   };
+  var TONOS = {
+    "Climatización": "var(--md-sys-color-tertiary-container)",
+    "Herramientas": "var(--md-sys-color-surface-container-highest)",
+    // gris cálido: se lee «taller», lejos del azul de clima
+    "Eléctrico": "var(--md-sys-color-secondary-container)"
+    // azul pizarra: sobrio, y distinto del hielo de Climatización
+    // Sin ámbar (es de acción) ni colores de estado (un verde se leería como «disponible»). Un oficio nuevo sin tono cae en neutro.
+  };
+  var oficioDe = (p) => String(p.categoria || "").split(" › ")[0];
+  var teselaAttrs = (p) => {
+    const tono = TONOS[oficioDe(p)];
+    return `data-oficio="${esc(oficioDe(p))}"${tono ? ` style="--tone:${tono}"` : ""}`;
+  };
   function productCard(p, { i } = {}) {
     const t = tienda(p.tienda), off = pct2(p), out = p.stock <= 0;
     return `<article class="vx-pcard"${i != null ? ` style="--i:${i}"` : ""}>
     <a class="vx-pcard-link md-sl vx-press" href="#/M2.08?id=${p.id}" data-go="M2.08?id=${p.id}" aria-label="${esc(p.nombre)}, ${money(p.precio)}">
-      <span class="vx-pimg" aria-hidden="true">${icon("box", 32)}</span>
+      <span class="vx-pimg vx-tile" ${teselaAttrs(p)} aria-hidden="true">${icon("box", 32)}</span>
       <span class="vx-pbody">
         ${p.marca ? `<span class="md-label-small vx-muted">${esc(p.marca)}</span>` : ""}
         <span class="md-body-medium vx-pname">${esc(p.corto || p.nombre)}</span>
@@ -2337,7 +2350,7 @@
         <button type="button" class="md-search md-sl vx-searchbtn" data-go="M2.02" data-kind="smart" aria-label="Buscar en VexBiz">${icon("search")}<span class="md-body-large vx-muted">Buscar en VexBiz</span></button>
         <h1 class="md-sr-only" tabindex="-1">Inicio</h1>
       </header>
-      <section class="vx-hero" aria-label="Promociones"><div class="vx-carousel" tabindex="0" aria-label="Promociones, desliza para ver más">${[1, 2, 3].map((n) => `<div class="vx-slide" role="group" aria-label="Promoción ${n} de 3"><span aria-hidden="true">${icon("tag", 40)}</span></div>`).join("")}</div>
+      <section class="vx-hero" aria-label="Promociones"><div class="vx-carousel" tabindex="0" aria-label="Promociones, desliza para ver más">${[1, 2, 3].map((n) => `<div class="vx-slide vx-tile" style="--tone:var(--md-sys-color-${["tertiary-container", "secondary-container", "surface-container-highest"][n - 1]})" role="group" aria-label="Promoción ${n} de 3"><span aria-hidden="true">${icon("tag", 40)}</span></div>`).join("")}</div>
         <div class="vx-dots" aria-hidden="true">${[0, 1, 2].map((i) => `<i class="vx-dot${i === 0 ? " is-on" : ""}"></i>`).join("")}</div></section>
       <section class="vx-sec vx-reveal">${sectionHead("Nichos", btn("Ver todos", { kind: "text", go: "M2.05", kindNav: "swap" }))}
         <ul class="vx-nichesq" role="list">${nichos.slice(0, 5).map((n) => `<li><button type="button" class="vx-nsq md-sl vx-press" data-go="M2.06?id=${n.id}"><span>${icon(n.id === "clima" ? "sliders" : "box", 28)}</span><span class="md-label-medium">${esc(n.nombre)}</span></button></li>`).join("")}</ul></section>
@@ -2560,7 +2573,7 @@
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl" id="fav" aria-pressed="false" aria-label="Guardar en favoritos">${icon("heart")}</button>
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl vx-cartbtn" data-go="M3.01" data-kind="smart" data-cart-btn aria-label="Carrito, ${plural(cartCount(), "artículo", "artículos")}">${icon("cart")}<span class="md-badge md-badge--large vx-cartbadge" id="fCart"${cartCount() ? "" : " hidden"}>${cartCount()}</span></button></header>`,
         `
-      <button type="button" class="vx-gallery md-sl" data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${icon("box", 64)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
+      <button type="button" class="vx-gallery vx-tile md-sl" ${teselaAttrs(p)} data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${icon("box", 64)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
       <div class="vx-pad-h vx-ficha">
         <p class="md-body-small vx-muted">${esc(p.categoria)}</p>
         <h1 class="md-headline-small" tabindex="-1">${esc(p.nombre)}${p.id === "aa12" ? " · 220V" : ""}</h1>
@@ -3120,7 +3133,7 @@
       const row2 = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
       const metTxt = { debito: "Débito · 0414 ···1234", binance: "Binance Pay · USDT", transferencia: "Transferencia bancaria" }[metodo];
       const ico = {
-        aprobado: `<svg class="vx-ring vx-resico vx-resico--ok" viewBox="0 0 72 72" width="72" height="72" aria-hidden="true"><circle cx="36" cy="36" r="32" fill="none" stroke="currentColor" stroke-width="4"/><path class="vx-check" pathLength="1" d="M22 37l10 10 18-20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        aprobado: `<svg class="vx-ring vx-resico vx-resico--ok" viewBox="0 0 72 72" width="72" height="72" aria-hidden="true"><circle pathLength="1" cx="36" cy="36" r="32" fill="none" stroke="currentColor" stroke-width="4"/><path class="vx-check" pathLength="1" d="M22 37l10 10 18-20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
         rechazado: `<span class="vx-resico vx-resico--bad" id="resIco">${icon("error", 56)}</span>`,
         pendiente: `<span class="vx-resico vx-resico--wait">${icon("clock", 56)}</span>`,
         revision: `<span class="vx-resico vx-resico--wait">${icon("clock", 56)}</span>`
@@ -3133,11 +3146,13 @@
         pendiente: `${btn("Ver mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${btn("Ir al inicio", { kind: "text", block: true, go: "M2.01", kindNav: "swap" })}`,
         revision: `${btn("Ver mis pedidos", { kind: "filled", block: true, go: "M6.03", kindNav: "swap" })}${btn("Ir al inicio", { kind: "text", block: true, go: "M2.01", kindNav: "swap" })}`
       }[estado];
-      const el = h(`<div class="vx-page"><div class="vx-body vx-result"><div class="vx-resbox">${ico}<h1 class="md-headline-small" tabindex="-1">${title}</h1>
+      const win = estado === "aprobado";
+      const el = h(`<div class="vx-page"><div class="vx-body vx-result"><div class="vx-resbox${win ? " vx-win" : ""}">${ico}<h1 class="md-headline-small" tabindex="-1">${title}</h1>
+      ${win ? `<p class="vx-figure vx-figure--lg vx-win-amt" id="winAmt">${money(t.total)}</p><p class="md-body-medium vx-muted vx-win-bs">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</p>` : ""}
       ${estado === "rechazado" ? `<p class="md-body-large vx-reason">${icon("error", 18)} Tu banco rechazó el pago: «Fondos insuficientes»</p>` : ""}
       ${estado === "pendiente" ? `<div class="md-progress md-progress--indet vx-resprog" role="progressbar" aria-label="Esperando a tu banco" style="--_pct:30%"><span class="md-progress-track"></span><span class="md-progress-active"></span></div><p class="md-body-large">Estamos esperando la confirmación de tu banco. Te avisamos aquí.</p>` : ""}
       ${estado === "revision" ? '<p class="md-body-large">Reportar no es pagar: la compra queda en revisión hasta que se confirme el dinero.</p>' : ""}</div>
-      <dl class="vx-dl vx-pad-h">${row2("Importe", `${money(t.total)}<br><span class="md-body-small vx-muted">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</span>`)}${row2("Método", metTxt)}${metodo !== "transferencia" ? row2("Transacción", compra.pasarela.intento) : ""}</dl>
+      <dl class="vx-dl vx-pad-h">${win ? "" : row2("Importe", `${money(t.total)}<br><span class="md-body-small vx-muted">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</span>`)}${row2("Método", metTxt)}${metodo !== "transferencia" ? row2("Transacción", compra.pasarela.intento) : ""}</dl>
       <div class="vx-pad-h">${pedidos2}</div><div class="vx-pad vx-stack">${acts}</div></div></div>`);
       return el;
     },
@@ -3156,6 +3171,31 @@
         }
       }
       el.querySelector("h1").focus({ preventScroll: true });
+      if (estado !== "aprobado") return;
+      if (ctx.first && !reduce()) {
+        stagger(el.querySelector(".vx-dl"));
+        const ul = el.querySelector(".vx-list");
+        if (ul) stagger(ul);
+      }
+      const amt = el.querySelector("#winAmt");
+      if (!amt || reduce()) return;
+      const total = compraPasarela().total;
+      let raf = 0, t0 = 0;
+      const step = (now) => {
+        t0 || (t0 = now);
+        const k = Math.min((now - t0) / 800, 1), e = 1 - (1 - k) ** 3;
+        amt.textContent = money(total * e);
+        if (k < 1) raf = requestAnimationFrame(step);
+        else amt.textContent = money(total);
+      };
+      amt.textContent = money(0);
+      const id = setTimeout(() => {
+        raf = requestAnimationFrame(step);
+      }, 520);
+      return () => {
+        clearTimeout(id);
+        cancelAnimationFrame(raf);
+      };
     }
   });
   register("M3.12", {
@@ -6427,6 +6467,7 @@
   // assets/js/main.js
   var root2 = document.documentElement;
   var prefs2 = loadPrefs();
+  if (new URLSearchParams(location.search).get("piel") !== "0") root2.setAttribute("data-piel", "");
   var setTheme = (t) => {
     root2.setAttribute("data-theme", t);
     savePrefs({ theme: t });

@@ -185,9 +185,9 @@ a { color: inherit; }
 .vx-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } .vx-filters { padding-bottom: 8px; }
 
 /* Secciones, tarjetas de producto, carruseles */
-.vx-sec { padding: 8px 0; } .vx-sechead { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 0; } .vx-sechead h2 { margin: 0; }
+.vx-sec { padding: 8px 0; } .vx-sec.vx-pad-h { padding-inline: 16px; } /* .vx-sec pisaba el margen lateral de .vx-pad-h (los KPI de M7.01 salían al borde) */ .vx-sechead { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 0; } .vx-sechead h2 { margin: 0; }
 .vx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 16px; }
-.vx-scroller { display: flex; gap: 12px; overflow-x: auto; padding: 8px 16px; scroll-snap-type: x proximity; scrollbar-width: none; } .vx-scroller::-webkit-scrollbar { display: none; }
+.vx-scroller { display: flex; gap: 12px; overflow-x: auto; padding: 8px 16px; scroll-snap-type: x proximity; scroll-padding-inline: 16px; scrollbar-width: none; } .vx-scroller::-webkit-scrollbar { display: none; }
 .vx-scroller .vx-pcard { flex: 0 0 172px; scroll-snap-align: start; }
 .vx-pcard { position: relative; display: flex; flex-direction: column; border-radius: var(--md-sys-shape-corner-large); background: var(--md-sys-color-surface); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant); overflow: hidden; }
 .vx-pcard-link { display: flex; flex-direction: column; flex: 1; text-decoration: none; color: inherit; }

@@ -20,12 +20,23 @@ export function stock(n) {
 }
 export const stockHtml = (n, extra = '') => { const s = stock(n); return `<span class="vx-stock vx-stock--${s.level} md-body-small">${icon(s.ic, 14)}${s.label}${extra}</span>`; };
 
+/** Tono de la tesela de producto por oficio (la primera parte de «categoría»). Solo tokens: así sigue en claro y oscuro. */
+export const TONOS = {
+  'Climatización': 'var(--md-sys-color-tertiary-container)',
+  'Herramientas': 'var(--md-sys-color-surface-container-highest)', // gris cálido: se lee «taller», lejos del azul de clima
+  'Eléctrico': 'var(--md-sys-color-secondary-container)',          // azul pizarra: sobrio, y distinto del hielo de Climatización
+  // Sin ámbar (es de acción) ni colores de estado (un verde se leería como «disponible»). Un oficio nuevo sin tono cae en neutro.
+};
+export const oficioDe = (p) => String(p.categoria || '').split(' › ')[0];
+/** Atributos de tesela: clase + tono del oficio. `attrs` extra se concatena al final. */
+export const teselaAttrs = (p) => { const tono = TONOS[oficioDe(p)]; return `data-oficio="${esc(oficioDe(p))}"${tono ? ` style="--tone:${tono}"` : ''}`; };
+
 /** Tarjeta de producto (tarjeta clara, precio sin píldora). Toda la tarjeta lleva a la ficha; el botón añade al carrito. */
 export function productCard(p, { i } = {}) {
   const t = tienda(p.tienda), off = pct(p), out = p.stock <= 0;
   return `<article class="vx-pcard"${i != null ? ` style="--i:${i}"` : ''}>
     <a class="vx-pcard-link md-sl vx-press" href="#/M2.08?id=${p.id}" data-go="M2.08?id=${p.id}" aria-label="${esc(p.nombre)}, ${money(p.precio)}">
-      <span class="vx-pimg" aria-hidden="true">${icon('box', 32)}</span>
+      <span class="vx-pimg vx-tile" ${teselaAttrs(p)} aria-hidden="true">${icon('box', 32)}</span>
       <span class="vx-pbody">
         ${p.marca ? `<span class="md-label-small vx-muted">${esc(p.marca)}</span>` : ''}
         <span class="md-body-medium vx-pname">${esc(p.corto || p.nombre)}</span>

@@ -6,7 +6,7 @@ import { h, icon, btn, iconBtn, topbar, stateBlock, toast, $, $$ } from '../ui.j
 import { avatar, stars, page, banner, stepper, field, fieldError, radioOpt, switchHtml, wireControls, checkoutSteps, fillSteps, otpHtml, wireOtp, closeOnGo, stock } from '../market.js';
 import { go, closeOverlay } from '../router.js';
 import { state, set, subscribe, cartLines, cartSubtotal, cartCount, setQty, removeLine, lineKey } from '../store.js';
-import { play, countdown } from '../motion.js';
+import { play, countdown, stagger, reduce } from '../motion.js';
 import { compra, producto, tienda, TASA } from '../data.js';
 import { money, bs, bsRef, num, esc, plural, pct, round2 } from '../format.js';
 
@@ -320,7 +320,7 @@ register('M3.11', {
     const row = (k, v) => `<div class="vx-kv"><dt class="md-body-medium vx-muted">${k}</dt><dd class="md-body-large vx-tab-num">${v}</dd></div>`;
     const metTxt = { debito: 'Débito · 0414 ···1234', binance: 'Binance Pay · USDT', transferencia: 'Transferencia bancaria' }[metodo];
     const ico = {
-      aprobado: `<svg class="vx-ring vx-resico vx-resico--ok" viewBox="0 0 72 72" width="72" height="72" aria-hidden="true"><circle cx="36" cy="36" r="32" fill="none" stroke="currentColor" stroke-width="4"/><path class="vx-check" pathLength="1" d="M22 37l10 10 18-20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      aprobado: `<svg class="vx-ring vx-resico vx-resico--ok" viewBox="0 0 72 72" width="72" height="72" aria-hidden="true"><circle pathLength="1" cx="36" cy="36" r="32" fill="none" stroke="currentColor" stroke-width="4"/><path class="vx-check" pathLength="1" d="M22 37l10 10 18-20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
       rechazado: `<span class="vx-resico vx-resico--bad" id="resIco">${icon('error', 56)}</span>`,
       pendiente: `<span class="vx-resico vx-resico--wait">${icon('clock', 56)}</span>`, revision: `<span class="vx-resico vx-resico--wait">${icon('clock', 56)}</span>` }[estado];
     const title = { aprobado: 'Pago aprobado', rechazado: 'Pago rechazado', pendiente: 'Pago pendiente', revision: 'Transferencia reportada' }[estado];
@@ -329,11 +329,13 @@ register('M3.11', {
       rechazado: `${btn('Reintentar el pago', { kind: 'filled', block: true, go: 'M3.09', kindNav: 'mode' })}${btn('Cambiar forma de pago', { kind: 'outlined', block: true, go: 'M3.09', kindNav: 'mode' })}${btn('Ver mis pedidos', { kind: 'text', block: true, go: 'M6.03', kindNav: 'swap' })}`,
       pendiente: `${btn('Ver mis pedidos', { kind: 'filled', block: true, go: 'M6.03', kindNav: 'swap' })}${btn('Ir al inicio', { kind: 'text', block: true, go: 'M2.01', kindNav: 'swap' })}`,
       revision: `${btn('Ver mis pedidos', { kind: 'filled', block: true, go: 'M6.03', kindNav: 'swap' })}${btn('Ir al inicio', { kind: 'text', block: true, go: 'M2.01', kindNav: 'swap' })}` }[estado];
-    const el = h(`<div class="vx-page"><div class="vx-body vx-result"><div class="vx-resbox">${ico}<h1 class="md-headline-small" tabindex="-1">${title}</h1>
+    const win = estado === 'aprobado'; // momento firma: el sello se dibuja y el importe cuenta hasta su valor (piel.css)
+    const el = h(`<div class="vx-page"><div class="vx-body vx-result"><div class="vx-resbox${win ? ' vx-win' : ''}">${ico}<h1 class="md-headline-small" tabindex="-1">${title}</h1>
+      ${win ? `<p class="vx-figure vx-figure--lg vx-win-amt" id="winAmt">${money(t.total)}</p><p class="md-body-medium vx-muted vx-win-bs">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</p>` : ''}
       ${estado === 'rechazado' ? `<p class="md-body-large vx-reason">${icon('error', 18)} Tu banco rechazó el pago: «Fondos insuficientes»</p>` : ''}
       ${estado === 'pendiente' ? `<div class="md-progress md-progress--indet vx-resprog" role="progressbar" aria-label="Esperando a tu banco" style="--_pct:30%"><span class="md-progress-track"></span><span class="md-progress-active"></span></div><p class="md-body-large">Estamos esperando la confirmación de tu banco. Te avisamos aquí.</p>` : ''}
       ${estado === 'revision' ? '<p class="md-body-large">Reportar no es pagar: la compra queda en revisión hasta que se confirme el dinero.</p>' : ''}</div>
-      <dl class="vx-dl vx-pad-h">${row('Importe', `${money(t.total)}<br><span class="md-body-small vx-muted">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</span>`)}${row('Método', metTxt)}${metodo !== 'transferencia' ? row('Transacción', compra.pasarela.intento) : ''}</dl>
+      <dl class="vx-dl vx-pad-h">${win ? '' : row('Importe', `${money(t.total)}<br><span class="md-body-small vx-muted">${bsRef(t.total, compra.pasarela.tasaDia, { decimals: 0 })}</span>`)}${row('Método', metTxt)}${metodo !== 'transferencia' ? row('Transacción', compra.pasarela.intento) : ''}</dl>
       <div class="vx-pad-h">${pedidos}</div><div class="vx-pad vx-stack">${acts}</div></div></div>`);
     return el;
   },
@@ -345,6 +347,14 @@ register('M3.11', {
       if (!state.orders.some((o) => o.id === compra.pedidos[0].id)) { state.orders.unshift(...compra.pedidos.map((p) => ({ ...p, estado: 'Pagado', fecha: '16/10' }))); state.cart = []; set({ orders: state.orders }); }
     }
     el.querySelector('h1').focus({ preventScroll: true });
+    if (estado !== 'aprobado') return;
+    // Momento firma: filas en cascada y cifra que cuenta. Con «reducir movimiento» todo aparece ya terminado.
+    if (ctx.first && !reduce()) { stagger(el.querySelector('.vx-dl')); const ul = el.querySelector('.vx-list'); if (ul) stagger(ul); }
+    const amt = el.querySelector('#winAmt'); if (!amt || reduce()) return;
+    const total = compraPasarela().total; let raf = 0, t0 = 0;
+    const step = (now) => { t0 ||= now; const k = Math.min((now - t0) / 800, 1), e = 1 - (1 - k) ** 3; amt.textContent = money(total * e); if (k < 1) raf = requestAnimationFrame(step); else amt.textContent = money(total); };
+    amt.textContent = money(0); const id = setTimeout(() => { raf = requestAnimationFrame(step); }, 520); // arranca cuando la cifra termina de aparecer
+    return () => { clearTimeout(id); cancelAnimationFrame(raf); };
   },
 });
 
