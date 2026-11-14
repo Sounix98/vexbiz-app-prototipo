@@ -28,9 +28,10 @@ a { color: inherit; }
 }
 #view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
 .screen {
-  position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: none;
   background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface);
 }
+.screen::-webkit-scrollbar { display: none; } /* el marco del teléfono no lleva barra de desplazamiento nativa */
 .screen h1:focus, #sheet h2:focus, #dialog h2:focus { outline: none; }
 .vx-loaded { animation: vx-fade-in var(--vx-dur-fade) var(--vx-ease-fade) both; }
 #bar { flex: none; position: relative; z-index: 2; }

@@ -1,6 +1,7 @@
 // M7 · Modo Tienda (1/2): inicio, confirmación pendiente, pedidos, preparar, despachar y facturar,
 // productos, poner un artículo a la venta y oferta.
 import { register } from './registry.js';
+import { productArt } from '../art.js';
 import { h, icon, btn, iconBtn, topbar, stateBlock, skeleton, toast, $, $$ } from '../ui.js';
 import { avatar, page, field, fieldError, area, select, statusTag, row, banner, switchHtml, wireControls } from '../market.js';
 import { go, back, closeOverlay } from '../router.js';
@@ -23,7 +24,7 @@ export const porDespachar = () => S().pedidos.filter((o) => o.status === 'pagado
 export const buscarPedido = (id) => [...S().pedidos, ...S().mas].find((o) => o.id === id) || S().pedidos[0];
 export const modoLbl = () => '<p class="md-label-medium vx-muted vx-pad-h vx-modolbl">Modo Tienda</p>';
 export const avisosBtn = () => iconBtn('bell', 'Avisos en vivo', 'data-go="O.AVI"');
-const thumb = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon('box', n)}</span>`;
+const thumb = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`; // imagen limpia: la del producto si se conoce, si no, una caja
 const sec = (t) => `<h2 class="md-label-large vx-sub vx-sub--list">${t}</h2>`;
 const retiroTag = () => `<span class="vx-tag md-label-small">${icon('store', 14)}Retiro en tienda</span>`;
 export const cuenta = (ms) => clock(ms, { pad: true });

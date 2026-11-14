@@ -2,6 +2,7 @@
 // pasarela, resultado del pago, reportar una transferencia.
 // Cadena (Huecos, punto 3): M3.01 → M3.02 → M3.04 → M3.06 → ▣ Resumen → M3.08 → M3.09 → M3.10 | M3.12 → M3.11.
 import { register } from './registry.js';
+import { productArt } from '../art.js';
 import { h, icon, btn, iconBtn, topbar, stateBlock, toast, $, $$ } from '../ui.js';
 import { avatar, stars, page, banner, stepper, field, fieldError, radioOpt, switchHtml, wireControls, checkoutSteps, fillSteps, otpHtml, wireOtp, closeOnGo, stock } from '../market.js';
 import { go, closeOverlay } from '../router.js';
@@ -34,7 +35,7 @@ const compraPasarela = () => {
   const sub = round2(compra.pedidos.reduce((s, p) => s + p.total, 0)), imp = pct(sub, compra.pasarela.impuestoPct);
   return { sub, imp, total: round2(sub + imp) };
 };
-const thumb = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon('box', n)}</span>`;
+const thumb = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`; // imagen limpia: la del producto si se conoce, si no, una caja
 const acciones = (left, right) => `${left}${right}`;
 
 // ── M3.01 · Carrito ─────────────────────────────────────────────────────────
@@ -57,7 +58,7 @@ register('M3.01', {
             ${cambios ? banner('info', `El precio de ${plural(cambios, 'artículo', 'artículos')} cambió desde que lo añadiste.`) : ''}</div>
           <p class="md-body-medium vx-muted vx-pad-h">${plural(c.lines.length, 'artículo', 'artículos')} en ${plural(c.grupos.length, 'tienda', 'tiendas')}</p>
           ${c.grupos.map((g, gi) => `<section class="vx-cartgroup" aria-label="${esc(g.t.nombre)}"><h2 class="md-title-medium">${esc(g.t.nombre)}</h2>
-            <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-cartline${l.cambioPrecio ? ' vx-priced' : ''}" data-line="${l.key}">${thumb()}
+            <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-cartline${l.cambioPrecio ? ' vx-priced' : ''}" data-line="${l.key}">${thumb(24, l.p)}
               <div class="vx-cartline-main"><p class="md-body-large">${esc(l.p.corto || l.p.nombre)}</p><p class="md-body-medium vx-muted vx-tab-num">${money(l.precio)} c/u</p>
                 ${l.cambioPrecio ? `<p class="vx-tag md-label-small">${icon('info', 14)}Cambió de precio</p>` : ''}
                 <div class="vx-cartline-row">${stepper(l.key, l.qty, l.p.stock)}<b class="md-title-medium vx-tab-num">${money(l.precio * l.qty)}</b></div></div>
@@ -132,7 +133,7 @@ register('M3.04', {
       el.querySelector('#envBody').innerHTML = `<div class="vx-pad-h"><p class="md-title-small">${esc(d.nombre)}</p><p class="md-body-medium vx-muted">${esc(dirCorta(d))} ${btn('Cambiar', { kind: 'text', go: 'M3.03' })}</p>
         <p class="md-body-medium">Cada tienda despacha su paquete por separado.</p></div>
         ${c.grupos.map((g) => `<section class="vx-cartgroup" aria-label="${esc(g.t.nombre)}"><h2 class="md-title-medium">${esc(g.t.nombre)} <span class="md-body-medium vx-muted">· ${plural(g.units, 'unidad', 'unidades')}</span></h2>
-          <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-envline">${thumb(20)}<span class="md-body-medium">${esc(l.p.corto || l.p.nombre)}<br><span class="vx-muted vx-tab-num">${l.qty} × ${money(l.precio)}</span></span><b class="md-body-large vx-tab-num">${money(l.precio * l.qty)}</b></li>`).join('')}</ul>
+          <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-envline">${thumb(20, l.p)}<span class="md-body-medium">${esc(l.p.corto || l.p.nombre)}<br><span class="vx-muted vx-tab-num">${l.qty} × ${money(l.precio)}</span></span><b class="md-body-large vx-tab-num">${money(l.precio * l.qty)}</b></li>`).join('')}</ul>
           ${g.env.gratis ? `<p class="md-body-medium vx-env">${icon('check', 18)} Esta tienda no te cobra el envío · ${g.env.dias}</p>` : `
             <p class="md-body-medium vx-env vx-tab-num">${icon('truck', 18)} ${g.retiro ? 'Retiro en la tienda · $ 0,00' : `Envío ${money(g.env.costo)} · ${g.env.km} km · ${g.env.kg} kg · ${g.env.dias} · Aproximado`}</p>
             <div class="vx-row-end">${btn('Ver ruta', { kind: 'text', go: 'M3.05' })}</div>

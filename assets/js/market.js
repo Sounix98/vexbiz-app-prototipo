@@ -7,6 +7,7 @@ import { producto, tienda } from './data.js';
 import { state, set, addToCart, subscribe } from './store.js';
 import { play } from './motion.js';
 import { openOverlay, closeOverlay } from './router.js';
+import { productArt } from './art.js';
 
 export const stars = (r) => `★ ${num(r, 1)}`;
 export const avatar = (txt, big = false) => `<span class="md-avatar md-avatar--initials vx-av${big ? ' vx-av--l' : ''}" aria-hidden="true">${esc(txt)}</span>`;
@@ -36,7 +37,7 @@ export function productCard(p, { i } = {}) {
   const t = tienda(p.tienda), off = pct(p), out = p.stock <= 0;
   return `<article class="vx-pcard"${i != null ? ` style="--i:${i}"` : ''}>
     <a class="vx-pcard-link md-sl vx-press" href="#/M2.08?id=${p.id}" data-go="M2.08?id=${p.id}" aria-label="${esc(p.nombre)}, ${money(p.precio)}">
-      <span class="vx-pimg vx-tile" ${teselaAttrs(p)} aria-hidden="true">${icon('box', 32)}</span>
+      <span class="vx-pimg vx-tile" ${teselaAttrs(p)} aria-hidden="true">${productArt(p)}</span>
       <span class="vx-pbody">
         ${p.marca ? `<span class="md-label-small vx-muted">${esc(p.marca)}</span>` : ''}
         <span class="md-body-medium vx-pname">${esc(p.corto || p.nombre)}</span>

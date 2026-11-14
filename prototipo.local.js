@@ -1810,6 +1810,92 @@
     }
   });
 
+  // assets/js/art.js
+  var G = (rx = 62) => `<ellipse class="art-g" cx="100" cy="158" rx="${rx}" ry="7"/>`;
+  var DIBUJOS = {
+    // Unidad interior de aire split (pared)
+    split: () => `<ellipse class="art-g" cx="100" cy="124" rx="66" ry="4.5"/>
+    <rect class="art-b" x="24" y="54" width="152" height="62" rx="16"/>
+    <path class="art-s" d="M24 98h152v2a16 16 0 0 1-16 16H40a16 16 0 0 1-16-16z"/>
+    <rect class="art-d" x="38" y="96" width="124" height="9" rx="4.5"/>
+    <path class="art-s" d="M44 110h112l-6 12H50z"/>
+    <rect class="art-d" x="40" y="72" width="34" height="5" rx="2.5"/>
+    <circle class="art-a" cx="152" cy="76" r="3.4"/>`,
+    // Control remoto
+    remote: () => `${G(34)}
+    <rect class="art-b" x="74" y="30" width="52" height="128" rx="18"/>
+    <rect class="art-d" x="84" y="42" width="32" height="24" rx="6"/>
+    <circle class="art-a" cx="100" cy="82" r="7.5"/>
+    <circle class="art-s" cx="86" cy="104" r="6.5"/><circle class="art-s" cx="114" cy="104" r="6.5"/>
+    <circle class="art-s" cx="86" cy="124" r="6.5"/><circle class="art-s" cx="114" cy="124" r="6.5"/>
+    <rect class="art-s" x="84" y="138" width="32" height="9" rx="4.5"/>`,
+    // Capacitor de marcha
+    capacitor: () => `${G(46)}
+    <rect class="art-d" x="80" y="30" width="10" height="20" rx="3"/><rect class="art-d" x="110" y="30" width="10" height="20" rx="3"/>
+    <rect class="art-b" x="66" y="46" width="68" height="108" rx="14"/>
+    <path class="art-s" d="M118 46h2a14 14 0 0 1 14 14v80a14 14 0 0 1-14 14h-2a14 14 0 0 0 14-14V60a14 14 0 0 0-14-14z"/>
+    <rect class="art-d" x="66" y="78" width="68" height="40"/>
+    <rect class="art-a" x="78" y="90" width="30" height="5" rx="2.5"/><rect class="art-s" x="78" y="101" width="44" height="4" rx="2"/>`,
+    // Compresor (cápsula con tubos). `h` cambia la altura según el tipo.
+    compressor: (v = {}) => {
+      const h2 = v.h || 104, top2 = 154 - h2;
+      return `${G(54)}
+    <rect class="art-d" x="52" y="150" width="96" height="9" rx="4.5"/>
+    <rect class="art-d" x="80" y="${top2 - 22}" width="9" height="30" rx="3"/><rect class="art-d" x="112" y="${top2 - 14}" width="9" height="22" rx="3"/>
+    <rect class="art-b" x="58" y="${top2}" width="84" height="${h2}" rx="40"/>
+    <path class="art-s" d="M112 ${top2 + 1}a40 40 0 0 1 30 39v${h2 - 80}a40 40 0 0 1-40 40a40 40 0 0 0 28-38V${top2 + 40}a40 40 0 0 0-18-41z"/>
+    ${v.band ? `<rect class="art-a" x="58" y="${top2 + h2 * 0.46}" width="84" height="7"/>` : ""}
+    <circle class="art-d" cx="100" cy="${top2 + h2 * 0.7}" r="9"/>`;
+    },
+    // Tarjeta electrónica
+    board: () => `${G(66)}
+    <rect class="art-b" x="32" y="52" width="136" height="96" rx="12"/>
+    <rect class="art-s" x="32" y="136" width="136" height="12" rx="6"/>
+    <rect class="art-d" x="50" y="68" width="38" height="38" rx="5"/>
+    <path class="art-line" d="M58 68v-6M68 68v-6M78 68v-6M58 106v6M68 106v6M78 106v6" fill="none" stroke-width="3" stroke-linecap="round"/>
+    <circle class="art-s" cx="108" cy="78" r="9"/><circle class="art-s" cx="132" cy="78" r="9"/>
+    <rect class="art-d" x="132" y="96" width="26" height="30" rx="4"/>
+    <circle class="art-a" cx="104" cy="112" r="3.4"/>
+    <path class="art-line" d="M88 90h12M108 120h18M50 122h60" fill="none" stroke-width="2.5" stroke-linecap="round"/>`,
+    // Taladro percutor inalámbrico
+    drill: () => `${G(60)}
+    <rect class="art-d" x="130" y="70" width="22" height="22" rx="5"/><rect class="art-s" x="150" y="78" width="30" height="7" rx="3.5"/>
+    <rect class="art-b" x="40" y="58" width="96" height="42" rx="16"/>
+    <rect class="art-a" x="52" y="70" width="44" height="7" rx="3.5"/>
+    <path class="art-b" d="M84 92h34l6 52a8 8 0 0 1-8 9h-18a8 8 0 0 1-8-9z"/>
+    <path class="art-s" d="M104 92h14l6 52a8 8 0 0 1-8 9h-10z"/>
+    <rect class="art-d" x="74" y="146" width="56" height="16" rx="6"/>
+    <rect class="art-d" x="92" y="100" width="12" height="18" rx="5"/>`,
+    // Juego de llaves (tres llaves en abanico)
+    wrenches: () => {
+      const llave = (a, w) => `<g transform="translate(100 156) rotate(${a})"><rect class="art-b" x="-8" y="-104" width="16" height="104" rx="8"/><circle class="art-b" cx="0" cy="-108" r="${w}"/><circle class="art-d" cx="0" cy="-108" r="${w * 0.44}"/></g>`;
+      return `${G(50)}${llave(-24, 19)}${llave(24, 19)}${llave(0, 21)}`;
+    },
+    // Caja genérica
+    caja: () => `${G(52)}
+    <path class="art-b" d="M100 40l58 28v62l-58 28-58-28V68z"/>
+    <path class="art-s" d="M100 96l58-28v62l-58 28z"/>
+    <path class="art-d" d="M100 40l58 28-58 28-58-28z" opacity=".35"/>
+    <rect class="art-a" x="92" y="104" width="16" height="6" rx="3" transform="rotate(-24 100 107)"/>`
+  };
+  function tipoDe(p) {
+    if (!p) return { k: "caja" };
+    const cat = String(p.categoria || "");
+    if (/Aires split/.test(cat)) return { k: "split" };
+    if (p.id === "ctrl" || /Controles/.test(cat)) return { k: "remote" };
+    if (p.id === "cap") return { k: "capacitor" };
+    if (/Compresores/.test(cat)) return { k: "compressor", v: { rotativo: {}, scroll: { h: 118 }, inverter: { band: true }, nevera: { h: 88 } }[p.sub] || {} };
+    if (/Tarjetas/.test(cat)) return { k: "board" };
+    if (p.id === "tal") return { k: "drill" };
+    if (p.id === "llav") return { k: "wrenches" };
+    return { k: "caja" };
+  }
+  function productArt(p, { vista = 0, cls = "" } = {}) {
+    const { k, v } = tipoDe(typeof p === "string" ? producto(p) : p);
+    const T2 = ["", "translate(100 100) scale(1.45) translate(-100 -112)", "translate(200 0) scale(-1 1)", "rotate(-7 100 100)", "translate(100 100) scale(.78) translate(-100 -100)"][vista] || "";
+    return `<svg class="art ${cls}" viewBox="16 22 168 146" aria-hidden="true" focusable="false"><g${T2 ? ` transform="${T2}"` : ""}>${DIBUJOS[k](v)}</g></svg>`;
+  }
+
   // assets/js/market.js
   var stars = (r) => `★ ${num(r, 1)}`;
   var avatar = (txt, big = false) => `<span class="md-avatar md-avatar--initials vx-av${big ? " vx-av--l" : ""}" aria-hidden="true">${esc(txt)}</span>`;
@@ -1840,7 +1926,7 @@
     const t = tienda(p.tienda), off = pct2(p), out = p.stock <= 0;
     return `<article class="vx-pcard"${i != null ? ` style="--i:${i}"` : ""}>
     <a class="vx-pcard-link md-sl vx-press" href="#/M2.08?id=${p.id}" data-go="M2.08?id=${p.id}" aria-label="${esc(p.nombre)}, ${money(p.precio)}">
-      <span class="vx-pimg vx-tile" ${teselaAttrs(p)} aria-hidden="true">${icon("box", 32)}</span>
+      <span class="vx-pimg vx-tile" ${teselaAttrs(p)} aria-hidden="true">${productArt(p)}</span>
       <span class="vx-pbody">
         ${p.marca ? `<span class="md-label-small vx-muted">${esc(p.marca)}</span>` : ""}
         <span class="md-body-medium vx-pname">${esc(p.corto || p.nombre)}</span>
@@ -2338,6 +2424,14 @@
     return subscribe(sync);
   }
   var countText = (n) => plural(n, "publicación", "publicaciones");
+  var heroSlides = () => {
+    const o = producto("lg12");
+    return [
+      { tono: "ink", eyebrow: "Ofertas relámpago", titulo: `Aires split con ${pct2(o)}&nbsp;% menos`, sub: `Oferta hasta el ${o.oferta}`, cta: "Ver ofertas", go: "M2.03", art: "aa12" },
+      { tono: "tertiary", eyebrow: "Técnicos certificados", titulo: "Técnicos en tu zona", sub: "Instalación y reparación con técnicos verificados.", cta: "Ver técnicos", go: "M4.03", art: "tal" },
+      { tono: "secondary", eyebrow: "Repuestos", titulo: "Compresores, capacitores y tarjetas", sub: "De tiendas verificadas.", cta: "Explorar", go: "M2.06?id=clima", art: "comp" }
+    ];
+  };
   register("M2.01", {
     render() {
       const ofertas6 = ["aa12", "lg12", "mi12", "sa09", "comp", "da18"].map(producto);
@@ -2350,7 +2444,7 @@
         <button type="button" class="md-search md-sl vx-searchbtn" data-go="M2.02" data-kind="smart" aria-label="Buscar en VexBiz">${icon("search")}<span class="md-body-large vx-muted">Buscar en VexBiz</span></button>
         <h1 class="md-sr-only" tabindex="-1">Inicio</h1>
       </header>
-      <section class="vx-hero" aria-label="Promociones"><div class="vx-carousel" tabindex="0" aria-label="Promociones, desliza para ver más">${[1, 2, 3].map((n) => `<div class="vx-slide vx-tile" style="--tone:var(--md-sys-color-${["tertiary-container", "secondary-container", "surface-container-highest"][n - 1]})" role="group" aria-label="Promoción ${n} de 3"><span aria-hidden="true">${icon("tag", 40)}</span></div>`).join("")}</div>
+      <section class="vx-hero" aria-label="Promociones"><div class="vx-carousel" tabindex="0" aria-label="Promociones, desliza para ver más">${heroSlides().map((c, i) => `<div class="vx-slide vx-hs vx-hs--${c.tono}" role="group" aria-label="Promoción ${i + 1} de 3"><div class="vx-hs-copy"><p class="vx-hs-eyebrow">${c.eyebrow}</p><h2 class="vx-hs-title">${c.titulo}</h2><p class="vx-hs-sub">${c.sub}</p>${btn(c.cta, { kind: "filled", go: c.go })}</div><div class="vx-hs-art" aria-hidden="true">${productArt(c.art)}</div></div>`).join("")}</div>
         <div class="vx-dots" aria-hidden="true">${[0, 1, 2].map((i) => `<i class="vx-dot${i === 0 ? " is-on" : ""}"></i>`).join("")}</div></section>
       <section class="vx-sec vx-reveal">${sectionHead("Nichos", btn("Ver todos", { kind: "text", go: "M2.05", kindNav: "swap" }))}
         <ul class="vx-nichesq" role="list">${nichos.slice(0, 5).map((n) => `<li><button type="button" class="vx-nsq md-sl vx-press" data-go="M2.06?id=${n.id}"><span>${icon(n.id === "clima" ? "sliders" : "box", 28)}</span><span class="md-label-medium">${esc(n.nombre)}</span></button></li>`).join("")}</ul></section>
@@ -2573,7 +2667,7 @@
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl" id="fav" aria-pressed="false" aria-label="Guardar en favoritos">${icon("heart")}</button>
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl vx-cartbtn" data-go="M3.01" data-kind="smart" data-cart-btn aria-label="Carrito, ${plural(cartCount(), "artículo", "artículos")}">${icon("cart")}<span class="md-badge md-badge--large vx-cartbadge" id="fCart"${cartCount() ? "" : " hidden"}>${cartCount()}</span></button></header>`,
         `
-      <button type="button" class="vx-gallery vx-tile md-sl" ${teselaAttrs(p)} data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${icon("box", 64)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
+      <button type="button" class="vx-gallery vx-tile md-sl" ${teselaAttrs(p)} data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${productArt(p)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
       <div class="vx-pad-h vx-ficha">
         <p class="md-body-small vx-muted">${esc(p.categoria)}</p>
         <h1 class="md-headline-small" tabindex="-1">${esc(p.nombre)}${p.id === "aa12" ? " · 220V" : ""}</h1>
@@ -2633,8 +2727,9 @@
   register("M2.09", {
     skeleton: false,
     render() {
+      const pg = producto(state.flow.viewing) || producto("aa12");
       const el = h(`<div class="vx-gal"><header class="vx-galhead">${iconBtn("close", "Cerrar galería", "data-back")}<h1 class="md-title-medium vx-tab-num" id="gCount" aria-live="polite" tabindex="-1">1 de 5</h1><span class="vx-spacer"></span></header>
-      <div class="vx-carousel vx-galcar" tabindex="0" aria-label="Fotos del producto">${[1, 2, 3, 4, 5].map((n) => `<div class="vx-slide vx-gslide" role="group" aria-label="Foto ${n} de 5">${icon("box", 72)}</div>`).join("")}</div>
+      <div class="vx-carousel vx-galcar" tabindex="0" aria-label="Fotos del producto">${[1, 2, 3, 4, 5].map((n) => `<div class="vx-slide vx-gslide vx-tile" ${teselaAttrs(pg)} role="group" aria-label="Foto ${n} de 5">${productArt(pg, { vista: n - 1 })}</div>`).join("")}</div>
       <div class="vx-dots vx-galdots" aria-hidden="true">${[0, 1, 2, 3, 4].map((i) => `<i class="vx-dot${i === 0 ? " is-on" : ""}"></i>`).join("")}</div></div>`);
       return el;
     },
@@ -2741,7 +2836,7 @@
     const sub = round2(compra.pedidos.reduce((s, p) => s + p.total, 0)), imp = pct(sub, compra.pasarela.impuestoPct);
     return { sub, imp, total: round2(sub + imp) };
   };
-  var thumb = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon("box", n)}</span>`;
+  var thumb = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`;
   register("M3.01", {
     render() {
       return h(page(
@@ -2764,7 +2859,7 @@
             ${cambios ? banner("info", `El precio de ${plural(cambios, "artículo", "artículos")} cambió desde que lo añadiste.`) : ""}</div>
           <p class="md-body-medium vx-muted vx-pad-h">${plural(c.lines.length, "artículo", "artículos")} en ${plural(c.grupos.length, "tienda", "tiendas")}</p>
           ${c.grupos.map((g, gi) => `<section class="vx-cartgroup" aria-label="${esc(g.t.nombre)}"><h2 class="md-title-medium">${esc(g.t.nombre)}</h2>
-            <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-cartline${l.cambioPrecio ? " vx-priced" : ""}" data-line="${l.key}">${thumb()}
+            <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-cartline${l.cambioPrecio ? " vx-priced" : ""}" data-line="${l.key}">${thumb(24, l.p)}
               <div class="vx-cartline-main"><p class="md-body-large">${esc(l.p.corto || l.p.nombre)}</p><p class="md-body-medium vx-muted vx-tab-num">${money(l.precio)} c/u</p>
                 ${l.cambioPrecio ? `<p class="vx-tag md-label-small">${icon("info", 14)}Cambió de precio</p>` : ""}
                 <div class="vx-cartline-row">${stepper(l.key, l.qty, l.p.stock)}<b class="md-title-medium vx-tab-num">${money(l.precio * l.qty)}</b></div></div>
@@ -2858,7 +2953,7 @@
         el.querySelector("#envBody").innerHTML = `<div class="vx-pad-h"><p class="md-title-small">${esc(d.nombre)}</p><p class="md-body-medium vx-muted">${esc(dirCorta(d))} ${btn("Cambiar", { kind: "text", go: "M3.03" })}</p>
         <p class="md-body-medium">Cada tienda despacha su paquete por separado.</p></div>
         ${c.grupos.map((g) => `<section class="vx-cartgroup" aria-label="${esc(g.t.nombre)}"><h2 class="md-title-medium">${esc(g.t.nombre)} <span class="md-body-medium vx-muted">· ${plural(g.units, "unidad", "unidades")}</span></h2>
-          <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-envline">${thumb(20)}<span class="md-body-medium">${esc(l.p.corto || l.p.nombre)}<br><span class="vx-muted vx-tab-num">${l.qty} × ${money(l.precio)}</span></span><b class="md-body-large vx-tab-num">${money(l.precio * l.qty)}</b></li>`).join("")}</ul>
+          <ul class="vx-list" role="list">${g.ls.map((l) => `<li class="vx-envline">${thumb(20, l.p)}<span class="md-body-medium">${esc(l.p.corto || l.p.nombre)}<br><span class="vx-muted vx-tab-num">${l.qty} × ${money(l.precio)}</span></span><b class="md-body-large vx-tab-num">${money(l.precio * l.qty)}</b></li>`).join("")}</ul>
           ${g.env.gratis ? `<p class="md-body-medium vx-env">${icon("check", 18)} Esta tienda no te cobra el envío · ${g.env.dias}</p>` : `
             <p class="md-body-medium vx-env vx-tab-num">${icon("truck", 18)} ${g.retiro ? "Retiro en la tienda · $ 0,00" : `Envío ${money(g.env.costo)} · ${g.env.km} km · ${g.env.kg} kg · ${g.env.dias} · Aproximado`}</p>
             <div class="vx-row-end">${btn("Ver ruta", { kind: "text", go: "M3.05" })}</div>
@@ -3844,7 +3939,7 @@
   // assets/js/screens/m6a.js
   var KIND = { "Falta pagar": "warning", "Pago reportado": "info", "En camino": "info", Entregado: "success", Pagado: "success", "En mediación": "info", Resuelto: "success", "En revisión": "info" };
   var tag = (estado, extra = "") => statusTag(KIND[estado] || "neutral", estado + extra);
-  var thumb2 = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon("box", n)}</span>`;
+  var thumb2 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`;
   var sec = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
   var listaPedidos = () => [...state.orders, ...pedidos.filter((c) => !state.orders.some((o) => o.id === c.id))];
   var buscarPedido = (id, t) => listaPedidos().find((o) => o.id === id && (!t || o.tienda === t)) || listaPedidos().find((o) => o.id === id) || pedidos.find((o) => o.id === "#VX-20211");
@@ -4155,7 +4250,7 @@
   var buscarPedido2 = (id) => [...S().pedidos, ...S().mas].find((o) => o.id === id) || S().pedidos[0];
   var modoLbl = () => '<p class="md-label-medium vx-muted vx-pad-h vx-modolbl">Modo Tienda</p>';
   var avisosBtn = () => iconBtn("bell", "Avisos en vivo", 'data-go="O.AVI"');
-  var thumb3 = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon("box", n)}</span>`;
+  var thumb3 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`;
   var retiroTag = () => `<span class="vx-tag md-label-small">${icon("store", 14)}Retiro en tienda</span>`;
   var cuenta = (ms) => clock(ms, { pad: true });
   register("M7.01", {
@@ -5120,7 +5215,7 @@
 
   // assets/js/screens/m8.js
   var T = () => state.tec;
-  var thumb4 = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon("box", n)}</span>`;
+  var thumb4 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`;
   var sec3 = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
   var avisosBtn2 = () => iconBtn("bell", "Avisos en vivo", 'data-go="O.AVI"');
   function quedan(ms, { min = false } = {}) {

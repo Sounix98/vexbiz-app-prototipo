@@ -72,9 +72,7 @@
 :root[data-piel] .vx-tile::after  { height: 86%; aspect-ratio: 1; }
 :root[data-piel] .vx-gallery.vx-tile::before { height: 62%; }
 :root[data-piel] .vx-gallery.vx-tile::after  { height: 92%; }
-:root[data-piel] .vx-tile > svg { filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--md-sys-color-shadow) 18%, transparent)); }
 :root[data-piel] .vx-gallery.vx-tile { background-color: transparent; color: var(--md-sys-color-on-surface); }
-:root[data-piel] .vx-gallery.vx-tile > svg { width: 96px; height: 96px; }
 :root[data-piel] .vx-pimg.vx-tile { border-radius: 0; --_end: var(--md-sys-color-surface-container-low); }  /* la tarjeta ya recorta las esquinas; la tesela se funde con su fondo */
 /* En la ficha la tesela entra con el producto (la View Transition la une con la tarjeta si el navegador la soporta). */
 :root[data-piel] .vx-tile > svg { animation: vx-pop 500ms var(--vx-ease-bounce) 80ms both; }
@@ -125,3 +123,41 @@
 :root[data-piel][data-reduce-motion] .vx-win-bs { animation: none; }
 :root[data-piel][data-reduce-motion] .vx-win .vx-resico::after { animation: none; opacity: 0; }
 :root[data-piel][data-reduce-motion] .vx-win .vx-ring circle { animation: none; stroke-dashoffset: 0; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Componentes nuevos (sin interruptor): imagen de producto y portada
+   ═══════════════════════════════════════════════════════════════════════════ */
+/* Capas de color de las ilustraciones de producto (art.js). El producto es siempre claro, también en oscuro. */
+:root {
+  --art-b: var(--vx-night-100); --art-s: var(--vx-night-92); --art-d: var(--vx-night-76);
+  --art-line: var(--vx-night-62); --art-a: var(--md-sys-color-tertiary);
+  --art-edge: color-mix(in srgb, var(--md-sys-color-on-surface) 14%, transparent);
+}
+:root[data-theme="dark"] { --art-b: var(--vx-night-92); --art-s: var(--vx-night-80); --art-d: var(--vx-night-50); }
+.art { display: block; width: 74%; max-width: 100%; height: auto; overflow: visible; }
+.art-b { fill: var(--art-b); stroke: var(--art-edge); stroke-width: 1.5; }
+.art-s { fill: var(--art-s); } .art-d { fill: var(--art-d); } .art-a { fill: var(--art-a); }
+.art-line { stroke: var(--art-line); } .art-g { fill: color-mix(in srgb, var(--md-sys-color-shadow) 16%, transparent); }
+.vx-gslide .art { width: 70%; }
+.vx-thumb-ph .art { width: 92%; }
+.vx-thumb-ph.vx-tile::before, .vx-thumb-ph.vx-tile::after { display: none; }
+.vx-thumb-ph.vx-tile { border-radius: var(--vx-r-sm); }
+
+/* Portada: texto a la izquierda, producto a la derecha, una acción por promoción. */
+.vx-hero .vx-carousel { border-radius: var(--vx-r-xl); }
+.vx-hero .vx-slide.vx-hs {
+  aspect-ratio: auto; min-height: 200px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center; justify-content: stretch; gap: 4px; padding: 20px 8px 20px 20px; text-align: left;
+}
+.vx-hs--ink { background: radial-gradient(70% 90% at 88% 52%, color-mix(in srgb, var(--md-sys-color-primary) 26%, transparent), transparent 70%), var(--vx-ink); color: var(--vx-on-ink); }
+.vx-hs--tertiary { background: radial-gradient(70% 90% at 88% 52%, color-mix(in srgb, var(--md-sys-color-surface) 45%, transparent), transparent 72%), var(--md-sys-color-tertiary-container); color: var(--md-sys-color-on-tertiary-container); }
+.vx-hs--secondary { background: radial-gradient(70% 90% at 88% 52%, color-mix(in srgb, var(--md-sys-color-surface) 45%, transparent), transparent 72%), var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+.vx-hs-copy { display: grid; justify-items: start; gap: 4px; min-width: 0; }
+.vx-hs-copy > * { margin: 0; }
+.vx-hs-eyebrow { font-size: var(--vx-fs-xs); font-weight: 600; letter-spacing: var(--vx-ls-caps); }
+.vx-hs-title { font-family: var(--font-display); font-size: 1.5rem; line-height: 1.12; font-weight: 700; letter-spacing: var(--vx-ls-display); }
+.vx-hs-sub { font-size: var(--vx-fs-sm); line-height: 1.35; }
+.vx-hs-copy .md-btn { margin-top: 12px; }
+.vx-hs-art { display: grid; place-items: center; min-width: 0; }
+.vx-hs-art .art { width: 100%; max-width: 190px; animation: vx-rise-in var(--vx-dur-sheet) var(--vx-ease-emphasized) 120ms both, vx-fade-in var(--vx-dur-fade) var(--vx-ease-fade) 120ms both; }
+.vx-hs--ink .art-g { fill: color-mix(in srgb, var(--vx-gray-black) 40%, transparent); }

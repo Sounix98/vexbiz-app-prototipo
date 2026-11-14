@@ -1,6 +1,7 @@
 // M8 · Modo Técnico: trabajos, solicitud entrante, trabajo en curso (con cambios guardados en el teléfono),
 // cerrar, firma del cliente, servicios, oficios, cobertura y horario, documentos, perfil, compras y membresía.
 import { register } from './registry.js';
+import { productArt } from '../art.js';
 import { h, icon, btn, iconBtn, topbar, stateBlock, toast, $, $$ } from '../ui.js';
 import { avatar, stars, page, field, fieldError, area, select, statusTag, row, switchHtml, wireControls, banner, radioOpt } from '../market.js';
 import { go, back } from '../router.js';
@@ -11,7 +12,7 @@ import { HOY } from '../data.js';
 import { money, num, esc, plural, date, round2 } from '../format.js';
 
 const T = () => state.tec;
-const thumb = (n = 24) => `<span class="vx-thumb-ph vx-thumb-ph--sm" aria-hidden="true">${icon('box', n)}</span>`;
+const thumb = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`; // imagen limpia: la del producto si se conoce, si no, una caja
 const sec = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
 const avisosBtn = () => iconBtn('bell', 'Avisos en vivo', 'data-go="O.AVI"');
 
