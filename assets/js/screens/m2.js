@@ -266,7 +266,7 @@ register('M2.08', {
         ${iconBtn('share', 'Compartir', 'data-toast="Enlace copiado"')}
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl" id="fav" aria-pressed="false" aria-label="Guardar en favoritos">${icon('heart')}</button>
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl vx-cartbtn" data-go="M3.01" data-kind="smart" data-cart-btn aria-label="Carrito, ${plural(cartCount(), 'artículo', 'artículos')}">${icon('cart')}<span class="md-badge md-badge--large vx-cartbadge" id="fCart"${cartCount() ? '' : ' hidden'}>${cartCount()}</span></button></header>`, `
-      <button type="button" class="vx-gallery vx-tile md-sl" ${teselaAttrs(p)} data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${productArt(p)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
+      <button type="button" class="vx-gallery vx-photo md-sl" ${teselaAttrs(p)} data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${productArt(p)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
       <div class="vx-pad-h vx-ficha">
         <p class="md-body-small vx-muted">${esc(p.categoria)}</p>
         <h1 class="md-headline-small" tabindex="-1">${esc(p.nombre)}${p.id === 'aa12' ? ' · 220V' : ''}</h1>
@@ -306,7 +306,7 @@ register('M2.09', {
   render() {
     const pg = producto(state.flow.viewing) || producto('aa12');
     const el = h(`<div class="vx-gal"><header class="vx-galhead">${iconBtn('close', 'Cerrar galería', 'data-back')}<h1 class="md-title-medium vx-tab-num" id="gCount" aria-live="polite" tabindex="-1">1 de 5</h1><span class="vx-spacer"></span></header>
-      <div class="vx-carousel vx-galcar" tabindex="0" aria-label="Fotos del producto">${[1, 2, 3, 4, 5].map((n) => `<div class="vx-slide vx-gslide vx-tile" ${teselaAttrs(pg)} role="group" aria-label="Foto ${n} de 5">${productArt(pg, { vista: n - 1 })}</div>`).join('')}</div>
+      <div class="vx-carousel vx-galcar" tabindex="0" aria-label="Fotos del producto">${[1, 2, 3, 4, 5].map((n) => `<div class="vx-slide vx-gslide vx-photo" ${teselaAttrs(pg)} role="group" aria-label="Foto ${n} de 5">${productArt(pg, { vista: n - 1 })}</div>`).join('')}</div>
       <div class="vx-dots vx-galdots" aria-hidden="true">${[0, 1, 2, 3, 4].map((i) => `<i class="vx-dot${i === 0 ? ' is-on' : ''}"></i>`).join('')}</div></div>`);
     return el;
   },

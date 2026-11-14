@@ -1926,7 +1926,7 @@
     const t = tienda(p.tienda), off = pct2(p), out = p.stock <= 0;
     return `<article class="vx-pcard"${i != null ? ` style="--i:${i}"` : ""}>
     <a class="vx-pcard-link md-sl vx-press" href="#/M2.08?id=${p.id}" data-go="M2.08?id=${p.id}" aria-label="${esc(p.nombre)}, ${money(p.precio)}">
-      <span class="vx-pimg vx-tile" ${teselaAttrs(p)} aria-hidden="true">${productArt(p)}</span>
+      <span class="vx-pimg vx-photo" ${teselaAttrs(p)} aria-hidden="true">${productArt(p)}</span>
       <span class="vx-pbody">
         ${p.marca ? `<span class="md-label-small vx-muted">${esc(p.marca)}</span>` : ""}
         <span class="md-body-medium vx-pname">${esc(p.corto || p.nombre)}</span>
@@ -2667,7 +2667,7 @@
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl" id="fav" aria-pressed="false" aria-label="Guardar en favoritos">${icon("heart")}</button>
         <button type="button" class="md-iconbtn md-iconbtn--standard md-sl vx-cartbtn" data-go="M3.01" data-kind="smart" data-cart-btn aria-label="Carrito, ${plural(cartCount(), "artículo", "artículos")}">${icon("cart")}<span class="md-badge md-badge--large vx-cartbadge" id="fCart"${cartCount() ? "" : " hidden"}>${cartCount()}</span></button></header>`,
         `
-      <button type="button" class="vx-gallery vx-tile md-sl" ${teselaAttrs(p)} data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${productArt(p)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
+      <button type="button" class="vx-gallery vx-photo md-sl" ${teselaAttrs(p)} data-go="M2.09?id=${p.id}" data-kind="fade" aria-label="Abrir la galería, 5 fotos">${productArt(p)}<span class="vx-gcount md-label-medium">1 de 5</span></button>
       <div class="vx-pad-h vx-ficha">
         <p class="md-body-small vx-muted">${esc(p.categoria)}</p>
         <h1 class="md-headline-small" tabindex="-1">${esc(p.nombre)}${p.id === "aa12" ? " · 220V" : ""}</h1>
@@ -2729,7 +2729,7 @@
     render() {
       const pg = producto(state.flow.viewing) || producto("aa12");
       const el = h(`<div class="vx-gal"><header class="vx-galhead">${iconBtn("close", "Cerrar galería", "data-back")}<h1 class="md-title-medium vx-tab-num" id="gCount" aria-live="polite" tabindex="-1">1 de 5</h1><span class="vx-spacer"></span></header>
-      <div class="vx-carousel vx-galcar" tabindex="0" aria-label="Fotos del producto">${[1, 2, 3, 4, 5].map((n) => `<div class="vx-slide vx-gslide vx-tile" ${teselaAttrs(pg)} role="group" aria-label="Foto ${n} de 5">${productArt(pg, { vista: n - 1 })}</div>`).join("")}</div>
+      <div class="vx-carousel vx-galcar" tabindex="0" aria-label="Fotos del producto">${[1, 2, 3, 4, 5].map((n) => `<div class="vx-slide vx-gslide vx-photo" ${teselaAttrs(pg)} role="group" aria-label="Foto ${n} de 5">${productArt(pg, { vista: n - 1 })}</div>`).join("")}</div>
       <div class="vx-dots vx-galdots" aria-hidden="true">${[0, 1, 2, 3, 4].map((i) => `<i class="vx-dot${i === 0 ? " is-on" : ""}"></i>`).join("")}</div></div>`);
       return el;
     },
@@ -2836,7 +2836,7 @@
     const sub = round2(compra.pedidos.reduce((s, p) => s + p.total, 0)), imp = pct(sub, compra.pasarela.impuestoPct);
     return { sub, imp, total: round2(sub + imp) };
   };
-  var thumb = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`;
+  var thumb = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-photo" aria-hidden="true">${productArt(p)}</span>`;
   register("M3.01", {
     render() {
       return h(page(
@@ -3939,7 +3939,7 @@
   // assets/js/screens/m6a.js
   var KIND = { "Falta pagar": "warning", "Pago reportado": "info", "En camino": "info", Entregado: "success", Pagado: "success", "En mediación": "info", Resuelto: "success", "En revisión": "info" };
   var tag = (estado, extra = "") => statusTag(KIND[estado] || "neutral", estado + extra);
-  var thumb2 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`;
+  var thumb2 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-photo" aria-hidden="true">${productArt(p)}</span>`;
   var sec = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
   var listaPedidos = () => [...state.orders, ...pedidos.filter((c) => !state.orders.some((o) => o.id === c.id))];
   var buscarPedido = (id, t) => listaPedidos().find((o) => o.id === id && (!t || o.tienda === t)) || listaPedidos().find((o) => o.id === id) || pedidos.find((o) => o.id === "#VX-20211");
@@ -4250,7 +4250,7 @@
   var buscarPedido2 = (id) => [...S().pedidos, ...S().mas].find((o) => o.id === id) || S().pedidos[0];
   var modoLbl = () => '<p class="md-label-medium vx-muted vx-pad-h vx-modolbl">Modo Tienda</p>';
   var avisosBtn = () => iconBtn("bell", "Avisos en vivo", 'data-go="O.AVI"');
-  var thumb3 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`;
+  var thumb3 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-photo" aria-hidden="true">${productArt(p)}</span>`;
   var retiroTag = () => `<span class="vx-tag md-label-small">${icon("store", 14)}Retiro en tienda</span>`;
   var cuenta = (ms) => clock(ms, { pad: true });
   register("M7.01", {
@@ -5215,7 +5215,7 @@
 
   // assets/js/screens/m8.js
   var T = () => state.tec;
-  var thumb4 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`;
+  var thumb4 = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-photo" aria-hidden="true">${productArt(p)}</span>`;
   var sec3 = (title) => `<h2 class="md-label-large vx-sub vx-sub--list">${title}</h2>`;
   var avisosBtn2 = () => iconBtn("bell", "Avisos en vivo", 'data-go="O.AVI"');
   function quedan(ms, { min = false } = {}) {

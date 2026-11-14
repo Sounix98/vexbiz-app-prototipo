@@ -24,7 +24,7 @@ export const porDespachar = () => S().pedidos.filter((o) => o.status === 'pagado
 export const buscarPedido = (id) => [...S().pedidos, ...S().mas].find((o) => o.id === id) || S().pedidos[0];
 export const modoLbl = () => '<p class="md-label-medium vx-muted vx-pad-h vx-modolbl">Modo Tienda</p>';
 export const avisosBtn = () => iconBtn('bell', 'Avisos en vivo', 'data-go="O.AVI"');
-const thumb = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-tile" aria-hidden="true">${productArt(p)}</span>`; // imagen limpia: la del producto si se conoce, si no, una caja
+const thumb = (n = 24, p = null) => `<span class="vx-thumb-ph vx-thumb-ph--sm vx-photo" aria-hidden="true">${productArt(p)}</span>`; // imagen limpia: la del producto si se conoce, si no, una caja
 const sec = (t) => `<h2 class="md-label-large vx-sub vx-sub--list">${t}</h2>`;
 const retiroTag = () => `<span class="vx-tag md-label-small">${icon('store', 14)}Retiro en tienda</span>`;
 export const cuenta = (ms) => clock(ms, { pad: true });
