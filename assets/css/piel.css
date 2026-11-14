@@ -166,3 +166,10 @@
 .vx-thumb-ph.vx-photo { width: 56px; height: 56px; flex: none; align-self: flex-start; aspect-ratio: 1 / 1; }
 .vx-envline .vx-thumb-ph.vx-photo, .vx-wait-line .vx-thumb-ph.vx-photo, .vx-detline .vx-thumb-ph.vx-photo { width: 44px; height: 44px; align-self: center; }
 .vx-thumb-ph .art { width: 100%; }
+
+/* Indicador del carrusel: el punto activo se estira con scaleX (solo transform) pero el radio se compensa para que siga siendo
+   una píldora y no un óvalo, y la separación reserva el sitio que ocupa al estirarse (scaleX no mueve a los vecinos). */
+.vx-dots { gap: 14px; padding: 10px 8px 6px; }
+.vx-dot { transform-origin: center; }
+.vx-dot.is-on { border-radius: 1.6px / 4px; /* 4 px de radio del punto, con el horizontal dividido por el 2,5 del estirado */ background: var(--md-sys-color-on-surface); }
+.vx-galdots .vx-dot.is-on { background: var(--md-sys-color-inverse-on-surface); }
