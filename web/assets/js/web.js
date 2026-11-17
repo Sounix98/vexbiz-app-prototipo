@@ -11,13 +11,24 @@ import { img, priceLabel } from './ui.js';
 
 const ROUTE_OF = { pedidos: 'pedidos', pedido: 'pedidos', favoritos: 'favoritos', cuenta: 'cuenta', login: 'cuenta', registro: 'cuenta', carrito: 'carrito', pago: 'carrito', categorias: 'categorias', tiendas: 'tiendas', s: 'tiendas' };
 
-const FOOTER = () => `<footer class="df" aria-label="Pie de página"><div class="df__in">
-  <div class="df__brand"><img class="brandmark--on-light" src="assets/img/logo-claro.webp" width="112" height="44" alt="VEXBIZ"><img class="brandmark--on-dark" src="assets/img/logo-oscuro.webp" width="112" height="44" alt="VEXBIZ">
-    <p>Repuestos, equipos y suministros de tiendas verificadas en Venezuela. Pago protegido hasta que recibes.</p></div>
-  <nav class="df__col" aria-label="Comprar"><b>Comprar</b><a href="#/categorias">Categorías</a><a href="#/tiendas">Tiendas</a><a href="#/n/todo">Todo el catálogo</a><a href="#/buscar">Buscar</a></nav>
-  <nav class="df__col" aria-label="Tu cuenta"><b>Tu cuenta</b><a href="#/cuenta">Mi cuenta</a><a href="#/pedidos">Mis pedidos</a><a href="#/favoritos">Favoritos</a><a href="#/carrito">Carrito</a></nav>
-  <nav class="df__col" aria-label="VEXBIZ"><b>VEXBIZ</b><a href="${CONFIG.siteUrl}/sell-on-vexbiz" target="_blank" rel="noopener">Vender en VEXBIZ</a><a href="${CONFIG.siteUrl}/technical-service" target="_blank" rel="noopener">Técnicos certificados</a><a href="${CONFIG.siteUrl}/academy" target="_blank" rel="noopener">Academia</a><a href="${CONFIG.siteUrl}/contact" target="_blank" rel="noopener">Soporte</a></nav>
-  <div class="df__legal">© 2026 VEXBIZ · Precios en dólares (USD) con IVA · Prototipo de escritorio</div>
+const PAGE_LABEL = { cuenta: 'MI CUENTA', login: 'MI CUENTA', registro: 'MI CUENTA', pedidos: 'MIS COMPRAS', pedido: 'MIS COMPRAS', favoritos: 'FAVORITOS', carrito: 'MI CARRITO', pago: 'PAGO', categorias: 'CATEGORÍAS', tiendas: 'TIENDAS' };
+const ext = (path, label) => `<a href="${CONFIG.siteUrl}${path}" target="_blank" rel="noopener">${label}</a>`;
+const FOOTER = () => `<section class="nl" aria-label="Boletín"><div class="nl__in">
+  <span class="nl__ico" aria-hidden="true"><svg class="ico"><use href="#i-mail"/></svg></span>
+  <div class="nl__t"><h2>Suscríbete a nuestro boletín</h2><p>Ofertas, cupones y novedades. Una vez por semana, sin más.</p></div>
+  <form class="nl__f" novalidate data-nl><div class="nl__row"><label class="sr" for="nl-mail">Correo electrónico</label><input id="nl-mail" type="email" inputmode="email" autocomplete="email" placeholder="tunombre@vexbiz.com"><button class="nl__go" type="submit">Suscribirme</button></div><small>Cero spam. Puedes darte de baja cuando quieras.</small></form>
+</div></section>
+<footer class="df" aria-label="Pie de página"><div class="df__in">
+  <div class="df__brand"><img src="assets/img/logo-oscuro.webp" width="112" height="44" alt="VEXBIZ">
+    <p>El marketplace de productos, repuestos y servicios técnicos. Compra con custodia Escrow en tiendas verificadas.</p>
+    <p class="df__chips"><span class="df__chip"><svg class="ico ico--xs" aria-hidden="true"><use href="#i-shield"/></svg>Custodia Escrow</span><span class="df__chip"><svg class="ico ico--xs" aria-hidden="true"><use href="#i-check-circle"/></svg>Tiendas Verificadas</span></p>
+    <p class="df__h">Redes Oficiales</p><p class="df__soc"><span>IG</span><span>FB</span><span>TT</span><span>YT</span></p></div>
+  <nav class="df__col" aria-label="Ayuda"><b>AYUDA</b>${ext('/how-to-buy', 'Cómo comprar')}${ext('/shipping', 'Envíos')}${ext('/returns', 'Devoluciones y garantías')}${ext('/contact', 'Contacto')}<a href="#/inicio">Cómo se ve VexBiz</a></nav>
+  <nav class="df__col" aria-label="Legal"><b>LEGAL</b>${ext('/terms', 'Términos y condiciones')}${ext('/privacy', 'Política de privacidad')}${ext('/legal', 'Aviso legal')}</nav>
+  <nav class="df__col" aria-label="Servicios"><b>SERVICIOS</b>${ext('/technical-service', 'Servicio técnico')}${ext('/insurance', 'Seguros')}${ext('/roadside', 'Auxilio vial')}${ext('/academy', 'Academia')}</nav>
+  <nav class="df__col" aria-label="Únete a VEXBIZ"><b>ÚNETE A VEXBIZ</b>${ext('/sell-on-vexbiz', 'Vender en VexBiz')}${ext('/technical-service', 'Trabajar como técnico')}${ext('/franchise', 'Franquicias')}${ext('/about', 'Quiénes somos')}<a href="#/categorias">Nichos</a></nav>
+  <div class="df__pay"><span class="df__h">MEDIOS DE PAGO</span><span class="df__pill">SPIDI</span><span class="df__pill">Transferencia Bancaria</span><span class="df__pill">Pago Móvil</span></div>
+  <div class="df__legal"><span>© 2026 Vexbiz Marketplace. Todos los derechos reservados.</span><span>Infraestructura Tecnológica Multipaís &amp; Multinicho</span></div>
 </div></footer>`;
 
 export function initWeb() {
@@ -26,7 +37,7 @@ export function initWeb() {
   const badge = dh.querySelector('[data-dh-badge]');
   const sync = () => { const n = cart.count(); badge.hidden = !n; badge.textContent = n > 99 ? '99+' : n; };
   subscribe((w) => { if (w === 'cart' || w === 'reset' || w === 'orders') sync(); }); sync();
-  const user = () => { const n = auth.signedIn() ? auth.firstName() : ''; dh.querySelector('[data-dh-username]').textContent = n ? 'Hola, ' + n : 'Entrar'; };
+  const user = () => { const n = auth.signedIn() ? auth.firstName() : ''; dh.querySelector('[data-dh-hello]').textContent = n ? 'Hola, ' + n : 'Inicia sesión'; dh.querySelector('[data-dh-username]').textContent = n ? 'Mi cuenta' : 'Entrar'; };
   auth.subscribe(user); user();
   const form = dh.querySelector('[data-dh-search]');
   initSearch(form);
@@ -37,6 +48,7 @@ export function initWeb() {
     dh.querySelectorAll('[data-dh-n]').forEach((a) => a.toggleAttribute('aria-current', a.dataset.dhN === niche));
     if (r.view === 'buscar') { form.q.value = r.query.q || ''; form.n.value = r.query.n || ''; form.dispatchEvent(new Event('input')); }
     else form.n.value = r.view === 'n' && r.param !== 'todo' && NAMES[r.param] ? r.param : '';
+    dh.querySelector('[data-dh-page]').textContent = PAGE_LABEL[r.view] || 'MARKETPLACE';
     const scr = document.getElementById('screen-host').firstChild;
     // carrusel con flechas para los proveedores (una sola fila)
     const rail = scr && scr.querySelector('[data-providers]');
@@ -47,7 +59,7 @@ export function initWeb() {
       wrap.addEventListener('click', (e) => { const b = e.target.closest('[data-dir]'); if (b) rail.scrollBy({ left: Number(b.dataset.dir) * rail.clientWidth * 0.84 }); });
       rail.addEventListener('scroll', upd, { passive: true }); setTimeout(upd, 300); upd();
     }
-    if (scr && !scr.querySelector(':scope > .df')) scr.insertAdjacentHTML('beforeend', FOOTER());
+    if (scr && !scr.querySelector(':scope > .df')) { scr.insertAdjacentHTML('beforeend', FOOTER()); const nl = scr.querySelector('[data-nl]'); if (nl) nl.addEventListener('submit', (e) => { e.preventDefault(); const i = nl.querySelector('input'); i.value = ''; i.placeholder = 'Listo, te escribiremos pronto'; }); }
   };
 }
 /* Buscador de la cabecera, al estilo de los marketplaces grandes (Mercado Libre, Amazon):

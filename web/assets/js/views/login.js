@@ -61,6 +61,7 @@ export const login = {
   render(_p, q) {
     if (auth.signedIn()) return topbar('Iniciar sesión') + `<div class="auth"><div class="msg msg--info">${ico('check-circle')}<span>Ya entraste como ${esc(auth.firstName())}.</span></div></div>`;
     return brandbar() + `<div class="auth"><div class="auth__card">
+        <p class="auth__welcome">Bienvenido a <img class="brandmark--on-light" src="assets/img/logo-claro.webp" width="112" height="44" alt="VEXBIZ"><img class="brandmark--on-dark" src="assets/img/logo-oscuro.webp" width="112" height="44" alt="VEXBIZ"></p>
         <div class="auth__head"><span class="auth__badge">${ico('shield')}</span><div><h1 data-step-title tabindex="-1" data-focus>Iniciar sesión</h1><p data-step-sub>Ingresa con tu email y contraseña registrados en Venezuela.</p></div></div>
         ${demoNote('login')}
         <div data-step>${stepPassword()}</div>

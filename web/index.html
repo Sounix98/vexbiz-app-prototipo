@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <link rel="stylesheet" href="assets/css/web.css">
+<link rel="stylesheet" href="assets/css/figma.css">
 <script>try{var t=localStorage.getItem('vx-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);document.querySelectorAll('meta[name=theme-color]').forEach(function(m){m.content=t==='dark'?'#1E262A':'#FFD85E';});}}catch(e){}
 /* Fuentes críticas: preload solo servida por http (en file:// el navegador lo bloquea) */
 if(location.protocol!=='file:')['host-grotesk-latin-600-normal','host-grotesk-latin-700-normal','inter-latin-400-normal'].forEach(function(f){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='anonymous';l.href='assets/fonts/'+f+'.woff2';document.head.appendChild(l);});</script>
@@ -114,14 +115,15 @@ if(location.protocol!=='file:')['host-grotesk-latin-600-normal','host-grotesk-la
         <div class="dh__sug" id="dh-sug" role="listbox" aria-label="Sugerencias de búsqueda" hidden data-dh-sug></div>
       </form>
       <nav class="dh__acts" aria-label="Tu cuenta">
-        <a class="dh__act" href="#/pedidos" data-dh-r="pedidos"><svg class="ico" aria-hidden="true"><use href="#i-box"/></svg><span>Pedidos</span></a>
-        <a class="dh__act" href="#/favoritos" data-dh-r="favoritos"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span>Favoritos</span></a>
-        <a class="dh__act" href="#/cuenta" data-dh-r="cuenta" data-dh-user><svg class="ico" aria-hidden="true"><use href="#i-user"/></svg><span data-dh-username>Mi cuenta</span></a>
-        <a class="dh__act dh__cart" href="#/carrito" data-dh-r="carrito"><svg class="ico" aria-hidden="true"><use href="#i-cart"/></svg><span>Carrito</span><b class="dh__badge" data-dh-badge hidden>0</b></a>
+        <a class="dh__acct" href="#/cuenta" data-dh-r="cuenta" data-dh-user><span class="dh__avatar"><svg class="ico" aria-hidden="true"><use href="#i-user"/></svg></span><span class="dh__acct-t"><small data-dh-hello>Inicia sesión</small><b data-dh-username>Entrar</b></span></a>
+        <a class="dh__bell" href="#/pedidos" data-dh-r="pedidos" aria-label="Avisos y pedidos"><svg class="ico" aria-hidden="true"><use href="#i-bell"/></svg><i class="dh__dot" aria-hidden="true"></i></a>
+        <a class="dh__cart2" href="#/carrito" data-dh-r="carrito"><svg class="ico" aria-hidden="true"><use href="#i-cart"/></svg><span>Carrito</span><b class="dh__badge" data-dh-badge hidden>0</b></a>
       </nav>
     </div></div>
-    <nav class="dh__nav" aria-label="Nichos"><div class="dh__in">
-      <a class="dh__nlink dh__nlink--all" href="#/categorias" data-dh-r="categorias"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-grid"/></svg>Todas las categorías</a><a class="dh__nlink" href="#/n/ref" data-dh-n="ref">Refrigeración</a><a class="dh__nlink" href="#/n/aut" data-dh-n="aut">Automotriz</a><a class="dh__nlink" href="#/n/fer" data-dh-n="fer">Ferretería</a><a class="dh__nlink" href="#/n/far" data-dh-n="far">Farmacias</a><a class="dh__nlink" href="#/n/res" data-dh-n="res">Restaurantes</a><a class="dh__nlink" href="#/n/mot" data-dh-n="mot">Motos</a><a class="dh__nlink" href="#/n/ind" data-dh-n="ind">Industrial</a><a class="dh__nlink" href="#/n/sol" data-dh-n="sol">Paneles Solares</a><a class="dh__nlink" href="#/n/gps" data-dh-n="gps">GPS Trackers</a><a class="dh__nlink" href="#/n/sup" data-dh-n="sup">Supermercados</a><a class="dh__nlink" href="#/n/tlc" data-dh-n="tlc">Telecomunicaciones</a><a class="dh__nlink" href="#/tiendas" data-dh-r="tiendas">Tiendas</a>
+    <nav class="dh__nav" aria-label="Secciones"><div class="dh__in dh__in--nav">
+      <a class="dh__nlink dh__nlink--all" href="#/categorias" data-dh-r="categorias"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-menu"/></svg>Categorías<svg class="ico ico--xs" aria-hidden="true"><use href="#i-chev-d"/></svg></a>
+      <span class="dh__page" data-dh-page>MARKETPLACE</span>
+      <span class="dh__links"><a class="dh__nlink" href="https://ve.vexbiz.com/technical-service" target="_blank" rel="noopener"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-tools"/></svg>Servicios</a><a class="dh__nlink" href="https://ve.vexbiz.com/technical-service" target="_blank" rel="noopener"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-users"/></svg>Comunidad técnica</a><a class="dh__nlink" href="https://ve.vexbiz.com/technical-service" target="_blank" rel="noopener"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-award"/></svg>Trabaja como técnico</a><a class="dh__nlink" href="https://ve.vexbiz.com/sell-on-vexbiz" target="_blank" rel="noopener"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-store"/></svg>Vende en VexBiz</a></span>
     </div></nav>
   </header>
   <main id="screen-host"><noscript><p style="padding:24px">VEXBIZ necesita JavaScript para funcionar.</p></noscript></main>
