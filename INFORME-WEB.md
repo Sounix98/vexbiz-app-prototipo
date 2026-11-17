@@ -9,9 +9,28 @@ Fuente visual: las 82 exportaciones de Figma de `web marketplace/web/` (archivo 
 | 1 · Base, portada, catálogo y compra | 13 | Hecha |
 | 2 · Acceso y Mi cuenta | 26 | Hecha |
 | 3 · Servicios y Academia | 12 | Hecha |
-| 4 · Técnico y empresa de servicio | 15 | Pendiente |
+| 4 · Técnico y empresa de servicio | 15 | Hecha |
 | 5 · Tienda | 16 | Pendiente |
 | 6 · Web móvil y pulido | 82 | Pendiente |
+
+## Fase 4 · Técnico y empresa de servicio (15 páginas)
+
+**Páginas.** Modo técnico con su menú «Mi trabajo»: bandeja con solicitudes y órdenes (07.01), ejecutar el trabajo (07.02), cerrar con firma (07.03), oficios (07.04), servicios y tarifas (07.05), cobertura y agenda (07.06), documentos (07.07), perfil profesional (07.08), compras de trabajo (07.09) y membresía (07.10). Modo empresa con su menú «Empresa de servicios»: agenda (08.01), ficha de la solicitud (08.02), catálogo (08.03), membresía (08.04) y ficha pública (08.05).
+
+**Qué funciona.** Aceptar o rechazar (con confirmación) una solicitud, con cuenta atrás de caducidad; ponerle fecha a una orden (no deja fechas pasadas), iniciarla y completar el parte. El parte se guarda campo a campo y simula estar sin señal: cuenta los cambios guardados en el teléfono y «Intentar ahora» los envía. El cierre exige qué se hizo (15 caracteres), nombre y una firma real dibujada en el recuadro (ratón, dedo o lápiz); suma mano de obra y repuestos y calcula hasta cuándo dura la garantía. Apuntarse y quitar oficios, pausar y reactivar servicios, publicar uno nuevo, guardar el radio (0 a 200 km) y el horario (valida que la hora de fin sea posterior), subir o fotografiar documentos (pasan a «En revisión») y guardar el perfil. En la empresa: indicadores, filtros, búsqueda y «retrasadas» en la agenda; la ficha de la solicitud recorre todo el ciclo (cotizar → cotizada → aceptada → en curso → terminada con garantía) con validaciones; el catálogo avisa antes de pausar un servicio con pedidos, edita el precio, reactiva y añade servicios.
+
+**Conexiones.** «Trabaja como técnico» de la cabecera y «Trabajar como técnico» del pie llevan a Mi trabajo (piden sesión). En Mi tablero, «Ver trabajos» y el menú «Trabajos» llevan a Mi trabajo e «Ir a completarlo» a Mis documentos. «Ver como cliente» del perfil abre el perfil público (04.01).
+
+**Datos.** De la app (`data3.js`, `data5.js`): solicitudes, horario, solicitudes de la empresa, catálogo, perfil y membresía de ClimaPro. Del Figma web (en `pages/tecnico.js` y `pages/empresa.js`): las 3 órdenes activas, los oficios y documentos tal como salen en la web, los servicios del técnico, las compras de trabajo, los planes Básico y Pro y la solicitud #S-2011 terminada.
+
+**Comprobado.** Las 66 páginas hechas pasan el barrido a 1440 px en claro y en oscuro (se subieron a 13 px los contadores de caracteres y a 44 px el enlace «lo que ofreces»). Ninguna página de la fase 4 se desborda a 390 px (se corrigió la rejilla del menú lateral, que en móvil crecía con su contenido; arregla también Mi cuenta). Recorrido de interacciones de todos los flujos de arriba sin errores de JavaScript. Capturas en `capturas/web-fase-4/`.
+
+**Diferencias con el Figma (para revisar).**
+1. **Ficha de la solicitud:** el Figma enseña los tres estados apilados («Estados siguientes de la misma ficha»); aquí la ficha muestra solo el estado actual con una línea de pasos, y se avanza con los botones (incluido «Simular que el cliente acepta»).
+2. **Fechas:** el Figma pone «jue 16/10» y «sáb 18/10», pero en 2026 el 16/10 es viernes; las fechas que calcula la demo se muestran sin día de la semana.
+3. **Contadores de la agenda:** el Figma dice 54 / 3 / 3 / 48; aquí se cuentan en vivo con las 4 solicitudes de la demo más las 48 terminadas.
+4. **Membresías:** las variantes «país sin membresía» y «membresía no activada» se muestran debajo del estado principal, como en el Figma; el pago no se hace en la web (soporte).
+5. **Pedido (06.05) a 390 px:** la tabla de importes se desborda; queda para la Fase 6 (web móvil).
 
 ## Fase 3 · Servicios y Academia (12 páginas)
 

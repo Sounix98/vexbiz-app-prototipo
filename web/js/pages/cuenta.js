@@ -46,7 +46,7 @@ const S = (globalThis.__vxCuenta ||= {
 
 // ── Panel lateral ───────────────────────────────────────────────────────────
 const MENUS = {
-  tablero: ['Tu cuenta', [['tablero', 'Mi tablero', 'explore'], ['cuenta', 'Mi cuenta', 'person'], ['compras', 'Mis compras', 'bag'], ['trabajos', 'Trabajos', 'wrench', '#/indice']]],
+  tablero: ['Tu cuenta', [['tablero', 'Mi tablero', 'explore'], ['cuenta', 'Mi cuenta', 'person'], ['compras', 'Mis compras', 'bag'], ['trabajos', 'Trabajos', 'wrench', '#/mi-trabajo']]],
   cuenta: ['Mi cuenta', [['cuenta', 'Mi cuenta', 'person'], ['direcciones', 'Mis direcciones', 'pin'], ['pagos', 'Mis formas de pago', 'wallet'], ['avisos', 'Avisos y alertas', 'bell'], ['seguridad', 'Seguridad y 2FA', 'lock']]],
   compras: ['Mis compras', [['compras', 'Mis compras', 'bag'], ['reclamos', 'Reclamos', 'flag'], ['garantias', 'Garantías', 'shield'], ['servicios-pedidos', 'Servicios pedidos', 'briefcase']]],
 };
@@ -73,10 +73,10 @@ const tablero = pageOf('06.01', 'MI CUENTA', 'Mi tablero', () => {
         <p class="w-muted w-sm">De tus compras de los últimos seis meses. Los cancelados no suman gasto.</p></figure>
         <figure><figcaption>En qué estado están</figcaption><div class="w-stack" aria-hidden="true"><i class="is-ok" style="--w:${(r.entregados / tot) * 100}%"></i><i class="is-way" style="--w:${(r.enCamino / tot) * 100}%"></i><i class="is-bad" style="--w:${(r.sinPagar / tot) * 100}%"></i></div>
           <ul class="w-legend"><li><i class="is-ok"></i>Entregadas<b>${r.entregados}</b></li><li><i class="is-way"></i>En camino<b>${r.enCamino}</b></li><li><i class="is-bad"></i>Sin pagar<b>${r.sinPagar}</b></li></ul></figure></div>`)}
-    ${card(`<div class="w-card2__head"><h2>${icon('wrench', 24)}Mis trabajos</h2><a class="w-link" href="#/indice">${icon('chevron', 18)}Ver trabajos</a></div>
+    ${card(`<div class="w-card2__head"><h2>${icon('wrench', 24)}Mis trabajos</h2><a class="w-link" href="#/mi-trabajo">${icon('chevron', 18)}Ver trabajos</a></div>
       ${notice('warn', 'info', '<b>Todavía no apareces en el directorio. Falta esto:</b>')}
       <ul class="w-checks">${pasos.map(([t, d, ok]) => `<li class="${ok ? 'is-ok' : ''}">${icon(ok ? 'check' : 'add', 18)}<div><b>${t}</b><span>${d}</span></div></li>`).join('')}</ul>
-      <a class="w-btn w-btn--primary" href="#/indice">${icon('chevron', 18)}Ir a completarlo</a>
+      <a class="w-btn w-btn--primary" href="#/documentos">${icon('chevron', 18)}Ir a completarlo</a>
       <a class="w-rowlink" href="#/comunidad">${icon('chat', 24)}<span><b>Comunidad técnica</b><small>Pregunta, responde y resuelve con otros técnicos de tu oficio.</small></span>${icon('chevron', 20)}</a>`)}`);
 });
 
