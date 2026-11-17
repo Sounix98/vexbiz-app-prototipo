@@ -31,9 +31,9 @@ export const PAGINAS = [
   ['07.07', 'Mis documentos', '#/documentos', 4], ['07.08', 'Mi perfil profesional', '#/perfil-profesional', 4], ['07.09', 'Compras de trabajo', '#/compras-trabajo', 4], ['07.10', 'Membresía del técnico', '#/membresia', 4],
   ['08.01', 'Agenda de servicios', '#/empresa-agenda', 4], ['08.02', 'Ficha de la solicitud', '#/solicitud?id=S-2041', 4], ['08.03', 'Catálogo de servicios', '#/empresa-catalogo', 4],
   ['08.04', 'Membresía de servicios', '#/empresa-membresia', 4], ['08.05', 'Ficha pública de servicios', '#/empresa-ficha', 4],
-  ['09.01', 'Panel de la tienda', '', 5], ['09.02', 'Ficha de un pedido', '', 5], ['09.03', 'Documentos', '', 5], ['09.04', 'Mis productos', '', 5],
-  ['09.05', 'Editar una oferta', '', 5], ['09.06', 'Datos de la tienda', '', 5], ['09.07', 'Envíos', '', 5], ['09.08', 'Cupones', '', 5],
-  ['09.09', 'Cuentas bancarias', '', 5], ['09.10', 'Liquidaciones', '', 5], ['09.11', 'Ventas', '', 5], ['09.12', 'Reseñas', '', 5],
-  ['09.13', 'Cómo se te ve', '', 5], ['09.14', 'Reclamos', '', 5], ['09.15', 'Importadora · Mis fichas', '', 5], ['09.16', 'Importadora · Editar ficha', '', 5],
+  ['09.01', 'Panel de la tienda', '#/mi-tienda', 5], ['09.02', 'Ficha de un pedido', '#/pedido-tienda?id=VX-20431', 5], ['09.03', 'Documentos', '#/tienda-documentos', 5], ['09.04', 'Mis productos', '#/mis-productos', 5],
+  ['09.05', 'Editar una oferta', '#/editar-oferta?id=p1', 5], ['09.06', 'Datos de la tienda', '#/datos-tienda', 5], ['09.07', 'Envíos', '#/envios', 5], ['09.08', 'Cupones', '#/cupones', 5],
+  ['09.09', 'Cuentas bancarias', '#/cuentas-banco', 5], ['09.10', 'Liquidaciones', '#/liquidaciones', 5], ['09.11', 'Ventas', '#/ventas', 5], ['09.12', 'Reseñas', '#/resenas', 5],
+  ['09.13', 'Cómo se te ve', '#/vitrina', 5], ['09.14', 'Reclamos', '#/tienda-reclamos', 5], ['09.15', 'Importadora · Mis fichas', '#/mis-fichas', 5], ['09.16', 'Importadora · Editar ficha', '#/editar-ficha?id=f1', 5],
 ];
 export const MODULOS = { '01': 'Portada', '02': 'Catálogo', '03': 'Compra', '04': 'Servicios', '05': 'Acceso', '06': 'Mi cuenta', '07': 'Técnico', '08': 'Empresa de servicio', '09': 'Tienda' };

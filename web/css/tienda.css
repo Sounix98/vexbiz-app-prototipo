@@ -1,0 +1,136 @@
+/* 09 · Mi tienda e Importadora. Reutiliza el panel lateral (cuenta.css) y las piezas de tecnico.css. */
+.w-bad { color: var(--vx-status-danger-fg); } .w-info { color: var(--vx-status-info-fg); } .w-text { color: var(--w-text); }
+.w-label { font-size: 15px; font-weight: 600; margin: 0 0 6px; }
+.w-eyebrow { margin: 8px 0 0; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--w-muted); }
+.w-hr { border: 0; border-top: 1px solid var(--w-line); margin: 4px 0; width: 100%; }
+.w-grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } .w-span3 { grid-column: 1 / -1; }
+.w-grid3 > .w-btn { justify-self: start; }
+.w-grid6 { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px 16px; }
+.w-c2 { grid-column: span 2; } .w-c3 { grid-column: span 3; } .w-c6 { grid-column: 1 / -1; } .w-end { justify-content: flex-end; }
+.w-grid2--top { align-items: start; }
+.w-req__bar--split { justify-content: space-between; }
+.w-req__bar--split .w-h2 { display: flex; align-items: baseline; gap: 10px; margin: 0; }
+.w-link--bad { color: var(--vx-status-danger-fg); font-size: 14px; }
+.w-narrow--lg { max-width: 920px; }
+.w-pair { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px; }
+
+/* ── 09.01 Panel ─────────────────────────────────────────────────────────── */
+.w-urgent { border-left: 6px solid var(--vx-status-danger-fg); }
+.w-urgent .w-rowinfo > svg { color: var(--vx-status-danger-fg); }
+.w-want { margin: 0; padding: 0; list-style: none; }
+.w-want li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 20px; padding: 14px 0; border-top: 1px solid var(--w-line); }
+.w-want li > div { display: grid; gap: 4px; justify-items: start; } .w-want small { font-size: 13px; color: var(--w-muted); }
+.w-want__t { display: grid; justify-items: center; margin: 0; } .w-want__t b { font-family: var(--font-display); font-size: 30px; color: var(--vx-status-danger-fg); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.w-carts { margin: 0; padding: 0; list-style: none; }
+.w-carts li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--w-line); }
+.w-carts li > span:first-child { display: grid; gap: 2px; min-width: 0; justify-items: start; } .w-carts small { font-size: 13px; color: var(--w-muted); } .w-carts small.w-bad { color: var(--vx-status-danger-fg); }
+.w-carts .w-muted { flex: none; display: inline-flex; align-items: center; gap: 4px; }
+.w-paused summary > span { display: inline-flex; align-items: center; gap: 10px; }
+.w-paused li { min-height: 44px; }
+.w-ords { margin: 0; padding: 0; list-style: none; }
+.w-ord { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 20px; padding: 14px 0; border-top: 1px solid var(--w-line); }
+.w-ord p { margin: 2px 0; }
+.w-ord__m { display: grid; justify-items: end; } .w-ord__m b { font-family: var(--font-display); font-size: 22px; } .w-ord__m small { font-size: 13px; color: var(--vx-status-info-fg); font-weight: 600; }
+
+/* ── 09.02 Pedido ────────────────────────────────────────────────────────── */
+.w-box { display: flex; gap: 12px; align-items: flex-start; }
+.w-box > span { display: grid; gap: 2px; } .w-box small { font-size: 13px; color: var(--w-muted); } .w-box > svg { flex: none; margin-top: 2px; }
+.w-items li { align-items: center; padding: 12px 0; } .w-items li > span:not(.w-items__m) { flex: 1; display: grid; }
+.w-items__m { display: grid; justify-items: end; } .w-items__m small.w-bad { color: var(--vx-status-danger-fg); }
+.w-liq { display: grid; gap: 8px; margin: 0; }
+.w-liq > div { display: flex; justify-content: space-between; gap: 16px; } .w-liq dt { color: var(--w-muted); } .w-liq dd { margin: 0; font-weight: 600; }
+.w-liq__tot { padding-top: 10px; border-top: 1px solid var(--w-line); } .w-liq__tot dd { font-size: 18px; }
+.w-netbox { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 0; padding: 14px 18px; border-radius: 14px; background: var(--vx-status-info-bg); color: var(--vx-status-info-fg); }
+.w-netbox span { display: grid; } .w-netbox small { font-size: 13px; } .w-netbox > b { font-family: var(--font-display); font-size: 26px; }
+.w-drop { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border: 2px dashed var(--w-line); border-radius: 14px; background: var(--w-soft); cursor: pointer; }
+.w-drop span { display: grid; gap: 2px; } .w-drop b { display: flex; align-items: center; gap: 8px; } .w-drop small { font-size: 13px; color: var(--w-muted); }
+.w-drop:focus-within { outline: 2px solid var(--vx-accent-text); outline-offset: 2px; }
+.w-drop.is-ok { border-style: solid; border-color: var(--vx-status-info-fg); }
+
+/* ── 09.03 Documentos y 09.04 Productos ──────────────────────────────────── */
+.w-doc__act--box { padding: 12px 16px; border: 1px dashed var(--w-line); border-radius: 14px; }
+.w-alta { border: 2px solid var(--vx-accent); }
+
+/* ── 09.05 Oferta ────────────────────────────────────────────────────────── */
+.w-prices { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.w-prices li { display: flex; align-items: center; gap: 16px; min-height: 56px; padding: 0 8px 0 16px; border-radius: 12px; background: var(--w-soft); }
+.w-prices li > span { flex: 1; } .w-prices li.is-prog { background: var(--vx-accent-soft); }
+.w-stockbig { margin: 0; color: var(--w-muted); font-size: 18px; } .w-stockbig b { font-family: var(--font-display); font-size: 48px; color: var(--w-text); margin-right: 8px; }
+.w-adj { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 14px 16px; }
+.w-movs { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.w-movs li { display: grid; grid-template-columns: 48px 100px minmax(0, 1fr); align-items: center; min-height: 36px; } .w-movs b { font-size: 17px; } .w-movs small { font-size: 13px; color: var(--w-muted); }
+
+/* ── 09.06 Datos ─────────────────────────────────────────────────────────── */
+.w-logo2 { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; } .w-logo2 > div { display: grid; gap: 8px; justify-items: start; }
+.w-logo2__box { display: grid; place-items: center; align-content: center; gap: 2px; width: 128px; height: 128px; border: 2px dashed var(--w-line); border-radius: 18px; background: var(--w-soft); color: var(--w-muted); text-align: center; }
+.w-logo2__box small { font-size: 13px; } .w-logo2__box.is-on { border: 0; background: var(--w-ink); color: var(--w-on-ink); font-family: var(--font-display); font-size: 40px; font-weight: 700; }
+.w-rif { margin: 0; font-family: var(--font-display); font-size: 26px; font-weight: 700; }
+.w-figs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.w-figs li { display: grid; gap: 6px; justify-items: start; padding: 18px; border-radius: 18px; background: var(--w-soft); } .w-figs small { font-size: 14px; color: var(--w-muted); }
+
+/* ── 09.08 Cupones ───────────────────────────────────────────────────────── */
+.w-code { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border: 1px dashed var(--vx-accent-text); border-radius: 8px; background: var(--vx-accent-soft); font-family: var(--font-display); font-weight: 700; letter-spacing: 0.04em; }
+.w-chiprow > span.w-code { padding: 4px 12px; background: var(--vx-accent-soft); font-size: 15px; color: var(--w-text); }
+.w-input--code { text-transform: uppercase; letter-spacing: 0.06em; }
+.w-cat > li > p { margin: 0; }
+
+/* ── 09.09 Cuentas y 09.10 Liquidaciones ─────────────────────────────────── */
+.w-abonos { margin: 0; padding: 0; list-style: none; }
+.w-abonos li { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--w-line); }
+.w-abonos li > span { flex: 1; display: grid; } .w-abonos small { font-size: 13px; color: var(--w-muted); } .w-abonos svg { flex: none; color: var(--vx-status-info-fg); }
+.w-abonos li.is-bad svg, .w-abonos li.is-bad small { color: var(--vx-status-danger-fg); }
+.w-cat h3 svg { flex: none; }
+.w-liqcard { padding: 0; }
+.w-liqcard summary { display: flex; align-items: center; gap: 16px; min-height: 72px; padding: 12px 24px; cursor: pointer; list-style: none; }
+.w-liqcard summary::-webkit-details-marker { display: none; }
+.w-liqcard summary > span:first-child { flex: 1; display: grid; } .w-liqcard summary small { font-size: 13px; color: var(--w-muted); }
+.w-liqcard__m { font-family: var(--font-display); font-size: 24px; }
+.w-liqcard__t { display: grid; place-items: center; width: 44px; height: 44px; transition: transform var(--vx-dur-state); transform: rotate(90deg); }
+.w-liqcard[open] .w-liqcard__t { transform: rotate(-90deg); }
+.w-liqcard > .w-notebox { margin: 0 24px 24px; display: grid; gap: 10px; }
+
+/* ── 09.11 Ventas y 09.12 Reseñas ────────────────────────────────────────── */
+.w-sales { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; } .w-sales p { margin: 0; }
+.w-sales__big { color: var(--w-muted); } .w-sales__big b { font-family: var(--font-display); font-size: 48px; color: var(--w-text); }
+.w-sales .w-liq p { margin: 0; }
+.w-hbars { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.w-hbars li { display: grid; grid-template-columns: 150px minmax(0, 1fr) 100px 80px; align-items: center; gap: 16px; }
+.w-hbars i { height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--w-ink) var(--w), var(--md-sys-color-surface-container-high) var(--w)); }
+.w-hbars i.is-now { background: linear-gradient(90deg, var(--vx-accent) var(--w), var(--md-sys-color-surface-container-high) var(--w)); }
+.w-hbars b { text-align: right; } .w-hbars small { font-size: 13px; color: var(--w-muted); }
+.w-rate { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: center; }
+.w-rate__big { display: grid; justify-items: center; gap: 6px; text-align: center; } .w-rate__big b { font-family: var(--font-display); font-size: 56px; line-height: 1; } .w-rate__big small { font-size: 14px; color: var(--w-muted); }
+.w-dist { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.w-dist li { display: grid; grid-template-columns: 40px minmax(0, 1fr) 32px; align-items: center; gap: 12px; } .w-dist span { display: inline-flex; align-items: center; gap: 4px; } .w-dist svg { color: var(--vx-accent-text); }
+.w-dist i { height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--vx-accent) var(--w), var(--md-sys-color-surface-container-high) var(--w)); }
+.w-dist b { text-align: right; font-weight: 500; }
+.w-quote { margin: 0; font-size: 17px; }
+
+/* ── 09.13 Vitrina ───────────────────────────────────────────────────────── */
+.w-tips { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.w-tips li { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 8px 6px 18px; border-radius: 14px; background: var(--w-card); }
+.w-tips li > span { flex: 1; } .w-tips svg { flex: none; }
+.w-facts2--1 { grid-template-columns: 1fr; }
+.w-notebox > svg { vertical-align: -4px; margin-right: 8px; }
+
+/* ── 09.15 y 09.16 Importadora ───────────────────────────────────────────── */
+.w-ficha { justify-content: flex-start; } .w-ficha > div { flex: 1; } .w-ficha .w-thumb svg { width: 56px; height: 56px; }
+.w-chiprow > span.w-info, .w-chiprow > span.w-muted { display: inline-flex; align-items: center; gap: 4px; padding: 0; background: none; }
+.w-rows2 { margin: 0; padding: 0; list-style: none; }
+.w-rows2 li { display: flex; align-items: center; gap: 12px; min-height: 48px; } .w-rows2 li > span { flex: 1; display: inline-flex; align-items: center; gap: 6px; } .w-rows2 small { color: var(--w-muted); font-size: 15px; }
+.w-compat { margin: 0; padding: 0; list-style: none; }
+.w-compat li { display: flex; align-items: center; gap: 12px; min-height: 60px; border-bottom: 1px solid var(--w-line); } .w-compat li > span { flex: 1; display: grid; } .w-compat small { font-size: 13px; color: var(--w-muted); }
+
+@media (max-width: 1080px) {
+  .w-want li, .w-ord { grid-template-columns: minmax(0, 1fr) auto; } .w-want .w-btnrow, .w-ord > .w-btn { grid-column: 1 / -1; justify-self: start; }
+  .w-sales, .w-rate { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .w-grid3, .w-grid6, .w-adj, .w-figs { grid-template-columns: minmax(0, 1fr); } .w-c2, .w-c3 { grid-column: 1 / -1; }
+  .w-hbars li { grid-template-columns: minmax(0, 1fr) auto; } .w-hbars i { grid-column: 1 / -1; grid-row: 2; } .w-hbars small { display: none; }
+  .w-liqcard summary { flex-wrap: wrap; } .w-ficha { flex-direction: row; flex-wrap: wrap; }
+  .w-carts li, .w-tips li, .w-compat li { flex-wrap: wrap; } .w-liq > div { flex-wrap: wrap; }
+  .w-want__t { justify-items: start; }
+}
+.w-seg legend.w-sr { float: none; width: 1px; margin: 0; }
+.w-carts li { flex-wrap: wrap; } .w-carts li > span:first-child { flex: 1 1 220px; }

@@ -142,7 +142,7 @@
 .w-card2--info, .w-card2--info h2, .w-card2--info p, .w-card2--info b { color: var(--vx-status-info-fg); }
 .w-card2--info .w-rowinfo > svg { background: none; }
 .w-h-ok { display: flex; align-items: center; gap: 10px; }
-.w-seg { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; border: 0; }
+.w-seg { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; border: 0; min-width: 0; }
 .w-seg legend { float: left; width: 100%; margin-bottom: 8px; font-size: 15px; font-weight: 600; }
 .w-seg label { position: relative; }
 .w-seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }

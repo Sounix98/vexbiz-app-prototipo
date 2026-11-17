@@ -234,7 +234,7 @@ const empresaP = pageOf('06.08', 'MI CUENTA', 'Registrar mi empresa', () => `<di
   f.addEventListener('submit', (e) => { e.preventDefault(); const rif = f.querySelector('#em-rif').value.trim(), raz = f.querySelector('#em-razon').value.trim(), hace = f.querySelectorAll('[name=hace]:checked').length, er = f.querySelector('[data-emerr]');
     const m = !/^[VEJGP]-?\d{6,9}-?\d?$/i.test(rif) ? 'Escribe la identificación fiscal como J-41234567-8.' : !raz ? 'Escribe la razón social.' : !hace ? 'Marca al menos una cosa que hace tu empresa.' : '';
     er.hidden = !m; er.innerHTML = m ? `${icon('error', 16)}${m}` : ''; if (m) return;
-    f.hidden = true; root.querySelector('[data-ok]').innerHTML = `${notice('info', 'check', `<b>${esc(raz)} está en modo preparación.</b>Ya puedes cargar tu catálogo; VexBiz revisa los documentos en hasta 72 horas hábiles.`)}<a class="w-btn w-btn--primary" href="#/indice">Ir a Mi tienda (fase 5)</a>`; });
+    f.hidden = true; root.querySelector('[data-ok]').innerHTML = `${notice('info', 'check', `<b>${esc(raz)} está en modo preparación.</b>Ya puedes cargar tu catálogo; VexBiz revisa los documentos en hasta 72 horas hábiles.`)}<a class="w-btn w-btn--primary" href="#/mi-tienda">Ir a Mi tienda</a>`; });
 });
 
 // ── 06.09 · Mis compras ─────────────────────────────────────────────────────

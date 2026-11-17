@@ -10,8 +10,36 @@ Fuente visual: las 82 exportaciones de Figma de `web marketplace/web/` (archivo 
 | 2 · Acceso y Mi cuenta | 26 | Hecha |
 | 3 · Servicios y Academia | 12 | Hecha |
 | 4 · Técnico y empresa de servicio | 15 | Hecha |
-| 5 · Tienda | 16 | Pendiente |
+| 5 · Tienda | 16 | Hecha |
 | 6 · Web móvil y pulido | 82 | Pendiente |
+
+## Fase 5 · Tienda (16 páginas)
+
+**Páginas.** Con el menú «Mi tienda» (12 apartados): panel (09.01), ficha de un pedido (09.02), documentos (09.03), mis productos (09.04), datos de la tienda (09.06), envíos (09.07), cupones (09.08), cuentas bancarias (09.09), liquidaciones (09.10), ventas (09.11), reseñas (09.12), cómo se te ve (09.13) y reclamos (09.14). Sin menú, como en el Figma: editar una oferta (09.05) y las dos de la importadora, mis fichas (09.15) y editar ficha (09.16).
+
+**Qué funciona.**
+- **Panel:** cuenta atrás real en «clientes quieren comprarte»; «Sí, la tengo», «Puedo, pero…» (propone una alternativa) y «No la tengo» (con confirmación); al acabarse el tiempo la venta pasa a otra tienda. Confirmar precio y stock de un carrito, horario desplegable y filtro de la bandeja.
+- **Pedido:** la liquidación se calcula (comisión por artículo, IVA de la comisión, envío del delivery) y da los $ 375,58 del Figma. Despachar exige la factura adjunta, el número de factura y de control con su formato y que el total facturado coincida con el del pedido.
+- **Documentos:** subir o fotografiar; «Enviar a verificación» se activa cuando no falta ningún obligatorio.
+- **Productos y oferta:** buscar, filtrar (stock bajo, pausados…), publicar una oferta nueva; en la oferta, guardar, quitar y poner precios por cantidad o programados (no deja fechas pasadas ni quedarse sin precio vigente) y anotar ajustes de inventario con signo (no deja bajar de 0).
+- **Datos:** el botón Guardar solo se activa con cambios; logo, quitar logo y añadir figura (Importadora lleva a Mis fichas, Empresa de servicios a su agenda).
+- **Envíos:** el reparto debe sumar 100 %; los preajustes rellenan los tres campos y la suma se ve en vivo (con 50 + 30 + 0 sale «80% de 100%», como en el Figma). Pausar y quitar reglas.
+- **Cupones:** el código se pone en mayúsculas, vista previa en vivo, validaciones (1–90 %, código único, descuento fijo menor que el mínimo); pausar y reactivar.
+- **Cuentas:** el número de cuenta se comprueba (20 dígitos y que empiece por el código del banco), confirmación en vivo antes de añadir, hacer principal y retirar (no deja retirar la principal).
+- **Reclamos:** aceptar una devolución, rechazarla con motivo, y responder en la mediación (no deja compartir teléfonos ni correos).
+- **Importadora:** cargar una ficha nueva, editarla (valida el dígito de control del código de barras y que la descripción no lleve precios ni contactos) y añadir o quitar compatibilidades.
+- **Cómo se te ve:** las oportunidades de mejora salen del estado de las demás páginas (documentos, stock, reglas de envío activas).
+
+**Conexiones.** «Vender en VexBiz» del pie lleva al panel de la tienda; «Ir a Mi tienda» de Datos de empresa (06.08) también. «Preparar y despachar», las reseñas y los reclamos enlazan a la ficha del pedido.
+
+**Comprobado.** Las 82 páginas pasan el barrido a 1440 px en claro y en oscuro con 0 fallos (se corrigió que los selectores segmentados, hechos con `fieldset`, no encogían por su ancho mínimo). Ninguna página de la fase 5 se desborda a 390 px. Recorrido de todos los flujos de arriba sin errores de JavaScript. Capturas en `capturas/web-fase-5/`.
+
+**Diferencias con el Figma (para revisar).**
+1. **«Te quedan» de la bandeja:** el Figma dice $ 380,88 para #VX-20431 y la ficha del mismo pedido da $ 375,58; aquí los dos usan el mismo cálculo y muestran $ 375,58.
+2. **Ficha de un pedido:** solo #VX-20431 tiene datos en el Figma; los artículos y direcciones de #VX-20425 y #VX-20398 se inventaron (marcados en el código).
+3. **Código de barras:** el de la tarjeta Midea del Figma (6909876543210) no pasa el dígito de control; se cambió a 6909876543212.
+4. **Liquidaciones pasadas:** el Figma solo desglosa el período programado; el desglose de los dos transferidos se inventó para que «Ver desglose» abra algo.
+5. **Editar en cuentas y cupones:** «Editar» una cuenta avisa que hay que retirarla y añadirla de nuevo; «Modificar» un cupón lo pausa o reactiva (el Figma no muestra su formulario).
 
 ## Fase 4 · Técnico y empresa de servicio (15 páginas)
 

@@ -12,6 +12,8 @@ import * as cuenta from './pages/cuenta.js';
 import { RUTAS_SERV } from './pages/servicios.js';
 import { RUTAS_TEC } from './pages/tecnico.js';
 import { RUTAS_EMP } from './pages/empresa.js';
+import { RUTAS_TIENDA1 } from './pages/tienda.js';
+import { RUTAS_TIENDA2 } from './pages/tienda2.js';
 
 
 const ROUTES = {
@@ -19,7 +21,7 @@ const ROUTES = {
   producto: cat.productoPage, tiendas: cat.tiendasPage, tienda: cat.tiendaPage,
   carrito: compra.carritoPage, pagar: compra.pagarPage, espera: compra.esperaPage,
   entrar: acceso.entrarPage, registro: acceso.registroPage, verificar: acceso.verificarPage, pais: acceso.paisPage, recuperar: acceso.recuperarPage, boletin: acceso.boletinPage,
-  ...cuenta.RUTAS, ...RUTAS_SERV, ...RUTAS_TEC, ...RUTAS_EMP,
+  ...cuenta.RUTAS, ...RUTAS_SERV, ...RUTAS_TEC, ...RUTAS_EMP, ...RUTAS_TIENDA1, ...RUTAS_TIENDA2,
   indice: { code: 'Índice', label: 'MARKETPLACE', title: 'Índice de páginas', render: indice },
 };
 
