@@ -10,9 +10,9 @@ Fuentes: Host Grotesk (títulos) e Inter (texto). Cárgalas desde Google Fonts o
 
 ## Web y web móvil
 
-Además de la app (raíz), el repositorio incluye dos prototipos más, listos para abrir sin compilar:
+Además de la app (raíz), el repositorio incluye:
 
-- `web/`: versión de escritorio (1440 px) del marketplace. Abrir `web/index.html`.
-- `web-movil/`: versión web móvil (PWA) con el catálogo real capturado. Abrir `web-movil/index.html`.
+- `web/`: prototipo web hecho a partir del Figma web (82 páginas, por fases; ver `PLAN-WEB.md` e `INFORME-WEB.md`). Reutiliza los datos de la app. Abrir `web/index.html` por http; el índice de páginas está en `#/indice`.
+- `web-movil/`: versión web móvil anterior (PWA v1.9.13 con catálogo real capturado). Se reemplaza por la composición móvil de `web/` en la fase 6 del plan web.
 
-Los correos de ejemplo de los formularios usan el genérico `tunombre@vexbiz.com`. Las dos carpetas son copias de trabajo de VEXBIZ WEB y VEXBIZ APP (v1.9.13); las originales no se tocaron.
+Los correos de ejemplo de los formularios usan el genérico `tunombre@vexbiz.com`.

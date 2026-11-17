@@ -1876,10 +1876,84 @@
     <path class="art-b" d="M100 40l58 28v62l-58 28-58-28V68z"/>
     <path class="art-s" d="M100 96l58-28v62l-58 28z"/>
     <path class="art-d" d="M100 40l58 28-58 28-58-28z" opacity=".35"/>
-    <rect class="art-a" x="92" y="104" width="16" height="6" rx="3" transform="rotate(-24 100 107)"/>`
+    <rect class="art-a" x="92" y="104" width="16" height="6" rx="3" transform="rotate(-24 100 107)"/>`,
+    // ── Piezas añadidas para la web (catálogo del Figma web) ──
+    // Motor ventilador: carcasa redonda con aletas y eje
+    motor: () => `${G(56)}
+    <rect class="art-d" x="44" y="94" width="20" height="8" rx="4"/>
+    <circle class="art-b" cx="108" cy="98" r="46"/>
+    <circle class="art-s" cx="108" cy="98" r="30"/>
+    <path class="art-line" d="M78 70h60M70 84h76M70 112h76M78 126h60" fill="none" stroke-width="3" stroke-linecap="round"/>
+    <circle class="art-d" cx="108" cy="98" r="11"/>
+    <path class="art-a" d="M150 64c10-8 22-6 28 2" fill="none" stroke="var(--art-a)" stroke-width="4" stroke-linecap="round"/>`,
+    // Válvula de expansión: cuerpo con dos conexiones y bulbo enrollado
+    valve: () => `${G(58)}
+    <rect class="art-s" x="40" y="96" width="44" height="14" rx="7"/><rect class="art-s" x="116" y="96" width="34" height="14" rx="7"/>
+    <rect class="art-b" x="78" y="70" width="44" height="66" rx="10"/>
+    <rect class="art-d" x="86" y="52" width="28" height="22" rx="6"/>
+    <circle class="art-line" cx="150" cy="128" r="18" fill="none" stroke-width="3"/><circle class="art-line" cx="150" cy="128" r="11" fill="none" stroke-width="3"/>
+    <rect class="art-a" x="86" y="112" width="28" height="6" rx="3"/>`,
+    // Rollo de tubería (kit de instalación)
+    coil: () => `${G(64)}
+    <ellipse class="art-d" cx="100" cy="104" rx="66" ry="44"/>
+    <ellipse class="art-b" cx="100" cy="100" rx="60" ry="38"/>
+    <ellipse class="art-d" cx="100" cy="100" rx="40" ry="23"/>
+    <ellipse class="art-s" cx="100" cy="100" rx="30" ry="16"/>
+    <path class="art-a" d="M156 86l18-10" stroke="var(--art-a)" stroke-width="6" stroke-linecap="round"/>`,
+    // Bombona de gas refrigerante
+    gas: () => `${G(44)}
+    <rect class="art-d" x="84" y="34" width="32" height="18" rx="6"/>
+    <rect class="art-b" x="64" y="48" width="72" height="108" rx="30"/>
+    <rect class="art-a" x="64" y="88" width="72" height="26"/>
+    <path class="art-s" d="M118 50a30 30 0 0 1 18 28v48a30 30 0 0 1-18 28z"/>`,
+    // Nevera de dos puertas
+    fridge: () => `${G(40)}
+    <rect class="art-b" x="68" y="30" width="64" height="128" rx="8"/>
+    <rect class="art-s" x="68" y="72" width="64" height="3"/>
+    <rect class="art-d" x="118" y="44" width="5" height="20" rx="2.5"/><rect class="art-d" x="118" y="84" width="5" height="34" rx="2.5"/>`,
+    // Aire de ventana y aire portátil
+    windowac: () => `${G(62)}
+    <rect class="art-b" x="40" y="56" width="120" height="92" rx="10"/>
+    <rect class="art-s" x="52" y="68" width="66" height="68" rx="6"/>
+    <path class="art-line" d="M58 80h54M58 92h54M58 104h54M58 116h54" fill="none" stroke-width="3" stroke-linecap="round"/>
+    <rect class="art-d" x="128" y="70" width="22" height="10" rx="3"/><circle class="art-a" cx="139" cy="98" r="5"/>`,
+    portable: () => `${G(40)}
+    <rect class="art-b" x="66" y="34" width="68" height="122" rx="14"/>
+    <rect class="art-d" x="76" y="46" width="48" height="10" rx="5"/>
+    <path class="art-line" d="M78 72h44M78 82h44M78 92h44" fill="none" stroke-width="3" stroke-linecap="round"/>
+    <circle class="art-a" cx="100" cy="122" r="5"/>`,
+    // Soporte de pared en L
+    bracket: () => `${G(56)}
+    <path class="art-b" d="M50 44h16v96h82v16H50z"/>
+    <path class="art-s" d="M66 140l70-70v14l-56 56z"/>
+    <circle class="art-d" cx="58" cy="60" r="4"/><circle class="art-d" cx="58" cy="120" r="4"/>`,
+    // Bombillo LED
+    bulb: () => `${G(34)}
+    <circle class="art-b" cx="100" cy="76" r="40"/>
+    <rect class="art-s" x="84" y="112" width="32" height="18" rx="4"/>
+    <rect class="art-d" x="86" y="130" width="28" height="22" rx="6"/>
+    <path class="art-a" d="M88 78l12 12 12-12" fill="none" stroke="var(--art-a)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`,
+    // Cinta aislante
+    tape: () => `${G(52)}
+    <circle class="art-d" cx="100" cy="100" r="52"/>
+    <circle class="art-b" cx="100" cy="100" r="26"/>
+    <path class="art-d" d="M140 132l26 20-10 8-26-18z"/>`,
+    // Bujía
+    plug: () => `${G(30)}
+    <rect class="art-b" x="88" y="30" width="24" height="46" rx="10"/>
+    <rect class="art-d" x="82" y="76" width="36" height="26" rx="4"/>
+    <rect class="art-s" x="90" y="102" width="20" height="38" rx="3"/>
+    <path class="art-line" d="M92 112h16M92 122h16M92 132h16" fill="none" stroke-width="2.5"/>
+    <rect class="art-a" x="96" y="140" width="8" height="12" rx="2"/>`,
+    // Botella de aceite
+    bottle: () => `${G(40)}
+    <rect class="art-d" x="88" y="32" width="24" height="16" rx="4"/>
+    <path class="art-b" d="M74 58l14-12h24l14 12v92a8 8 0 0 1-8 8H82a8 8 0 0 1-8-8z"/>
+    <rect class="art-a" x="74" y="92" width="52" height="34"/>`
   };
   function tipoDe(p) {
     if (!p) return { k: "caja" };
+    if (p.art && DIBUJOS[p.art]) return { k: p.art, v: p.artV };
     const cat = String(p.categoria || "");
     if (/Aires split/.test(cat)) return { k: "split" };
     if (p.id === "ctrl" || /Controles/.test(cat)) return { k: "remote" };
