@@ -360,7 +360,7 @@ const serviciosP = pageOf('06.15', 'MIS COMPRAS', 'Servicios que pedí', () => {
       <h2>${esc(s.servicio)}</h2><p class="w-chiprow">${icon(s.rating ? 'wrench' : 'store', 18)}<span>${esc(s.quien)}</span>${s.rating ? `<span class="w-stars">${icon('star', 16)}${String(s.rating).replace('.', ',')}</span>` : `<small class="w-muted">· ${esc(s.nota || 'Empresa asignará técnico en turno')}</small>`}</p>
       <div class="w-grid2 w-grid2--tight"><div class="w-box w-box--row">${icon('calendar', 20)}<span><small>Fecha programada</small>${esc(s.cuando.replace('Sáb 18/10', 'Sáb 18/10/2026').replace('02/10 ·', '02/10/2026 ·'))}</span></div><div class="w-box w-box--row">${icon('pin', 20)}<span><small>Ubicación de visita</small>${esc(s.donde)}</span></div></div>
       ${s.id === '#S-2041' ? '<div class="w-box"><small>Detalle e indicaciones</small><p>El equipo ya está comprado. La unidad exterior va en el balcón, 3er piso.</p></div>' : ''}
-      <p class="w-acc__head">${s.ok ? `<a class="w-link" href="#/garantias">${icon('shield', 18)}Garantía activa de servicio (1)</a>` : '<small class="w-muted">Sin garantía técnica adicional</small>'}<a class="w-link" href="#/indice">${icon('chevron', 18)}Explorar catálogo de servicios</a></p>`)).join('')}`);
+      <p class="w-acc__head">${s.ok ? `<a class="w-link" href="#/garantias">${icon('shield', 18)}Garantía activa de servicio (1)</a>` : '<small class="w-muted">Sin garantía técnica adicional</small>'}<a class="w-link" href="#/servicios">${icon('chevron', 18)}Explorar catálogo de servicios</a></p>`)).join('')}`);
 });
 
 // ── 06.16 a 06.20 · Aprender ────────────────────────────────────────────────
@@ -398,8 +398,8 @@ const eventosP = pageOf('06.18', 'APRENDER', 'Eventos', () => col(`<h1 class="w-
 
 const comunidadP = pageOf('06.19', 'APRENDER', 'Comunidad técnica', () => col(`<h1 class="w-title">Comunidad técnica</h1><p class="w-lede">Un foro por oficio. Pregunta, responde y resuelve con otros técnicos.</p>
   <form class="w-searchbar" role="search" data-cs><label class="w-filter">${icon('search', 22)}<span class="w-sr">Buscar una avería</span><input type="search" placeholder="Busca una avería: «nevera no enfría», «split gotea»…"></label><button class="w-btn w-btn--primary" type="submit">${icon('search', 18)}Buscar</button></form>
-  ${card(`<ul class="w-forums">${W.foros.map(([n, a, c, art]) => `<li><a href="#/indice"><span class="w-thumb">${productArt(producto(art))}</span><span><b>${esc(n)}</b><small>${esc(a)}</small></span><span class="w-muted">${c} preguntas</span>${icon('chevron', 20)}</a></li>`).join('')}</ul>`, 'w-card2--flush')}`),
-(root) => { root.querySelector('[data-cs]').addEventListener('submit', (e) => { e.preventDefault(); const q = e.target.querySelector('input').value.trim(); toast(q ? `Buscamos «${q}» en los foros: el foro público llega en la fase 3` : 'Escribe la avería que buscas'); }); });
+  ${card(`<ul class="w-forums">${W.foros.map(([n, a, c, art], i) => `<li><a href="${i ? '#/foro?id=aa' : '#/foro?id=aa'}"><span class="w-thumb">${productArt(producto(art))}</span><span><b>${esc(n)}</b><small>${esc(a)}</small></span><span class="w-muted">${c} preguntas</span>${icon('chevron', 20)}</a></li>`).join('')}</ul>`, 'w-card2--flush')}`),
+(root) => { root.querySelector('[data-cs]').addEventListener('submit', (e) => { e.preventDefault(); const q = e.target.querySelector('input').value.trim(); if (!q) { toast('Escribe la avería que buscas'); return; } location.hash = '#/foro?id=aa'; }); });
 
 const nivelP = pageOf('06.20', 'APRENDER', 'Mi nivel', () => {
   const p = S.puntos, i = W.niveles.findLastIndex(([, m]) => p >= m), [nom, min] = W.niveles[i], [sig, max] = W.niveles[i + 1] || [nom, min], pct = Math.round(((p - min) / (max - min)) * 100);

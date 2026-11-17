@@ -8,7 +8,7 @@ import { clock } from '../../../assets/js/format.js';
 // sobre un fondo de tono, hasta tener las fotografías.
 const HERO = [
   { tag: 'Climatización', titulo: 'Todo para instalar y reparar aires, en un solo lugar', sub: 'Equipos, repuestos y herramientas de tiendas verificadas, con pago protegido por custodia Escrow.', cta: 'Ver climatización', href: '#/nicho?id=clima', art: 'aa12', tono: 'ink' },
-  { tag: 'Servicio técnico', titulo: 'Técnicos certificados cerca de ti', sub: 'Instalación, mantenimiento y reparación con garantía del trabajo.', cta: 'Buscar técnicos', href: '#/indice', art: 'tal', tono: 'tertiary' },
+  { tag: 'Servicio técnico', titulo: 'Técnicos certificados cerca de ti', sub: 'Instalación, mantenimiento y reparación con garantía del trabajo.', cta: 'Buscar técnicos', href: '#/servicios', art: 'tal', tono: 'tertiary' },
   { tag: 'Repuestos', titulo: 'Compresores, capacitores y tarjetas', sub: 'De tiendas verificadas, con precio y existencias confirmados.', cta: 'Ver compresores', href: '#/categoria?id=comp', art: 'comp', tono: 'secondary' },
 ];
 
@@ -33,7 +33,7 @@ export default {
       ['Auxilio vial 24/7', 'Grúa, batería y cerrajería en carretera', 'Empresas de auxilio activas en tu ciudad, a cualquier hora.', 'Solicitar ayuda', 'car', 'secondary'],
       ['Seguros y pólizas', 'Protege tu vehículo, hogar y negocio', 'Compara aseguradoras y pide una propuesta sin compromiso.', 'Pedir propuesta', 'shield', 'neutral'],
     ].map(([eb, t, d, cta, ic, tono]) => `<article class="w-serv w-serv--${tono}"><span class="w-serv__art" aria-hidden="true">${icon(ic, 56)}</span>
-        <div class="w-serv__body"><p class="w-serv__eb">${esc(eb)}</p><h3>${esc(t)}</h3><p>${esc(d)}</p><a class="w-btn w-btn--primary" href="#/indice">${icon('chevron', 18)}${esc(cta)}</a></div></article>`).join('');
+        <div class="w-serv__body"><p class="w-serv__eb">${esc(eb)}</p><h3>${esc(t)}</h3><p>${esc(d)}</p><a class="w-btn w-btn--primary" href="${{ wrench: '#/servicios', car: '#/auxilio', shield: '#/seguros' }[ic]}">${icon('chevron', 18)}${esc(cta)}</a></div></article>`).join('');
     return `<section class="w-hero" aria-label="Destacados" data-hero>
         <div class="w-hero__stage">${hero}</div>
         <button class="w-hero__arrow w-hero__arrow--prev" type="button" data-hero-dir="-1" aria-label="Lámina anterior">${icon('back', 22)}</button>
@@ -51,7 +51,7 @@ export default {
         ${secHead('Los más vendidos', { tag: badge('TOP VENTAS', 'brand'), action: '<a class="w-link" href="#/nichos">Ver catálogo completo</a>' })}
         ${rail('vendidos', portada.vendidos.map((id, i) => productCard(producto(id), { i })).join(''))}
 
-        ${secHead('Servicios Especializados y Soluciones Técnicas', { action: '<a class="w-link" href="#/indice">Ver todas</a>' })}
+        ${secHead('Servicios Especializados y Soluciones Técnicas', { action: '<a class="w-link" href="#/servicios">Ver todas</a>' })}
         <div class="w-grid w-grid--3">${servicios}</div>
 
         ${secHead('Tiendas oficiales y distribuidores', { tag: badge('VERIFICADAS', 'info', 'check'), sub: 'Vendedores con documentos revisados y catálogo activo.', action: '<a class="w-link" href="#/tiendas">Ver más</a>' })}

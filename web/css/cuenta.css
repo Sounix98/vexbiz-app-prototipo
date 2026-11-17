@@ -103,7 +103,7 @@ select.w-input { appearance: auto; cursor: pointer; }
 .w-box--row { display: flex; gap: 12px; align-items: flex-start; } .w-box--row span { display: grid; } .w-box--row svg { flex: none; margin-top: 2px; }
 .w-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; } .w-grid2--tight { gap: 12px; }
 .w-chiprow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; }
-.w-chiprow > span:not(.w-badge):not(.w-stars) { padding: 2px 10px; border-radius: 8px; background: var(--md-sys-color-surface-container-high); font-size: 13px; font-weight: 500; }
+.w-chiprow > span:not(.w-badge):not(.w-stars):not(.w-stars5):not(.w-av):not(.w-muted) { padding: 2px 10px; border-radius: 8px; background: var(--md-sys-color-surface-container-high); font-size: 13px; font-weight: 500; }
 .w-thumb { width: 64px; height: 64px; flex: none; display: grid; place-items: center; border-radius: 12px; background: var(--w-soft); }
 .w-thumb .art { width: 100%; }
 

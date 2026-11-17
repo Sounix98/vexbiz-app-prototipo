@@ -8,10 +8,29 @@ Fuente visual: las 82 exportaciones de Figma de `web marketplace/web/` (archivo 
 |---|---|---|
 | 1 · Base, portada, catálogo y compra | 13 | Hecha |
 | 2 · Acceso y Mi cuenta | 26 | Hecha |
-| 3 · Servicios y Academia | 12 | Pendiente |
+| 3 · Servicios y Academia | 12 | Hecha |
 | 4 · Técnico y empresa de servicio | 15 | Pendiente |
 | 5 · Tienda | 16 | Pendiente |
 | 6 · Web móvil y pulido | 82 | Pendiente |
+
+## Fase 3 · Servicios y Academia (12 páginas)
+
+**Páginas.** Perfil de técnico (04.01), ficha de empresa de servicio (04.02), servicio técnico con los 9 oficios (04.03), quién presta el servicio con 6 prestadores entre empresas y técnicos (04.04), seguros (04.05), ficha de aseguradora con 4 pólizas (04.06), auxilio vial con 3 empresas (04.07), ficha de empresa de auxilio (04.08), Academia con filtro por área (04.09), portada del curso con temario desplegable y muestras gratis (04.10), foro público de aire acondicionado (04.11) y pregunta resuelta (04.12).
+
+**Conexiones.** La cabecera (Servicios, Comunidad técnica), el pie (Servicio técnico, Seguros, Auxilio vial, Academia), las tarjetas de servicios de la portada, «Buscar un técnico» de la portada del nicho, los foros de la Comunidad técnica (06.19) y «Explorar catálogo de servicios» de Servicios que pedí llevan ahora a estas páginas. «Inscribirme al curso» inscribe y después lleva a la lección (06.17); «lo marcaron útil» suma y resta.
+
+**WhatsApp.** El Figma resuelve casi todo con «Solicitar», «Pedir cotización» o «Pedir auxilio por WhatsApp». En la demo esos botones verdes avisan que se abriría el chat; no abren WhatsApp.
+
+**Datos.** De la app: oficios, prestadores (ClimaPro, Carlos Mendoza, José Rodríguez), aseguradoras, auxilio vial, cuéntales, horario y la pregunta CH05 con sus respuestas. Del Figma web (en `pages/servicios.js`): 3 oficios más, 3 prestadores más (FríoMax, Ana Lucía Pérez, Pedro Salas), las pólizas y precios de cada aseguradora, Rescate Andino, la flota y «qué hace» de Auxilio Vial Centro, los 6 cursos con sus duraciones y precios, el temario de 3 módulos, las valoraciones y las 3 preguntas del foro.
+
+**Comprobado.** Las 51 páginas hechas pasan el barrido a 1440 px (se corrigieron los nombres de aseguradoras y grúas, que eran enlaces de 26 a 33 px, y los avatares de la pregunta, que perdían contraste por una regla de las fichas). Ninguna página de la fase 3 se desborda a 390 px. Recorrido de interacciones: filtro de Academia, oficio a prestadores, inscripción al curso, útil, enlaces de la portada. Capturas en `capturas/web-fase-3/`.
+
+**Diferencias con el Figma (para revisar).**
+1. **Fotos:** las tarjetas de cursos, el curso y la banda del foro usan ilustraciones sobre fondo de tinta en lugar de fotos de técnicos; las fotos de la placa de la pregunta usan la ilustración de la tarjeta.
+2. **Cursos:** el Figma da otros valores que la app para «Carga de gas» (Básico, 1 h 50, gratis) y «Tableros» (Intermedio, 2 h 30, $ 18); se usa el Figma. Solo «Diagnóstico de equipos inverter» tiene portada en el Figma: las demás tarjetas avisan que usarían el mismo diseño.
+3. **Temario:** el Figma dice 3 módulos y 9 clases pero muestra 5; las clases 3 y 4 del módulo «Casos reales» se inventaron (marcadas en el código).
+4. **Quién presta:** el Figma muestra los prestadores de Aire acondicionado; los demás oficios enseñan la misma lista en la demo.
+5. **Foros:** solo existe el foro de aire acondicionado; los demás foros de la Comunidad llevan a él.
 
 ## Fase 2 · Acceso y Mi cuenta (26 páginas)
 

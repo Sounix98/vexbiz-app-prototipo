@@ -9,6 +9,7 @@ import * as cat from './pages/catalogo.js';
 import * as compra from './pages/compra.js';
 import * as acceso from './pages/acceso.js';
 import * as cuenta from './pages/cuenta.js';
+import { RUTAS_SERV } from './pages/servicios.js';
 
 
 const ROUTES = {
@@ -16,7 +17,7 @@ const ROUTES = {
   producto: cat.productoPage, tiendas: cat.tiendasPage, tienda: cat.tiendaPage,
   carrito: compra.carritoPage, pagar: compra.pagarPage, espera: compra.esperaPage,
   entrar: acceso.entrarPage, registro: acceso.registroPage, verificar: acceso.verificarPage, pais: acceso.paisPage, recuperar: acceso.recuperarPage, boletin: acceso.boletinPage,
-  ...cuenta.RUTAS,
+  ...cuenta.RUTAS, ...RUTAS_SERV,
   indice: { code: 'Índice', label: 'MARKETPLACE', title: 'Índice de páginas', render: indice },
 };
 

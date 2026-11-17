@@ -115,7 +115,7 @@ export const nichoPage = {
     return `<div class="w-wrap">${crumbs([['Inicio', '#/'], ['Nichos', '#/nichos'], [n.nombre]])}
       <section class="w-nichehead"><div>${badge('Categoría Oficial', 'neutral', 'check')} ${badge('Requiere instalación técnica especializada', 'info', 'users')}
         <h1 class="w-title">${esc(n.nombre)}</h1><p class="w-lede">${esc(info.texto)}</p></div>
-        <a class="w-nichehead__cta" href="#/indice"><b>¿Necesitas instalarlo?</b><span>${icon('users', 20)}Buscar un técnico</span></a></section>
+        <a class="w-nichehead__cta" href="#/prestadores?oficio=aa"><b>¿Necesitas instalarlo?</b><span>${icon('users', 20)}Buscar un técnico</span></a></section>
       <div class="w-shop">${filtrosHtml({ marca: 'Samsung', max: 500 })}
         <section aria-labelledby="w-res"><div class="w-res__head"><h2 id="w-res">Resultados filtrados</h2><span data-count></span></div>
           <div data-list></div><p class="w-empty" data-empty hidden>Ningún producto cumple estos filtros. Prueba quitando alguno.</p></section></div></div>`;

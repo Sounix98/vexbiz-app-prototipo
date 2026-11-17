@@ -1,0 +1,122 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   VEXBIZ web · Fase 3: servicios (técnicos, empresas, seguros, auxilio vial) y Academia. Tokens de ds/tokens.css.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.w-mt { margin-top: 24px; }
+.w-sub2 { margin: 28px 0 14px; font-size: 24px; }
+.w-btn--wa { width: 100%; background: var(--md-sys-color-whatsapp); color: var(--md-sys-color-on-whatsapp); border-radius: var(--vx-r-pill); min-height: 48px; }
+.w-btn--wa:hover { filter: brightness(1.06); }
+.w-btn--waline { background: var(--w-card); border: 1.5px solid var(--md-sys-color-whatsapp); color: var(--md-sys-color-whatsapp); border-radius: var(--vx-r-pill); justify-self: start; }
+.w-narrow2 > * + * { margin-top: 20px; }
+.w-card2--info { background: var(--vx-status-info-bg); }
+.w-av--sm { width: 34px; height: 34px; font-size: 13px; }
+.w-av--ink { background: var(--w-ink); color: var(--w-on-ink); }
+.w-stars5 { display: inline-flex; align-items: center; gap: 2px; }
+.w-stars5 i { display: inline-grid; color: var(--md-sys-color-outline); } .w-stars5 i.is-on { color: var(--vx-accent-text); } .w-stars5 i.is-on svg { fill: currentColor; }
+.w-stars5 b { margin-left: 6px; font-size: 14px; }
+
+/* Perfil de técnico, empresa, aseguradora y auxilio */
+.w-prof { display: flex; align-items: center; gap: 24px; padding: 32px; }
+.w-prof > div { flex: 1; display: grid; gap: 4px; } .w-prof p { margin: 0; }
+.w-prof h1 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; }
+.w-prof > .w-badge { align-self: flex-start; }
+.w-prof__ico { flex: none; width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: var(--vx-accent-soft); }
+.w-prof__ico--sm { width: 48px; height: 48px; }
+.w-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.w-facts li { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 16px; background: var(--w-card); }
+.w-facts li > svg { flex: none; } .w-facts span { display: grid; } .w-facts small { font-size: 13px; color: var(--w-muted); } .w-facts b { font-size: 17px; }
+.w-chipsline { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.w-chipsline span { padding: 6px 12px; border: 1px solid var(--md-sys-color-outline); border-radius: 8px; font-size: 15px; }
+
+/* Servicio técnico */
+.w-oficios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0 16px; padding: 0; list-style: none; }
+.w-oficios a, .w-oficios button { width: 100%; display: flex; align-items: center; gap: 16px; padding: 20px; border: 0; border-radius: 20px; background: var(--w-card); text-decoration: none; text-align: left; cursor: pointer; transition: box-shadow var(--vx-dur-state), transform var(--vx-dur-state) var(--vx-ease-standard); }
+.w-oficios a:hover, .w-oficios button:hover { box-shadow: var(--vx-shadow-2); transform: translateY(-2px); }
+.w-oficios__ico { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--vx-accent-soft); }
+.w-oficios span:nth-child(2) { flex: 1; display: grid; } .w-oficios b { font-size: 17px; } .w-oficios small { font-size: 15px; color: var(--w-muted); } .w-oficios small.w-good { color: var(--vx-status-info-fg); }
+
+/* Quién presta el servicio */
+.w-pcard { display: flex; flex-direction: column; gap: 10px; padding: 22px; text-decoration: none; transition: box-shadow var(--vx-dur-state); }
+.w-pcard:hover { box-shadow: var(--vx-shadow-2); }
+.w-pcard__head { display: flex; gap: 12px; align-items: center; } .w-pcard__head > span:last-child { display: grid; }
+.w-pcard__head b { display: flex; align-items: center; gap: 6px; font-size: 17px; } .w-pcard__head b svg { color: var(--vx-status-info-fg); } .w-pcard__head small { font-size: 13px; font-weight: 600; }
+.w-pcard__ico { flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--md-sys-color-surface-container-high); }
+.w-pcard__txt { color: var(--w-muted); font-size: 15px; }
+.w-pcard .w-muted svg { display: inline; vertical-align: -3px; }
+.w-pcard__foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+.w-help { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 24px; padding: 18px 24px; border-radius: 20px; background: var(--md-sys-color-secondary-container); }
+.w-help .w-btn--wa { width: auto; }
+.w-help--warm { background: var(--vx-accent-soft); } .w-help--warm p { margin: 4px 0 0; } .w-help--warm b { font-size: 20px; }
+
+/* Seguros y auxilio */
+.w-aseg, .w-aux { display: flex; gap: 14px; align-items: center; } .w-aseg > div, .w-aux > div { flex: 1; display: grid; }
+.w-aseg__n { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-display); font-size: 22px; font-weight: 600; } .w-aux .w-aseg__n { font-size: 17px; text-decoration: none; }
+.w-aseg div > svg { display: inline; color: var(--vx-status-info-fg); }
+.w-pol { margin: 0; padding: 0; list-style: none; }
+.w-pol li { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--w-line); } .w-pol li:last-child { border-bottom: 0; }
+.w-pol span { display: grid; } .w-pol small { font-size: 13px; color: var(--w-muted); } .w-pol li > b { white-space: nowrap; }
+.w-otros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.w-otros button { width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px; border: 0; border-radius: 14px; background: var(--w-soft); text-align: left; cursor: pointer; }
+.w-otros button > span:first-child { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--vx-accent-soft); flex: none; }
+.w-otros button > span:last-child { display: grid; } .w-otros small { font-size: 13px; }
+.w-auxhead { display: flex; align-items: center; gap: 20px; }
+.w-auxhead__ico { flex: none; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--vx-status-danger-bg); color: var(--vx-status-danger-fg); }
+.w-auxhead p { margin: 0; }
+.w-box b { display: block; } .w-box small { margin-top: 2px; }
+.w-cuent { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; } .w-cuent li { display: flex; gap: 12px; align-items: center; font-size: 17px; }
+
+/* Academia */
+.w-course { display: flex; flex-direction: column; overflow: hidden; padding: 0; border: 0; text-align: left; text-decoration: none; cursor: pointer; font: inherit; color: inherit; transition: box-shadow var(--vx-dur-state), transform var(--vx-dur-state) var(--vx-ease-standard); }
+.w-course:hover { box-shadow: var(--vx-shadow-2); transform: translateY(-2px); }
+.w-course__img { display: grid; place-items: center; height: 170px; background: radial-gradient(70% 90% at 70% 40%, color-mix(in srgb, var(--vx-accent) 28%, transparent), transparent 70%), var(--w-ink); }
+.w-course__img .art { width: 46%; }
+.w-course__body { display: grid; gap: 6px; padding: 18px 20px 20px; } .w-course__body small { font-size: 13px; font-weight: 600; } .w-course__body > b { font-size: 18px; }
+.w-course__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 4px; font-size: 13px; color: var(--w-muted); }
+.w-course__meta span { display: inline-flex; align-items: center; gap: 4px; } .w-course__meta b { margin-left: auto; font-size: 18px; color: var(--w-text); } .w-course__meta b.w-good { color: var(--vx-status-info-fg); }
+.w-chips a.w-chip { text-decoration: none; }
+.w-coursehero { background: var(--w-ink); color: var(--w-on-ink); padding: 24px 0 36px; }
+.w-coursehero .w-crumbs ol { color: var(--w-on-ink-muted); } .w-coursehero .w-crumbs [aria-current] { color: var(--w-on-ink); }
+.w-coursehero h1 { margin: 10px 0 8px; color: var(--w-on-ink); font-size: clamp(32px, 3vw, 46px); }
+.w-coursehero__lede { margin: 0 0 14px; font-weight: 600; font-size: 18px; }
+.w-coursehero__meta { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0 0 16px; padding: 0; list-style: none; font-size: 15px; }
+.w-coursehero__meta li { display: inline-flex; align-items: center; gap: 6px; } .w-coursehero__meta svg { color: var(--vx-accent); }
+.w-coursehero .w-av { background: var(--vx-accent); color: var(--vx-n-900); }
+.w-learn { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; margin: 0; padding: 0; list-style: none; }
+.w-learn li { display: flex; gap: 10px; } .w-learn svg { flex: none; color: var(--vx-status-info-fg); margin-top: 2px; }
+.w-mod { border-radius: 14px; background: var(--w-soft); }
+.w-mod + .w-mod { margin-top: 10px; }
+.w-mod summary { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 16px; cursor: pointer; list-style: none; }
+.w-mod summary::-webkit-details-marker { display: none; }
+.w-mod summary b { flex: 1; } .w-mod summary small { font-size: 13px; color: var(--w-muted); }
+.w-mod summary > svg { transition: transform var(--vx-dur-state); } .w-mod[open] summary > svg { transform: rotate(90deg); }
+.w-mod ul { margin: 0; padding: 0 16px 10px; list-style: none; }
+.w-mod li { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.w-mod li > span, .w-mod li > button { display: inline-flex; align-items: center; gap: 10px; border: 0; background: none; padding: 0; cursor: pointer; min-height: 44px; }
+.w-mod li small { margin-left: auto; font-size: 13px; color: var(--w-muted); }
+.w-reviews { margin: 0; padding: 0; list-style: none; } .w-reviews li { padding: 14px 0; border-top: 1px solid var(--w-line); } .w-reviews p { margin: 0; }
+.w-trust--white li { background: var(--w-card); } .w-trust--white li > svg { color: var(--vx-accent-text); }
+.w-buycourse { position: sticky; top: 156px; padding: 0; overflow: hidden; }
+.w-buycourse__img { display: grid; place-items: center; height: 180px; background: radial-gradient(70% 90% at 60% 40%, color-mix(in srgb, var(--vx-accent) 28%, transparent), transparent 70%), var(--w-ink); }
+.w-buycourse__img .art { width: 44%; }
+.w-buycourse > div { display: grid; gap: 10px; padding: 24px; }
+.w-buycourse p { margin: 0; } .w-buycourse__price { font-family: var(--font-display); font-size: 36px; font-weight: 700; }
+.w-incl { display: grid; gap: 10px; margin: 0 0 8px; padding: 0; list-style: none; } .w-incl li { display: flex; gap: 10px; align-items: center; }
+
+/* Foro y pregunta */
+.w-forohead { padding: 0; overflow: hidden; }
+.w-forohead__band { display: flex; justify-content: space-around; align-items: center; height: 140px; padding: 0 24px; background: radial-gradient(60% 120% at 50% 0%, color-mix(in srgb, var(--vx-accent) 30%, transparent), transparent 70%), var(--w-ink); }
+.w-forohead__band .art { width: 96px; }
+.w-forohead__body { display: grid; gap: 6px; padding: 24px 28px 28px; } .w-forohead__body p { margin: 0; }
+.w-qlist { margin: 0; padding: 0; list-style: none; }
+.w-qlist a { display: grid; gap: 4px; padding: 16px 0; border-top: 1px solid var(--w-line); text-decoration: none; }
+.w-qlist b { display: flex; align-items: center; gap: 8px; font-size: 17px; } .w-qlist b svg { color: var(--vx-status-info-fg); } .w-qlist span { color: var(--w-muted); } .w-qlist small { font-size: 13px; color: var(--w-muted); }
+.w-qlist a:hover b { text-decoration: underline; }
+.w-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; } .w-photos--2 { grid-template-columns: repeat(2, 160px); justify-content: space-around; }
+.w-photos span { display: grid; place-items: center; aspect-ratio: 1; border-radius: 12px; background: var(--w-card); }
+.w-photos .art { width: 70%; }
+.w-resolved { display: flex; align-items: center; gap: 8px; font-weight: 600; margin: 0; }
+
+@media (max-width: 1023px) {
+  .w-facts, .w-oficios, .w-otros, .w-learn, .w-photos { grid-template-columns: 1fr; }
+  .w-prof { flex-wrap: wrap; padding: 20px; } .w-help { flex-direction: column; align-items: stretch; } .w-buycourse { position: static; }
+  .w-pol li { flex-direction: column; gap: 4px; }
+}
