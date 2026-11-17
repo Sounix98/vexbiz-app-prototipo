@@ -147,7 +147,7 @@
 .w-shopcard__av { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 12px; background: var(--w-ink); color: var(--w-on-ink); font-family: var(--font-display); font-size: 22px; font-weight: 700; }
 .w-shopcard__av--empty { background: var(--md-sys-color-surface-container-high); color: var(--w-text); }
 .w-shopcard h3 { margin: 0; font-size: 18px; } .w-shopcard p { margin: 0; font-size: 14px; color: var(--w-muted); }
-.w-shopcard .w-shopcard__meta { display: flex; align-items: center; gap: 10px; margin-top: 6px; color: var(--w-text); } .w-shopcard__meta .w-link { margin-left: auto; min-height: 40px; }
+.w-shopcard .w-shopcard__meta { display: flex; align-items: center; gap: 10px; margin-top: 6px; color: var(--w-text); } .w-shopcard__meta .w-link { margin-left: auto; min-height: 44px; }
 .w-storehead { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; margin-bottom: 8px; }
 .w-storehead__logo { width: 84px; height: 84px; border-radius: 18px; display: grid; place-items: center; background: var(--md-sys-color-surface-container-high); }
 .w-storehead .w-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -166,7 +166,7 @@
 .w-line__img { width: 76px; height: 76px; display: grid; place-items: center; border-radius: 14px; background: var(--w-soft); }
 .w-line__img .art { width: 100%; }
 .w-line__main { display: grid; gap: 4px; justify-items: start; } .w-line__main h3 { margin: 0; font-size: 16px; font-family: var(--font-body); font-weight: 600; } .w-line__main p { margin: 0; }
-.w-line__spec summary { min-height: 40px; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.w-line__spec summary { min-height: 44px; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; cursor: pointer; }
 .w-line__end { display: grid; justify-items: end; gap: 2px; } .w-line__end b { font-family: var(--font-display); font-size: 20px; }
 .w-summary { position: sticky; top: 156px; display: grid; gap: 10px; padding: 28px; }
 .w-summary h2 { margin: 0; font-size: 22px; } .w-summary h3 { margin: 8px 0 0; font-size: 15px; font-family: var(--font-body); }

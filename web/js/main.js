@@ -2,25 +2,27 @@
 // Cada página es un módulo { code, label, title, render(q) → html, mount(root, q) → limpieza }.
 import { state, subscribe, addToCart, cartCount } from '../../assets/js/store.js';
 import { nichos } from './dataweb.js';
-import { icon, esc, toast, play, reduce } from './kit.js';
+import { icon, esc, toast, play, reduce, sesion } from './kit.js';
 import { PAGINAS, MODULOS } from './paginas.js';
 import inicio from './pages/inicio.js';
 import * as cat from './pages/catalogo.js';
 import * as compra from './pages/compra.js';
+import * as acceso from './pages/acceso.js';
+import * as cuenta from './pages/cuenta.js';
 
-/** Sesión de la demo: el pago la exige, así que al entrar al pago se considera iniciada (Aníbal). */
-export const sesion = { on: false };
 
 const ROUTES = {
   '': inicio, nichos: cat.nichosPage, nicho: cat.nichoPage, categoria: cat.categoriaPage, buscar: cat.buscarPage,
   producto: cat.productoPage, tiendas: cat.tiendasPage, tienda: cat.tiendaPage,
   carrito: compra.carritoPage, pagar: compra.pagarPage, espera: compra.esperaPage,
+  entrar: acceso.entrarPage, registro: acceso.registroPage, verificar: acceso.verificarPage, pais: acceso.paisPage, recuperar: acceso.recuperarPage, boletin: acceso.boletinPage,
+  ...cuenta.RUTAS,
   indice: { code: 'Índice', label: 'MARKETPLACE', title: 'Índice de páginas', render: indice },
 };
 
 const $ = (s, r = document) => r.querySelector(s);
 const host = $('#page');
-let cleanup = null;
+let cleanup = null, lastHash = null;
 
 function parse() {
   const raw = location.hash.replace(/^#\/?/, '');
@@ -32,15 +34,22 @@ function render() {
   const { path, q } = parse();
   const page = ROUTES[path] || pendiente(path);
   if (cleanup) { try { cleanup(); } catch { /* sin limpieza */ } cleanup = null; }
-  if (page.sesion) sesion.on = true;
-  host.innerHTML = page.render(q);
-  host.classList.remove('is-in'); void host.offsetWidth; host.classList.add('is-in');
+  if (page.sesion === 'login' && !sesion.on) { location.replace(`#/entrar?next=${encodeURIComponent(location.hash)}`); return; }
+  if (page.sesion === true) sesion.on = true;
+  // Cada página se pinta en un elemento nuevo: así las escuchas que agrega su mount() mueren con ella
+  // (antes se acumulaban en #page y las acciones se disparaban varias veces al volver a una página).
+  const same = location.hash === lastHash; lastHash = location.hash;
+  const view = document.createElement('div'); view.className = 'w-view'; view.innerHTML = page.render(q);
+  const y = window.scrollY;
+  host.replaceChildren(view);
+  if (!same) { host.classList.remove('is-in'); void host.offsetWidth; host.classList.add('is-in'); }
   document.title = `VEXBIZ · ${page.title || 'Marketplace'}`;
   $('[data-page-label]').textContent = page.label || 'MARKETPLACE';
   paintAccount();
-  cleanup = page.mount ? page.mount(host, q) || null : null;
+  cleanup = page.mount ? page.mount(view, q) || null : null;
+  if (same) { window.scrollTo({ top: y, behavior: 'instant' }); return; } // volver a pintar la misma página (tras una acción) no la mueve
   window.scrollTo({ top: 0, behavior: 'instant' });
-  const h1 = host.querySelector('h1'); if (h1) { h1.setAttribute('tabindex', '-1'); h1.focus({ preventScroll: true }); }
+  const h1 = view.querySelector('h1'); if (h1) { h1.setAttribute('tabindex', '-1'); h1.focus({ preventScroll: true }); }
   // la búsqueda de la cabecera refleja la consulta actual
   const f = $('[data-search]'); f.q.value = path === 'buscar' ? q.q || '' : ''; f.n.value = path === 'buscar' ? q.n || '' : '';
 }
@@ -71,7 +80,10 @@ function indice() {
 function paintAccount() {
   $('[data-hello]').textContent = sesion.on ? 'Hola, Aníbal' : 'Inicia sesión';
   $('[data-acct]').textContent = sesion.on ? 'Mi cuenta' : 'Entrar';
+  $('.w-acct').setAttribute('href', sesion.on ? '#/tablero' : '#/entrar');
+  $('.w-bell').setAttribute('href', sesion.on ? '#/avisos' : '#/entrar');
 }
+window.addEventListener('vx-sesion', paintAccount);
 function paintCart() {
   const b = $('[data-cart-badge]'), n = cartCount();
   b.hidden = !n; b.textContent = n;

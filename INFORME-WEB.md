@@ -7,11 +7,32 @@ Fuente visual: las 82 exportaciones de Figma de `web marketplace/web/` (archivo 
 | Fase | Páginas | Estado |
 |---|---|---|
 | 1 · Base, portada, catálogo y compra | 13 | Hecha |
-| 2 · Acceso y Mi cuenta | 26 | Pendiente |
+| 2 · Acceso y Mi cuenta | 26 | Hecha |
 | 3 · Servicios y Academia | 12 | Pendiente |
 | 4 · Técnico y empresa de servicio | 15 | Pendiente |
 | 5 · Tienda | 16 | Pendiente |
 | 6 · Web móvil y pulido | 82 | Pendiente |
+
+## Fase 2 · Acceso y Mi cuenta (26 páginas)
+
+**Acceso (05.01 a 05.06).** Iniciar sesión, crear cuenta, verificar el correo, unirse al país, recuperar la contraseña y confirmar el boletín. El Figma presenta cada una como un tablero con varios estados; aquí cada una es un flujo real (crear cuenta lleva a «Revisa tu correo», «Ya lo confirmé» pasa por «Confirmando…» a «Confirmado», etc.) y debajo hay una barra **«Estados de la demo»** para ver cualquier estado directamente. Validación junto al campo, reglas de contraseña del Figma (10 caracteres, una letra, un número) que se marcan al escribir, ver/ocultar contraseña y, tras dos intentos fallidos, el hueco de comprobación antirrobot. Demo: cualquier correo y contraseña entran; la contraseña «error» falla; «Entrar como Aníbal» entra en un toque.
+
+**Sesión.** Las páginas de Mi cuenta piden haber entrado: sin sesión mandan a Iniciar sesión y vuelven a la página pedida. La cabecera pasa de «Inicia sesión / Entrar» a «Hola, Aníbal / Mi cuenta», el ícono de cuenta lleva al tablero y la campana a Avisos. «Cerrar sesión» y «Cerrar todas» la apagan.
+
+**Mi cuenta (06.01 a 06.20).** Panel lateral compartido con los tres menús del Figma (Tu cuenta, Mi cuenta, Mis compras). Lo que funciona en la demo: gráfico de gasto por mes y estado de compras en el tablero; foto de perfil (elegir archivo de hasta 5 MB, quitar); cerrar todas las sesiones con confirmación; cambiar la contraseña con validación; activar la verificación en dos pasos (código de 6 dígitos, códigos de respaldo) y desactivarla; marcar avisos como leídos y filtrar «Sin leer»; añadir dirección y elegir la predeterminada; añadir, quitar y elegir la forma de pago preferida (máximo 5); registrar empresa con validación del RIF; ver el detalle de cualquier pedido (IVA 19 % incluido calculado: neto $ 32,94 + IVA $ 6,26 = $ 39,20, igual al Figma); pagar la compra del grupo ($ 457,00); calificar con estrellas, pedir devolución por unidades y abrir un reclamo; responder en el hilo de mediación; marcar la lección como vista (suma 10 puntos que se ven en Mi nivel); apuntarse y cancelar en eventos.
+
+**Datos.** De la app: usuario, resumen y gasto mensual, direcciones, pedidos y su detalle, reclamos, formas de pago, servicios pedidos, cursos, avance y materiales, puntos. Del Figma web (en `pages/cuenta.js`): las sesiones con fecha y hora, los cinco avisos, las garantías tal como las muestra, el tercer servicio pedido (#S-2050), los 8 niveles, el historial de puntos, los cinco foros, los tres eventos y los códigos de respaldo.
+
+**Corrección importante en la base.** Cada página se pinta ahora en un elemento nuevo. Antes las escuchas de `mount()` se acumulaban en `#page` y, al volver a una página, sus acciones se disparaban varias veces (un mensaje se enviaba dos veces, «Apuntarme» se anulaba solo). Afectaba también a la Fase 1 (carrito, filtros, pago). Probado: tras ir y volver varias veces, enviar un mensaje suma 1, apuntarse resta 1 plaza y la cantidad del carrito sube de 1 en 1.
+
+**Comprobado.** Las 39 páginas hechas (fases 1 y 2) pasan el barrido a 1440 px: sin errores de consola, un `h1`, texto de 13 px o más, contraste AA y zonas táctiles de 44 px (el barrido ahora exige 44; se subieron cantidades, enlaces pequeños y desplegables que medían 40). A 390 px ninguna página de la fase 2 se desborda. Recorrido automático de 15 interacciones (2FA, contraseña, direcciones, pagos, avisos, reclamos, lección, eventos, postventa, pago del grupo, registro, cerrar sesión y bloqueo sin sesión) con el resultado esperado. Capturas en `capturas/web-fase-2/`.
+
+**Diferencias con el Figma (para revisar).**
+1. **Mi nivel:** el Figma dice 62 % de avance con 1.240 puntos; con los umbrales del propio Figma (Técnico Avanzado 1.000, Especialista 1.700) el avance dentro del nivel es 34 %, que es lo que se muestra. «Te faltan 460» coincide.
+2. **Garantías:** en la app el capacitor venció el 02/09/2026; en el Figma «vence mañana» (17/10/2026). Se usa el Figma. Las dos garantías expiradas no tienen nombre en el Figma: se inventaron (marcadas en el código).
+3. **Reclamo #R-0091:** el Figma lo atribuye a Frío Total; los datos de la app dicen Herramientas Andina. Se usa el dato.
+4. **Tablero:** la tarjeta «Mis trabajos» y «Ir a completarlo» llevan al índice hasta la fase 4 (Técnico).
+5. **Pantallas que el Figma deja en un estado** (Avisos página 1, paginación de compras) muestran la paginación sin páginas siguientes.
 
 ## Fase 1
 

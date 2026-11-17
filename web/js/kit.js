@@ -7,6 +7,8 @@ import { tienda, tiendasDe, desdeDe } from './dataweb.js';
 
 export { icon, money, bsRef, esc, num, productArt };
 export const TASA_DIA = '15/10';
+/** Sesión de la demo (Aníbal). Las páginas de cuenta y el pago la exigen; «Cerrar sesión» la apaga. */
+export const sesion = { on: false };
 
 /** Disponibilidad en tres niveles: texto + punto, nunca solo color. */
 export function stockInfo(n) {

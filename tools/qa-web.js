@@ -18,8 +18,8 @@ window.qaWeb = async function qaWeb({ theme = 'light' } = {}) {
     const leaves = [...host.querySelectorAll('*')].filter((e) => e.children.length === 0 && e.textContent.trim() && vis(e));
     const small = leaves.filter((e) => parseFloat(getComputedStyle(e).fontSize) < 13);
     if (small.length) prob.push('texto<13px: ' + small.slice(0, 2).map((e) => e.textContent.trim().slice(0, 20)).join('|'));
-    const tiny = [...host.querySelectorAll('button,a[href],input:not([type=hidden]):not([type=checkbox]):not([type=radio]),select,summary')].filter((e) => { const r = e.getBoundingClientRect(); return vis(e) && (r.height < 39.5) && !e.closest('.w-crumbs,label'); });
-    if (tiny.length) prob.push('target<40: ' + tiny.slice(0, 3).map((e) => `${(e.getAttribute('aria-label') || e.textContent.trim()).slice(0, 22)} ${Math.round(e.getBoundingClientRect().width)}x${Math.round(e.getBoundingClientRect().height)}`).join('|'));
+    const tiny = [...host.querySelectorAll('button,a[href],input:not([type=hidden]):not([type=checkbox]):not([type=radio]),select,summary')].filter((e) => { const r = e.getBoundingClientRect(); return vis(e) && (r.height < 43.5) && !e.closest('.w-crumbs,label'); });
+    if (tiny.length) prob.push('target<44: ' + tiny.slice(0, 3).map((e) => `${(e.getAttribute('aria-label') || e.textContent.trim()).slice(0, 22)} ${Math.round(e.getBoundingClientRect().width)}x${Math.round(e.getBoundingClientRect().height)}`).join('|'));
     if (host.querySelectorAll('h1').length !== 1) prob.push('h1=' + host.querySelectorAll('h1').length);
     const low = [];
     for (const e of leaves.slice(0, 160)) {
