@@ -23,6 +23,8 @@ const totales = () => {
 // ── 03.01 · Carrito ─────────────────────────────────────────────────────────
 export const carritoPage = {
   code: '03.01', label: 'MARKETPLACE', title: 'Tu carrito',
+  /** Barra fija de la web móvil: seguir con la compra sin bajar hasta el resumen. */
+  barra() { return cartLines().length ? `<div class="w-mbar__in"><a class="w-btn w-btn--primary w-btn--block" href="#/pagar?paso=1">${icon('lock', 18)}Continuar compra · ${money(cartSubtotal())}</a></div>` : ''; },
   render() {
     return `<div class="w-wrap">${crumbs([['Inicio', '#/'], ['Carrito de compras']])}<div data-cart></div>
       <div class="w-sechead"><div><h2>Productos relacionados</h2></div></div>

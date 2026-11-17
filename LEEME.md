@@ -13,6 +13,6 @@ Fuentes: Host Grotesk (títulos) e Inter (texto). Cárgalas desde Google Fonts o
 Además de la app (raíz), el repositorio incluye:
 
 - `web/`: prototipo web hecho a partir del Figma web (82 páginas, por fases; ver `PLAN-WEB.md` e `INFORME-WEB.md`). Reutiliza los datos de la app. Abrir `web/index.html` por http; el índice de páginas está en `#/indice`.
-- `web-movil/`: versión web móvil anterior (PWA v1.9.13 con catálogo real capturado). Se reemplaza por la composición móvil de `web/` en la fase 6 del plan web.
+- `web-movil/`: visor de la web móvil. Enseña `web/` dentro de un marco de teléfono de 390 px con accesos a las 8 pantallas del Figma móvil; en un teléfono abre la web directamente. La PWA anterior (v1.9.13) se retiró en la fase 6 y queda en el historial de git.
 
 Los correos de ejemplo de los formularios usan el genérico `tunombre@vexbiz.com`.

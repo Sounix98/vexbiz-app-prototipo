@@ -11,7 +11,7 @@
 .w-num { display: inline-grid; place-items: center; min-width: 30px; height: 30px; margin-left: 6px; padding: 0 8px; border-radius: var(--vx-r-pill); background: var(--vx-accent-soft); color: var(--w-text); font-size: 15px; vertical-align: 3px; }
 .w-h2 { margin: 8px 0 0; font-size: 24px; } .w-h2--sm { font-size: 17px; color: var(--w-muted); font-family: var(--font-body); font-weight: 600; }
 .w-spread { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0; }
-.w-narrow { max-width: 880px; display: grid; gap: 20px; align-content: start; }
+.w-col { max-width: 880px; display: grid; gap: 20px; align-content: start; }
 
 /* ── 07.01 Bandeja ───────────────────────────────────────────────────────── */
 .w-jobs { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
@@ -132,9 +132,9 @@
 
 /* ── 08.02 Ficha de la solicitud ─────────────────────────────────────────── */
 .w-req__id { font-family: var(--font-display); font-size: 28px; font-weight: 700; }
-.w-steps { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; counter-reset: paso; }
-.w-steps li { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: var(--vx-r-pill); background: var(--w-soft); color: var(--w-muted); font-size: 13px; font-weight: 600; }
-.w-steps li.is-done { color: var(--w-text); } .w-steps li.is-now { background: var(--vx-accent); color: var(--w-ink); }
+.w-ladder { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; counter-reset: paso; }
+.w-ladder li { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: var(--vx-r-pill); background: var(--w-soft); color: var(--w-muted); font-size: 13px; font-weight: 600; }
+.w-ladder li.is-done { color: var(--w-text); } .w-ladder li.is-now { background: var(--vx-accent); color: var(--w-ink); }
 .w-dl3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; }
 .w-dl3 dt { font-size: 13px; color: var(--w-muted); } .w-dl3 dd { margin: 2px 0 0; }
 .w-notebox { padding: 12px 16px; border-radius: 12px; background: var(--w-soft); } .w-notebox small { color: var(--w-muted); font-size: 13px; } .w-notebox p { margin: 2px 0 0; }

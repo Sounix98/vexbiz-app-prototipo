@@ -132,13 +132,14 @@ function buscar(q) {
   const enNicho = (p) => !n || fold(p.categoria).startsWith(fold(n.nombre).split(' ')[0]);
   let ps = productos.filter((p) => enNicho(p) && words.every((w) => fold(`${p.nombre} ${p.marca || ''} ${p.categoria}`).includes(w)));
   if (!ps.length && words.length) ps = productos.filter((p) => enNicho(p) && words.some((w) => w.length > 3 && fold(p.nombre).includes(w))); // sugiere por palabra suelta
+  if (q.orden === 'ofertas') ps = ps.filter((p) => p.antes > p.precio); // pestaña Ofertas de la web móvil
   return { term, n, ps };
 }
 export const buscarPage = {
   code: '02.04', label: 'MARKETPLACE', title: 'Búsqueda',
   render(q) {
     const { term, n, ps } = buscar(q);
-    const titulo = term ? `Resultados para «${esc(term)}»${n ? ` en ${esc(n.nombre)}` : ''}` : n ? esc(n.nombre) : 'Todo el catálogo';
+    const titulo = q.orden === 'ofertas' && !term ? 'Ofertas' : term ? `Resultados para «${esc(term)}»${n ? ` en ${esc(n.nombre)}` : ''}` : n ? esc(n.nombre) : 'Todo el catálogo';
     const tambien = ['cap', 'txv', 'ctrl'].map(producto);
     if (!ps.length) return `<div class="w-wrap"><h1 class="w-title w-title--md">${titulo}</h1>
       <div class="w-panel w-empty-card"><h2>No encontramos «${esc(term)}»</h2><p>Revisa cómo está escrito o busca con menos palabras. También puedes explorar por nicho.</p><a class="w-btn w-btn--primary" href="#/nichos">Explorar nichos</a></div></div>`;
@@ -162,6 +163,8 @@ export const buscarPage = {
 // ── 02.05 · Ficha de producto ───────────────────────────────────────────────
 export const productoPage = {
   code: '02.05', label: 'MARKETPLACE', title: 'Ficha de producto',
+  /** Barra fija de la web móvil: precio y «Añadir» siempre a mano. */
+  barra(q) { const p = producto(q.id) || producto('aa12'), t = tienda(p.tienda); return `<div class="w-mbar__in"><span><b>${money(p.precio)}</b><small>${bsRef(p.precio, TASA_DIA)} · ${esc(t?.nombre || '')}</small></span><button class="w-btn w-btn--primary" type="button" data-add="${p.id}" data-qty="1"${p.stock <= 0 ? ' disabled' : ''}>${icon('cart', 20)}Añadir</button></div>`; },
   render(q) {
     const p = producto(q.id) || producto('aa12'), t = tienda(p.tienda), ft = fichaTecnica[p.id], off = pctOff(p);
     const otras = (ofertas[p.id] || []).filter((o) => !o.actual);

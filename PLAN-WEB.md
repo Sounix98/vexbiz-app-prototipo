@@ -8,7 +8,7 @@ La web reutiliza los datos y la lógica del prototipo de la app (`assets/js/data
 
 - **Carpeta `web/`:** prototipo web nuevo con router propio por código de Figma (`01.01` a `09.16`) y páginas en `web/js/pages/`. Importa los módulos de datos de la app desde `../assets/js/`, sin copiarlos.
 - **Estilos:** tokens de `ds/tokens.css`, más la capa de cabecera, boletín y pie ya hecha a partir del Figma (`figma.css`), más una hoja de páginas web.
-- **Web móvil:** el mismo código, que por debajo de 1024 px pasa a una columna con cabecera compacta. `web-movil/` abre esa vista. No hay exportaciones de Figma móviles, así que se adapta la composición de escritorio.
+- **Web móvil:** el mismo código, que por debajo de 1024 px pasa a una columna con cabecera compacta. `web-movil/` abre esa vista. El Figma trae 8 exportaciones móviles (portada, nicho, ficha, carrito, checkout, iniciar sesión, mis compras y panel de la tienda): de ellas salen la cabecera compacta, la barra inferior, el menú lateral desplegable, el pie en acordeón y las barras de acción fijas, que se aplican a las 82 páginas.
 - **La web v1.9.13 con catálogo real** queda en el historial de git y en la carpeta original VEXBIZ WEB. Se reemplaza en `web/` cuando la Fase 1 esté lista.
 - **Imágenes:** las fotos de producto usan las ilustraciones de `art.js`. Las fotos de héroe y de servicios (técnico, grúa, taller, aula) quedan como bloques con tono hasta tener las imágenes.
 

@@ -131,7 +131,7 @@ const reclamos = pageT('09.14', 'Reclamos', () => panelT('tienda-reclamos', `${h
 
 // ── 09.15 · Importadora · Mis fichas ────────────────────────────────────────
 const IMP = 'IMPORTADORA';
-const fichas = pageT('09.15', 'Importadora · Mis fichas', () => `<div class="w-wrap w-narrow w-narrow--lg"><div><h1 class="w-title">Mis fichas</h1><p class="w-lede">Las tiendas del país publican sus ofertas sobre estas fichas: tú pones el producto, ellas el precio y el stock.</p></div>
+const fichas = pageT('09.15', 'Importadora · Mis fichas', () => `<div class="w-wrap w-col w-col--lg"><div><h1 class="w-title">Mis fichas</h1><p class="w-lede">Las tiendas del país publican sus ofertas sobre estas fichas: tú pones el producto, ellas el precio y el stock.</p></div>
   <div class="w-req__bar w-req__bar--split"><p class="w-chiprow">${icon('store', 20)}<span>${S.fichas.filter((f) => f.tiendas).length} de ${S.fichas.length} en esta página están en uso por alguna tienda</span></p>${pager()}</div>
   <ul class="w-reqs">${S.fichas.map((f) => `<li class="w-panel w-req w-ficha"><span class="w-thumb">${productArt({ art: f.art, nombre: f.t })}</span><div><h3>${esc(f.t)} ${f.abierta ? '' : badge('Oculta', 'neutral', 'eye')}</h3><p class="w-muted">${esc(f.marca)} · ${esc(f.modelo)} · ${esc(f.cat)}</p><p class="w-chiprow w-sm"><span class="${f.tiendas ? 'w-info' : 'w-muted'}">${icon('store', 16)}${f.tiendas ? `La ${f.tiendas === 1 ? 'usa 1 tienda' : `usan ${f.tiendas} tiendas`}` : 'Ninguna tienda la usa'}</span>${f.gtin ? `<span class="w-muted">${icon('list', 16)}${f.gtin}</span>` : ''}${f.ncompat ? `<span class="w-muted">${icon('share', 16)}${f.ncompat} compatibilidades</span>` : ''}</p></div><a class="w-btn w-btn--text" href="#/editar-ficha?id=${f.id}">${icon('chevron', 18)}Abrir</a></li>`).join('')}</ul>
   <button class="w-btn w-btn--primary" type="button" data-nueva>${icon('add', 18)}Cargar una ficha nueva</button>
@@ -141,7 +141,7 @@ const fichas = pageT('09.15', 'Importadora · Mis fichas', () => `<div class="w-
 // ── 09.16 · Importadora · Editar ficha ──────────────────────────────────────
 const TIPOS = ['Split pared', 'Split piso techo', 'Ventana', 'Portátil', 'Central', 'Nevera', 'Cava'];
 const editarFicha = pageT('09.16', 'Importadora · Editar ficha', (q) => { const f = S.fichas.find((x) => x.id === q.id) || S.fichas[0];
-  return `<div class="w-wrap w-narrow"><a class="w-link" href="#/mis-fichas">${icon('close', 18)}Volver a mis fichas</a><h1 class="w-title w-title--md">${esc(f.t)}</h1>
+  return `<div class="w-wrap w-col"><a class="w-link" href="#/mis-fichas">${icon('close', 18)}Volver a mis fichas</a><h1 class="w-title w-title--md">${esc(f.t)}</h1>
   ${f.tiendas ? notice('warn', 'store', `Esta ficha la ${f.tiendas === 1 ? 'usa 1 tienda' : `usan ${f.tiendas} tiendas`}. Lo que cambies aquí lo verán en su catálogo.`) : notice('neutral', 'info', 'Ninguna tienda usa esta ficha todavía.')}
   ${card(`<form class="w-grid2" novalidate data-ficha><div class="w-field w-span2"><label for="ef-n">Nombre del artículo</label><input class="w-input" id="ef-n" value="${esc(f.t === 'Ficha nueva' ? '' : f.t)}" maxlength="90"><small class="w-muted">Tal como lo buscaría un técnico: tipo, capacidad y gas.</small></div>
     <div class="w-field"><label for="ef-m">Marca</label><input class="w-input" id="ef-m" value="${esc(f.marca)}"></div><div class="w-field"><label for="ef-o">Modelo</label><input class="w-input" id="ef-o" value="${esc(f.modelo)}"></div>

@@ -1,0 +1,107 @@
+/* Web móvil (Fase 6). La misma web, por debajo de 1024 px, toma la composición de las exportaciones móviles del Figma:
+   cabecera compacta, barra inferior de 5 pestañas, hoja «Más», menú lateral desplegable, pie en acordeón y barras de acción fijas. */
+
+/* ── Escritorio: las piezas móviles no se ven; el pie se ve como siempre ─── */
+.w-mloc, .w-tabbar, .w-mbar, .w-search__cam, .w-side__m { display: none; }
+.w-sheet[hidden], .w-mbar[hidden] { display: none; }
+.w-foot__tog { display: block; width: auto; padding: 0; border: 0; background: none; font: inherit; font-size: 13px; text-align: left; cursor: default; }
+.w-foot__tog svg { display: none; }
+.w-foot__links { display: flex; flex-direction: column; gap: 4px; }
+.w-foot nav .w-foot__tog { margin-bottom: 8px; }
+.w-acct__av[data-ini]:not([data-ini=""]) svg { display: none; }
+.w-acct__av[data-ini]:not([data-ini=""])::after { content: attr(data-ini); font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+
+/* ── Hoja «Más» (también sirve en escritorio si se abre) ─────────────────── */
+.w-sheet { position: fixed; inset: 0; z-index: 70; display: flex; align-items: flex-end; background: rgb(0 0 0 / 0.45); }
+.w-sheet__sheet { width: 100%; max-height: 82vh; overflow: auto; display: grid; padding: 12px 16px calc(20px + env(safe-area-inset-bottom)); border-radius: 24px 24px 0 0; background: var(--w-card); animation: vx-rise-in var(--vx-dur-enter, 0.3s) var(--vx-ease-emphasized, ease-out); }
+.w-sheet__t { display: flex; justify-content: space-between; align-items: center; margin: 0 0 4px; font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+.w-sheet__sheet > a, .w-sheet__theme { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 4px; border: 0; border-bottom: 1px solid var(--w-line); background: none; color: var(--w-text); font: inherit; font-size: 16px; font-weight: 500; text-decoration: none; text-align: left; cursor: pointer; }
+.w-sheet__theme { border-bottom: 0; }
+body.is-locked { overflow: hidden; }
+
+@media (max-width: 1023px) {
+  /* Cabecera compacta: avatar, logo, avisos y carrito; buscador a lo ancho con cámara; «Enviar a…» debajo */
+  .w-head { position: relative; }
+  .w-head__row--top .w-in { gap: 10px 12px; padding-block: 10px 12px; }
+  .w-acct { order: -1; margin: 0; padding: 0; min-width: 44px; justify-content: center; }
+  .w-acct__av { width: 36px; height: 36px; }
+  .w-logo { font-size: 26px; }
+  .w-bell { margin-left: auto; }
+  .w-bell, .w-cart { min-width: 44px; justify-content: center; padding: 0; }
+  .w-search { height: 48px; }
+  .w-scope, .w-search__go { display: none; }
+  .w-search input { border-radius: 12px 0 0 12px; padding-left: 16px; }
+  .w-search__cam { flex: none; display: grid; place-items: center; width: 48px; margin: 4px; border: 0; border-radius: 10px; background: var(--vx-accent); color: var(--vx-n-900); cursor: pointer; }
+  .w-head__row--nav { display: none; }
+  .w-mloc { display: flex; align-items: center; gap: 6px; width: 100%; min-height: 44px; padding: 0 var(--w-gut) 6px; border: 0; background: none; color: var(--w-on-ink-muted); font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+  .w-mloc b { color: var(--w-on-ink); font-weight: 600; } .w-mloc svg:first-child { color: var(--vx-accent); }
+
+  /* Barra inferior de 5 pestañas */
+  body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
+  body.has-mbar { padding-bottom: calc(144px + env(safe-area-inset-bottom)); }
+  .w-tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); border-top: 1px solid var(--w-line); background: var(--w-card); }
+  .w-tabbar a, .w-tabbar button { display: grid; justify-items: center; gap: 2px; min-height: 56px; padding: 0; border: 0; background: none; color: var(--w-muted); font: inherit; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
+  .w-tabbar svg { width: 52px; height: 30px; padding: 3px 14px; border-radius: var(--vx-r-pill); box-sizing: border-box; transition: background var(--vx-dur-state); }
+  .w-tabbar [aria-current="page"], .w-tabbar [aria-expanded="true"] { color: var(--w-text); }
+  .w-tabbar [aria-current="page"] svg, .w-tabbar [aria-expanded="true"] svg { background: var(--vx-accent-soft); }
+  .w-tabbar span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Barra de acción fija de la página (precio + Añadir, Continuar compra…) */
+  .w-mbar { position: fixed; left: 0; right: 0; bottom: calc(68px + env(safe-area-inset-bottom)); z-index: 49; display: block; padding: 10px var(--w-gut); border-top: 1px solid var(--w-line); background: var(--w-card); }
+  .w-mbar__in { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .w-mbar__in > span { display: grid; min-width: 0; } .w-mbar__in b { font-family: var(--font-display); font-size: 22px; } .w-mbar__in small { font-size: 13px; color: var(--w-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .w-mbar .w-btn { min-height: 52px; }
+  .w-toast { bottom: calc(84px + env(safe-area-inset-bottom)); }
+  body.has-mbar .w-toast { bottom: calc(160px + env(safe-area-inset-bottom)); }
+
+  /* Menú lateral → desplegable «Sección › Página · Ir a otra sección» */
+  .w-acc { gap: 16px; }
+  .w-side { position: static; padding: 0; overflow: hidden; }
+  .w-side__m { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 10px 16px; border: 0; background: none; color: var(--w-text); font: inherit; text-align: left; cursor: pointer; }
+  .w-side__m > span { flex: 1; display: grid; min-width: 0; } .w-side__m b { font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .w-side__m small { font-size: 13px; color: var(--w-muted); }
+  .w-side__m > svg:last-child { transform: rotate(90deg); transition: transform var(--vx-dur-state); }
+  .w-side.is-open .w-side__m > svg:last-child { transform: rotate(-90deg); }
+  .w-side .w-side__t { display: none; }
+  .w-side ul { display: none; padding: 0 12px 12px; }
+  .w-side.is-open ul { display: grid; grid-template-columns: minmax(0, 1fr); }
+
+  /* Pie en acordeón */
+  .w-foot__grid { grid-template-columns: minmax(0, 1fr); gap: 0; padding-block: 32px 16px; }
+  .w-foot__brand { margin-bottom: 16px; }
+  .w-foot nav { gap: 0; border-bottom: 1px solid rgb(255 255 255 / 0.14); }
+  .w-foot nav .w-foot__tog { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 52px; margin: 0; color: var(--vx-accent); cursor: pointer; }
+  .w-foot__tog svg { display: block; transition: transform var(--vx-dur-state); }
+  .w-foot__tog[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .w-foot__links { display: none; padding-bottom: 12px; }
+  .w-foot__tog[aria-expanded="true"] + .w-foot__links { display: flex; }
+  .w-foot nav a { min-height: 44px; }
+  .w-foot__pay { flex-wrap: wrap; }
+}
+@media (max-width: 1023px) and (prefers-reduced-motion: reduce) { .w-sheet__sheet { animation: none; } }
+
+/* ── Rejillas que en móvil crecían con su contenido (1fr = minmax(auto, 1fr)) ── */
+@media (max-width: 1023px) {
+  .w-shop, .w-checkout, .w-pd, .w-pd__desc, .w-acc { grid-template-columns: minmax(0, 1fr); }
+  .w-shop > *, .w-checkout > *, .w-checkout__main > *, .w-pd > *, .w-acc__main > * { min-width: 0; }
+  .w-grid--3, .w-benefits ul, .w-trust, .w-why ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .w-quick ul { grid-template-columns: repeat(4, minmax(0, 1fr)); } .w-quick li { min-width: 0; }
+  .w-line { grid-template-columns: 64px minmax(0, 1fr); }
+  .w-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } .w-stats > * { min-width: 0; }
+  .w-pager { flex-wrap: wrap; } .w-pager .w-btn { padding: 0 10px; }
+  .w-req__bar--split, .w-rowinfo, .w-orderhead { flex-wrap: wrap; }
+  .w-card, .w-card__link, .w-card__body { min-width: 0; }
+  .w-col { gap: 16px; }
+}
+@media (max-width: 600px) {
+  .w-grid--3:not(:has(.w-card)), .w-benefits ul, .w-why ul { grid-template-columns: minmax(0, 1fr); }
+  .w-quick ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1023px) {
+  .w-sechead { flex-wrap: wrap; gap: 4px 12px; } .w-sechead > div { min-width: 0; } .w-sechead h2 { flex-wrap: wrap; }
+  .w-card__foot { flex-wrap: wrap; min-width: 0; }
+  .w-cartgroup header { flex-wrap: wrap; }
+  .w-view li:has(> .w-thumb) { flex-wrap: wrap; }
+  .w-searchbar { flex-wrap: wrap; } .w-searchbar > * { min-width: 0; }
+}
+@media (max-width: 1023px) { .w-pd { padding: 16px; gap: 20px; } }
+@media (max-width: 1023px) { .w-notice { flex-wrap: wrap; } .w-notice__t { flex: 1 1 220px; min-width: 0; } .w-notice > .w-btn, .w-notice > .w-btnrow, .w-notice > a { margin-left: 32px; } }

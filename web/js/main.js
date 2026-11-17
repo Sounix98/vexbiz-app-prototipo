@@ -50,7 +50,8 @@ function render() {
   if (!same) { host.classList.remove('is-in'); void host.offsetWidth; host.classList.add('is-in'); }
   document.title = `VEXBIZ · ${page.title || 'Marketplace'}`;
   $('[data-page-label]').textContent = page.label || 'MARKETPLACE';
-  paintAccount();
+  paintAccount(); paintShell(page, path, q);
+  if (!$('#w-sheet').hidden) toggleMore(false);
   cleanup = page.mount ? page.mount(view, q) || null : null;
   if (same) { window.scrollTo({ top: y, behavior: 'instant' }); return; } // volver a pintar la misma página (tras una acción) no la mueve
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -58,6 +59,24 @@ function render() {
   // la búsqueda de la cabecera refleja la consulta actual
   const f = $('[data-search]'); f.q.value = path === 'buscar' ? q.q || '' : ''; f.n.value = path === 'buscar' ? q.n || '' : '';
 }
+
+/** Móvil: pestaña activa de la barra inferior y barra de acción fija de la página (page.barra). */
+let barPage = null, barQ = {};
+function paintShell(page, path, q) {
+  barPage = page; barQ = q;
+  const tab = path === 'buscar' && q.orden === 'ofertas' ? 'buscar' : ['', 'nichos', 'compras'].includes(path) ? path : path === 'buscar' ? '' : null;
+  document.querySelectorAll('[data-tab]').forEach((a) => { const on = tab !== null && a.dataset.tab === tab && (path !== 'buscar' || q.orden === 'ofertas'); a.toggleAttribute('aria-current', on); if (on) a.setAttribute('aria-current', 'page'); });
+  paintBar();
+}
+function paintBar() {
+  const bar = $('#w-mbar'), html = barPage?.barra ? barPage.barra(barQ) : '';
+  bar.innerHTML = html || ''; bar.hidden = !html; document.body.classList.toggle('has-mbar', !!html);
+}
+function toggleMore(open) {
+  const m = $('#w-sheet'), b = $('[data-masmenu]'); m.hidden = !open; b.setAttribute('aria-expanded', String(open)); document.body.classList.toggle('is-locked', open);
+  if (open) m.querySelector('a').focus(); else b.focus();
+}
+function paintTheme() { const dark = document.documentElement.getAttribute('data-theme') === 'dark'; $('[data-theme-toggle] span').textContent = dark ? 'Modo claro' : 'Modo oscuro'; }
 
 /** Página aún no construida: dice qué es y en qué fase llega. */
 function pendiente(path) {
@@ -87,6 +106,7 @@ function paintAccount() {
   $('[data-acct]').textContent = sesion.on ? 'Mi cuenta' : 'Entrar';
   $('.w-acct').setAttribute('href', sesion.on ? '#/tablero' : '#/entrar');
   $('.w-bell').setAttribute('href', sesion.on ? '#/avisos' : '#/entrar');
+  $('.w-acct__av').dataset.ini = sesion.on ? 'A' : '';
 }
 window.addEventListener('vx-sesion', paintAccount);
 function paintCart() {
@@ -114,6 +134,11 @@ document.addEventListener('click', (e) => {
     play($('[data-cart]'), 'w-pop');
     return;
   }
+  if (e.target.closest('[data-masmenu]')) { toggleMore($('#w-sheet').hidden); return; }
+  if (e.target.closest('[data-sheet-close]') || e.target.matches('.w-sheet')) { toggleMore(false); return; }
+  if (e.target.closest('[data-theme-toggle]')) { const d = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', d); try { localStorage.setItem('vx-web-theme', d); } catch { /* sin almacenamiento */ } paintTheme(); return; }
+  const ft = e.target.closest('.w-foot__tog'); if (ft) { ft.setAttribute('aria-expanded', String(ft.getAttribute('aria-expanded') !== 'true')); return; }
+  const sm = e.target.closest('.w-side__m'); if (sm) { const open = sm.getAttribute('aria-expanded') !== 'true'; sm.setAttribute('aria-expanded', String(open)); sm.closest('.w-side').classList.toggle('is-open', open); return; }
   const t = e.target.closest('[data-toast]');
   if (t) { e.preventDefault(); toast(t.dataset.toast); }
 });
@@ -125,7 +150,9 @@ document.addEventListener('submit', (e) => {
   i.value = ''; toast('Listo: te enviamos un correo para confirmar la suscripción');
 });
 
-subscribe(paintCart);
+subscribe(paintCart); subscribe(() => { if (barPage?.barra) paintBar(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#w-sheet').hidden) toggleMore(false); });
+paintTheme();
 window.addEventListener('hashchange', render);
 if (reduce()) document.documentElement.setAttribute('data-reduce-motion', '');
 paintCart();

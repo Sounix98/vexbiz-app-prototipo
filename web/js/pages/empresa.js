@@ -73,9 +73,9 @@ const solicitud = page('08.02', 'Ficha de la solicitud', (q) => {
     hecho: card(`<div class="w-rowinfo">${icon('shield', 26)}<div><h2>Servicio Terminado y Certificado</h2><p>${s.garantia ? `Con garantía activa hasta el ${esc(s.garantia)}.` : 'Cerrado sin garantía.'}</p></div></div>`, 'w-card2--info'),
   }[s.paso];
   const idx = PASOS.findIndex(([k]) => k === s.paso);
-  return `<div class="w-wrap w-narrow"><p class="w-spread"><a class="w-link" href="#/empresa-agenda">${icon('back', 18)}Volver a la agenda</a><a class="w-link" href="#/empresa-catalogo">${icon('toolbox', 18)}Ver catálogo</a></p>
+  return `<div class="w-wrap w-col"><p class="w-spread"><a class="w-link" href="#/empresa-agenda">${icon('back', 18)}Volver a la agenda</a><a class="w-link" href="#/empresa-catalogo">${icon('toolbox', 18)}Ver catálogo</a></p>
   ${card(`<p class="w-chiprow"><span class="w-req__id">${s.id}</span>${badge(PASOS[idx][1], s.paso === 'cotizar' ? 'warn' : s.paso === 'hecho' ? 'neutral' : 'info', s.paso === 'cotizar' ? 'inbox' : '')}</p><h1 class="w-title w-title--md">${esc(s.titulo)}</h1>
-    <ol class="w-steps" aria-label="Estado de la solicitud">${PASOS.map(([k, t], i) => `<li class="${i < idx ? 'is-done' : i === idx ? 'is-now' : ''}"${i === idx ? ' aria-current="step"' : ''}>${i < idx ? icon('check', 14) : ''}${t}</li>`).join('')}</ol>`)}
+    <ol class="w-ladder" aria-label="Estado de la solicitud">${PASOS.map(([k, t], i) => `<li class="${i < idx ? 'is-done' : i === idx ? 'is-now' : ''}"${i === idx ? ' aria-current="step"' : ''}>${i < idx ? icon('check', 14) : ''}${t}</li>`).join('')}</ol>`)}
   ${card(`<dl class="w-dl3"><div><dt>Cliente solicitante</dt><dd>${esc(s.cliente)}<br>${esc(s.direccion)}</dd></div><div><dt>${s.para ? 'Fecha acordada' : 'Fecha preferida por el cliente'}</dt><dd>${esc(para)}</dd></div><div><dt>Recibida el</dt><dd>${esc(s.recibida || '16/10/2026 · 08:14')}</dd></div></dl>
     <div class="w-notebox"><small>Notas del trabajo</small><p>${esc(s.notas || 'Sin notas.')}</p></div>
     ${notice('neutral', 'shield', 'El precio, la fecha y la garantía deben quedar en esta ficha: es lo que respalda cualquier mediación.')}`)}

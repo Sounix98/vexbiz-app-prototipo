@@ -11,7 +11,29 @@ Fuente visual: las 82 exportaciones de Figma de `web marketplace/web/` (archivo 
 | 3 · Servicios y Academia | 12 | Hecha |
 | 4 · Técnico y empresa de servicio | 15 | Hecha |
 | 5 · Tienda | 16 | Hecha |
-| 6 · Web móvil y pulido | 82 | Pendiente |
+| 6 · Web móvil y pulido | 82 | Hecha |
+
+## Fase 6 · Web móvil y pulido (82 páginas)
+
+**Cómo se abre.** `web-movil/index.html` enseña la web dentro de un marco de teléfono de 390 px, con accesos a las 8 pantallas del Figma móvil y botón de modo oscuro; en un teléfono abre la web directamente. Es el mismo código que `web/`: por debajo de 1024 px la web toma la composición móvil (`web/css/movil.css`). La PWA anterior de esta carpeta (v1.9.13) se retiró y su service worker se da de baja al abrir el visor.
+
+**Lo que sale del Figma móvil, aplicado a las 82 páginas.**
+- **Cabecera compacta:** avatar (con la inicial al entrar), logo, avisos y carrito; buscador a lo ancho con botón de cámara; «Enviar a Valencia, Venezuela» debajo.
+- **Barra inferior de 5 pestañas:** Inicio, Categorías, Ofertas (búsqueda con los productos rebajados), Mis pedidos y Más. «Más» abre una hoja con las demás secciones (cuenta, servicios, comunidad, Academia, técnico, empresa de servicios, tienda, importadora, índice) y el cambio a modo oscuro; se cierra con Escape.
+- **Menú lateral → desplegable:** en Mi cuenta, Mi trabajo, Empresa de servicios y Mi tienda el menú pasa a una fila «Sección › Página · Ir a otra sección» que se despliega.
+- **Pie en acordeón:** Ayuda, Legal, Servicios y Únete a VexBiz se abren y cierran.
+- **Barras de acción fijas:** en la ficha de producto, precio y «Añadir»; en el carrito, «Continuar compra · total», que se actualiza al cambiar el carrito.
+
+**Pulido.**
+- Rejillas que en móvil crecían con su contenido (`1fr` sin mínimo 0): catálogo, búsqueda, ficha, carrito, checkout, curso, tablero, pedido (06.05, que quedaba pendiente desde la fase 4), comunidad, bandejas y paginadores. Los avisos con botón parten la línea en móvil.
+- Choques de nombres corregidos: la línea de pasos de la ficha de solicitud (08.02) usaba `.w-steps`, la clase del paso a paso del checkout; las páginas de columna estrecha de las fases 4 y 5 cambiaban `.w-narrow` de Mi cuenta; la hoja «Más» se llama `w-sheet` porque la búsqueda ya usa `data-more` para «Cargar más productos».
+
+**Comprobado.** Las 82 páginas pasan el barrido de calidad con 0 fallos a 1440 px y a 390 px, en claro y en oscuro (desbordes, texto de menos de 13 px, objetivos de menos de 44 px, un h1 por página, contraste AA y errores de JavaScript). Ninguna página se desborda a 360 px. Recorrido de la barra inferior, la hoja «Más» (abrir, Escape, modo oscuro), el menú desplegable, el pie en acordeón y las barras fijas (añadir al carrito desde la barra suma la unidad). Capturas en `capturas/web-fase-6/`.
+
+**Diferencias con el Figma (para revisar).**
+1. **Portada móvil:** el Figma usa fotos en el carrusel, los servicios y el banner; aquí siguen las ilustraciones (lo mismo que en escritorio).
+2. **Panel de la tienda móvil:** el Figma quita los carritos abiertos y las unidades apartadas; aquí se mantienen debajo, para no esconder información que en escritorio sí está.
+3. **Pie:** el Figma móvil añade «Binance Pay» a los medios de pago; no se añadió porque escritorio no lo muestra (hay que decidir si se acepta).
 
 ## Fase 5 · Tienda (16 páginas)
 
