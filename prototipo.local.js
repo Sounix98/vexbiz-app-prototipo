@@ -12,7 +12,7 @@
   var usuario = {
     nombre: "Aníbal Lejarazu",
     iniciales: "AL",
-    correo: "anibal@correo.com",
+    correo: "tunombre@vexbiz.com",
     verificado: true,
     ciudad: "Valencia, Carabobo",
     resumen: { sinPagar: 1, enCamino: 2, entregados: 14 },
@@ -188,7 +188,7 @@
   var pagosIni = [
     { id: "nomina", titulo: "Nómina", sub: "Cobro a tu cuenta", preferida: true, doc: "V-18.***.789", cuenta: "····4567", ultimo: "12/10/2026" },
     { id: "banesco", titulo: "Banesco ····1234", sub: "Teléfono y banco", doc: "V-18.***.789", tel: "0414 ···1234", ultimo: "28/09/2026", falla: true },
-    { id: "binance", titulo: "Binance", sub: "Binance Pay", correo: "an***@correo.com" }
+    { id: "binance", titulo: "Binance", sub: "Binance Pay", correo: "tu***@vexbiz.com" }
   ];
   var sesionesIni = [
     { id: "s1", equipo: "App VexBiz", so: "Android 15", actual: true, ip: "200.84.12.6", desde: "02/10", ic: "phone" },
@@ -2249,7 +2249,7 @@
         `
       <span class="vx-state-ico">${icon("inbox", 32)}</span>
       <h1 class="md-headline-small" tabindex="-1">Revisa tu correo</h1>
-      <p class="md-title-medium vx-tab-num">${esc(state.flow.correo || "anibal.lejarazu@correo.com")}</p>
+      <p class="md-title-medium vx-tab-num">${esc(state.flow.correo || "tunombre@vexbiz.com")}</p>
       <ol class="vx-steplist" role="list">
         ${step(1, "Abre el enlace que te enviamos.")}
         ${step(2, "Elige qué vienes a hacer: comprar, trabajar como técnico o registrar tu empresa.")}

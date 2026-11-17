@@ -7,3 +7,12 @@ Tres archivos CSS, en este orden en el `<head>`:
 3. `ds/motion.css` — sistema de movimiento v1 (documentado en la sección 9 de `vexbiz-app-contexto.md`). Se suma a `tokens.css`; no renombra nada.
 
 Fuentes: Host Grotesk (títulos) e Inter (texto). Cárgalas desde Google Fonts o localmente; `tokens.css` ya declara `--font-display` y `--font-body`.
+
+## Web y web móvil
+
+Además de la app (raíz), el repositorio incluye dos prototipos más, listos para abrir sin compilar:
+
+- `web/`: versión de escritorio (1440 px) del marketplace. Abrir `web/index.html`.
+- `web-movil/`: versión web móvil (PWA) con el catálogo real capturado. Abrir `web-movil/index.html`.
+
+Los correos de ejemplo de los formularios usan el genérico `tunombre@vexbiz.com`. Las dos carpetas son copias de trabajo de VEXBIZ WEB y VEXBIZ APP (v1.9.13); las originales no se tocaron.

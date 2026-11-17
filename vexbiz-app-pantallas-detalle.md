@@ -97,7 +97,7 @@ Cómo leerlo:
 ### M1.04 · Correo sin confirmar
 412 × 892 px · 2 íconos
 
-**Textos:** Confirma tu correo · Aún no has confirmado tu correo · Te enviamos el enlace hace un momento a anibal@correo.com. Revisa también la carpeta de no deseados. · Podrás pedir otro en 4 min
+**Textos:** Confirma tu correo · Aún no has confirmado tu correo · Te enviamos el enlace hace un momento a tunombre@vexbiz.com. Revisa también la carpeta de no deseados. · Podrás pedir otro en 4 min
 
 **Componentes:** Icon Button / Estilo=Standard, Estado=Enabled; Button / Estilo=Outlined, Estado=Disabled; Button / Estilo=Tonal, Estado=Enabled; Button / Estilo=Text, Estado=Enabled; Button / Estilo=Filled, Estado=Enabled
 
@@ -106,7 +106,7 @@ Cómo leerlo:
 ### M1.06 · Revisa tu correo
 412 × 892 px · 2 íconos
 
-**Textos:** Revisa tu correo · anibal.lejarazu@correo.com · 1 · Abre el enlace que te enviamos. · 2 · Elige qué vienes a hacer: comprar, trabajar como técnico o registrar tu empresa. · 3 · Hasta que no confirmes tu correo no podrás entrar. · Tu código de invitación quedó asociado.
+**Textos:** Revisa tu correo · tunombre@vexbiz.com · 1 · Abre el enlace que te enviamos. · 2 · Elige qué vienes a hacer: comprar, trabajar como técnico o registrar tu empresa. · 3 · Hasta que no confirmes tu correo no podrás entrar. · Tu código de invitación quedó asociado.
 
 **Componentes:** Icon Button / Estilo=Standard, Estado=Enabled; Button / Estilo=Text, Estado=Enabled; Button / Estilo=Filled, Estado=Enabled
 
@@ -548,7 +548,7 @@ Cómo leerlo:
 ### M6.01 · Cuenta
 412 × 1764 px · 4 íconos
 
-**Textos:** Aníbal Lejarazu · anibal@correo.com · Verificado · Estás en modo Comprador · 1 · Sin pagar · 2 · En camino · 14 · Entregados · Gasto por mes (USD) · 48 · May · 95 · Jun · 31 · Jul · 142 · Ago · 77 · Sep · 124 · Oct · Calculado sobre tus últimos 17 pedidos. · Mis compras · Mi cuenta · Aprender · Ayuda · Cerrar sesión · Cuenta
+**Textos:** Aníbal Lejarazu · tunombre@vexbiz.com · Verificado · Estás en modo Comprador · 1 · Sin pagar · 2 · En camino · 14 · Entregados · Gasto por mes (USD) · 48 · May · 95 · Jun · 31 · Jul · 142 · Ago · 77 · Sep · 124 · Oct · Calculado sobre tus últimos 17 pedidos. · Mis compras · Mi cuenta · Aprender · Ayuda · Cerrar sesión · Cuenta
 
 **Componentes:** List Item / Inicio=Ícono, Líneas=1×13; Avatar / Tipo=Iniciales, Tamaño=L; Button / Estilo=Text, Estado=Enabled; Icon Button / Estilo=Standard, Estado=Enabled; Badge / Tamaño=Small; App / Barra Comprador / Activa=Cuenta
 
@@ -602,7 +602,7 @@ Cómo leerlo:
 ### M6.02 · Datos personales
 412 × 686 px · 3 íconos
 
-**Textos:** Datos personales · AL · Nombre · Aníbal Lejarazu · Correo · anibal@correo.com · País activo · Venezuela · Verificación en dos pasos · Sin activar · Descargar mis datos · Un archivo con tu cuenta, compras y servicios.
+**Textos:** Datos personales · AL · Nombre · Aníbal Lejarazu · Correo · tunombre@vexbiz.com · País activo · Venezuela · Verificación en dos pasos · Sin activar · Descargar mis datos · Un archivo con tu cuenta, compras y servicios.
 
 **Componentes:** Icon Button / Estilo=Standard, Estado=Enabled; Button / Estilo=Tonal, Estado=Enabled; Button / Estilo=Outlined, Estado=Enabled
 
@@ -683,7 +683,7 @@ Cómo leerlo:
 ### M6.15 · Formas de pago
 412 × 710 px · 5 íconos
 
-**Textos:** Formas de pago · Guarda tu cuenta para pagar más rápido. La clave del banco se pide siempre al pagar y no se guarda. · Nómina · Cobro a tu cuenta · Preferida · V-18.***.789 · ····4567 · Último uso: 12/10/2026 · Banesco · ····1234 · Teléfono y banco · V-18.***.789 · 0414 ···1234 · Último uso: 28/09/2026 · Falló varias veces seguidas. Revisa los datos. · Binance · Binance Pay · an***@correo.com
+**Textos:** Formas de pago · Guarda tu cuenta para pagar más rápido. La clave del banco se pide siempre al pagar y no se guarda. · Nómina · Cobro a tu cuenta · Preferida · V-18.***.789 · ····4567 · Último uso: 12/10/2026 · Banesco · ····1234 · Teléfono y banco · V-18.***.789 · 0414 ···1234 · Último uso: 28/09/2026 · Falló varias veces seguidas. Revisa los datos. · Binance · Binance Pay · tu***@vexbiz.com
 
 **Componentes:** Icon Button / Estilo=Standard, Estado=Enabled×4; Button / Estilo=Filled, Estado=Enabled
 

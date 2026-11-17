@@ -5,7 +5,7 @@
 export const TASA = 36.89486;
 
 export const usuario = {
-  nombre: 'Aníbal Lejarazu', iniciales: 'AL', correo: 'anibal@correo.com', verificado: true,
+  nombre: 'Aníbal Lejarazu', iniciales: 'AL', correo: 'tunombre@vexbiz.com', verificado: true,
   ciudad: 'Valencia, Carabobo',
   resumen: { sinPagar: 1, enCamino: 2, entregados: 14 },
   gastoMensual: [['May', 48], ['Jun', 95], ['Jul', 31], ['Ago', 142], ['Sep', 77], ['Oct', 124]],
@@ -193,7 +193,7 @@ export const avisosCuenta = [
 export const pagosIni = [
   { id: 'nomina', titulo: 'Nómina', sub: 'Cobro a tu cuenta', preferida: true, doc: 'V-18.***.789', cuenta: '····4567', ultimo: '12/10/2026' },
   { id: 'banesco', titulo: 'Banesco ····1234', sub: 'Teléfono y banco', doc: 'V-18.***.789', tel: '0414 ···1234', ultimo: '28/09/2026', falla: true },
-  { id: 'binance', titulo: 'Binance', sub: 'Binance Pay', correo: 'an***@correo.com' },
+  { id: 'binance', titulo: 'Binance', sub: 'Binance Pay', correo: 'tu***@vexbiz.com' },
 ];
 export const sesionesIni = [
   { id: 's1', equipo: 'App VexBiz', so: 'Android 15', actual: true, ip: '200.84.12.6', desde: '02/10', ic: 'phone' },

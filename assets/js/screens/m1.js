@@ -163,7 +163,7 @@ register('M1.06', {
     return h(page(back(), `
       <span class="vx-state-ico">${icon('inbox', 32)}</span>
       <h1 class="md-headline-small" tabindex="-1">Revisa tu correo</h1>
-      <p class="md-title-medium vx-tab-num">${esc(state.flow.correo || 'anibal.lejarazu@correo.com')}</p>
+      <p class="md-title-medium vx-tab-num">${esc(state.flow.correo || 'tunombre@vexbiz.com')}</p>
       <ol class="vx-steplist" role="list">
         ${step(1, 'Abre el enlace que te enviamos.')}
         ${step(2, 'Elige qué vienes a hacer: comprar, trabajar como técnico o registrar tu empresa.')}

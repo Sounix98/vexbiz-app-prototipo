@@ -159,7 +159,7 @@ Estos recorridos deben poder hacerse de principio a fin en el prototipo. Son los
 El prototipo no usa un backend. Usa un conjunto fijo de datos, coherente entre pantallas, tomado de los textos del Figma. Cuando una pantalla necesite un dato que no está aquí, se inventa con el mismo estilo y se anota en el informe de entrega.
 
 **Comprador**
-- Aníbal Lejarazu · anibal@correo.com · verificado · Valencia, Carabobo.
+- Aníbal Lejarazu · tunombre@vexbiz.com · verificado · Valencia, Carabobo.
 - Direcciones: Casa (predeterminada, Av. Bolívar Norte, Res. Los Samanes, Torre B), Oficina (C.C. Metrópolis, Nivel 2, Local 214), Taller principal (Zona Industrial Castillito, Calle 98, San Diego).
 - Cuenta: 1 sin pagar, 2 en camino, 14 entregados.
 
